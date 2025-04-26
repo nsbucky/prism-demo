@@ -18,14 +18,11 @@ it('returns some text', function () {
                                     ->withText('Spit noise')
                                     ->withUsage(new Usage(10, 20));
 
-    // Set up the fake
-    $fake = Prism::fake([$fakeResponse]);
+    Prism::fake([$fakeResponse]);
 
-    // Run your code
     $this->artisan('ollama:spits',['feugo' => 'Hello'])
         ->expectsOutput('Spit noise')
          ->assertSuccessful();
 
-    // Make assertions
 });
 
