@@ -1,10 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Artisan;
 use Prism\Prism\Prism;
-use Prism\Prism\Enums\Provider;
-use Prism\Prism\ValueObjects\Usage;
 use Prism\Prism\Testing\TextResponseFake;
+use Prism\Prism\ValueObjects\Usage;
 
 
 test('only accepts strings as a prompt', function () {
