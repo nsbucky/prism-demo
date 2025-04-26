@@ -61,6 +61,9 @@ services:
         environment:
             - OLLAMA_KEEP_ALIVE=24h
             - OLLAMA_HOST=0.0.0.0
+            - OLLAMA_DEFAULT_MODEL=llama2
+        networks:
+            - sail
 networks:
     sail:
         driver: bridge
