@@ -9,14 +9,14 @@ use Prism\Prism\Enums\Provider;
 
 class OllamaSpitsCommand extends Command
 {
-    protected $signature = 'ollama:spits {feugo}';
+    protected $signature = 'ollama:spits {fuego}';
 
     protected $description = 'Let\'s get the Ollama\'s attention';
 
     public function handle()
     {
-        $validator = Validator::make(['feugo' => $this->argument('feugo')], rules: [
-            'feugo' => ['required', 'string', 'max:255'],
+        $validator = Validator::make(['fuego' => $this->argument('fuego')], rules: [
+            'fuego' => ['required', 'string', 'max:255'],
         ]);
 
         if ($validator->fails()) {
@@ -30,9 +30,9 @@ class OllamaSpitsCommand extends Command
         $response = Prism::text()
             ->using(Provider::Ollama, 'llama2')
             ->withClientOptions(['timeout' => 60])
-            ->withPrompt($input['feugo']);
+            ->withPrompt($input['fuego']);
 
-        $this->info($response->asText()->text);
+        $this->line($response->asText()->text);
 
         return self::SUCCESS;
     }
