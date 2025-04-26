@@ -28,7 +28,7 @@ class OllamaSpitsCommand extends Command
         $input = $validator->validated();
 
         $response = Prism::text()
-            ->using(Provider::Ollama, 'llama2')
+            ->using(Provider::Ollama, 'llama3.2')
             ->withClientOptions(['timeout' => 60])
             ->withPrompt($input['fuego']);
 
