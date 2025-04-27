@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Document;
 use Illuminate\Console\Command;
 use Prism\Prism\Enums\Provider;
 use Prism\Prism\Prism;
@@ -23,6 +24,12 @@ class TextEmbeddingCommand extends Command
         $embeddings = $response->embeddings[0]->embedding;
 
         $this->info('Embeddings: ' . implode(', ', $embeddings));
+
+        Document::create([
+            'name'          => 'Document Name',
+            'embedding'     => $response->embeddings,
+            'original_text' => 'this is text input king - man = queen'
+        ]);
 
         return self::SUCCESS;
     }
