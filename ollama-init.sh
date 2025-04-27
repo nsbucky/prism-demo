@@ -6,10 +6,10 @@ pid=$!
 
 # Pause for Ollama to start
 sleep 5
-
 echo "loading llama3.2"
-
 ollama pull llama3.2
+echo "loading mxbai-embed-large"
+ollama pull mxbai-embed-large
 # ollama pull mistral
 # ollama pull mwiewior/bielik
 # ollama pull deepseek-r1:7b
