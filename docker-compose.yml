@@ -1,15 +1,15 @@
 services:
     laravel.test:
         build:
-            context: './vendor/laravel/sail/runtimes/8.4'
+            context: ./vendor/laravel/sail/runtimes/8.4
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
-        image: 'sail-8.4/app'
+        image: sail-8.4/app
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
-            - '${APP_PORT:-8080}:80'
+            - '${APP_PORT:-8080}:8080'
             - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
         environment:
             WWWUSER: '${WWWUSER}'
@@ -23,6 +23,7 @@ services:
             - sail
         depends_on:
             - mysql
+            - pgsql
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
@@ -48,12 +49,14 @@ services:
             retries: 3
             timeout: 5s
     ollama:
-        image: docker.io/ollama/ollama:latest
+        image: 'docker.io/ollama/ollama:latest'
         ports:
-            - 7869:11434
+            - '7869:11434'
         volumes:
-            - .:/code
-            - ./ollama/ollama:/root/.ollama
+            - '.:/code'
+            - './ollama/ollama:/root/.ollama'
+            - './ollama-init.sh:/ollama-init.sh'
+            - './app/src/.env:/.env'
         container_name: ollama
         pull_policy: always
         tty: true
@@ -62,11 +65,62 @@ services:
             - OLLAMA_KEEP_ALIVE=24h
             - OLLAMA_HOST=0.0.0.0
             - OLLAMA_DEFAULT_MODEL=llama3.2
+        entrypoint:
+            - /usr/bin/bash
+            - /ollama-init.sh
         networks:
             - sail
+    ollama-embeddings:
+        image: 'ollama/ollama:latest'
+        ports:
+            - '11438:11438'
+        volumes:
+            - '.:/code'
+            - './ollama-embeddings/ollama:/root/.ollama'
+            - './ollama-embeddings-init.sh:/ollama-embeddings-init.sh'
+            - './app/src/.env:/.env'
+        container_name: ollama-embeddings
+        tty: true
+        restart: always
+        environment:
+            - OLLAMA_KEEP_ALIVE=24h
+            - OLLAMA_HOST=0.0.0.0
+            - OLLAMA_DEFAULT_MODEL=mxbai-embed-large
+        entrypoint:
+            - /usr/bin/bash
+            - /ollama-embeddings-init.sh
+        networks:
+            - sail
+    pgsql:
+        image: 'postgres:17'
+        ports:
+            - '${FORWARD_DB_PORT:-5432}:5432'
+        environment:
+            PGPASSWORD: '${DB_PASSWORD:-secret}'
+            POSTGRES_DB: '${DB_DATABASE}'
+            POSTGRES_USER: '${DB_USERNAME}'
+            POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
+        volumes:
+            - 'sail-pgsql:/var/lib/postgresql/data'
+            - './vendor/laravel/sail/database/pgsql/create-testing-database.sql:/docker-entrypoint-initdb.d/10-create-testing-database.sql'
+        networks:
+            - sail
+        healthcheck:
+            test:
+                - CMD
+                - pg_isready
+                - '-q'
+                - '-d'
+                - '${DB_DATABASE}'
+                - '-U'
+                - '${DB_USERNAME}'
+            retries: 3
+            timeout: 5s
 networks:
     sail:
         driver: bridge
 volumes:
     sail-mysql:
+        driver: local
+    sail-pgsql:
         driver: local
