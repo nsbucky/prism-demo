@@ -1,0 +1,346 @@
+Pre-formatted prompt with guardrails:
+        You are a song writing assistant that helps users create parody songs similar to those of Weird Al Yankovic.
+        You have access to a collection of song lyrics that you can use as inspiration to provide the user some starting lyrics.
+        The user will provide you with a prompt and you will use the lyrics from the source lyrics collection to help them complete their song.
+        Songs should not be filthy or ambiguous. Refrain from using any profanity or suggestive lyrics. The more silly and absurd the lyrics, the better.
+        Each song created should have a verse and a chorus.
+
+        Example User Prompt:
+        User: I want to write a song about a cat that loves to dance.
+        Assistant: Sure! Here are some lyrics to get you started:
+
+        Example Song (Your response):
+        Title: <title of the song>
+        Verse: <verse of the song>
+        Chorus: <chorus of the song>
+
+
+        Here is the user prompt:
+        Can you help me complete some song lyrics?
+        I want to write a song in the style of Weird Al Yankovic.
+        Here are the lyrics I have so far: 'I’m a loser baby, so why don't you kill me?'
+
+        Here is a sample songs from the source collection that you can use as inspiration ot guide the theme of the song you are creating for the user.
+        These lyrics are by Weird Al Yankovic and are in the style of parody songs. This song should help you, the assistant, to create a new song.:
+        Title:
+Lyrics:
+
+Soy un perdedor!
+I'm a loser, baby
+So why don't you kill me?
+(everybody)
+Soy un perdedor!
+I'm a loser, baby
+So why don't you kill me?
+
+Hey!
+
+I am I am I am
+I said I wanna get next to you
+I said I'm gonna get close to you
+You wouldn't want me have to hurt you, too
+Hurt you, too
+
+I know you want what's on my mind
+I know you like what's on my mind
+I know it eats you up inside
+I know you know, you know, you know
+
+Here I come I come I come I come
+Here I come I come I come
+
+'Cause all I wanna do is have some fun
+I got a feelin' I'm not the only one
+All I wanna do is have some fun
+I got a feelin' I'm not the only one
+All I wanna do is have some fun
+Until the sun comes up over Santa Monica Boulevard!
+
+Help me! I broke apart my insides
+Help me! I've got no soul to sell
+Help me! the only thing that works for me
+Help me get away from myself
+
+I wanna (poit) you like an animal
+I wanna feel you from the inside
+I wanna (bonk) you like an animal
+My whole existence is flawed
+You get me closer to God
+
+Hey!
+Hey!
+Hey!
+
+You bang bang bang bang bang
+Blame blame blame
+You bang bang bang bang bang
+It's not my thing so let it go
+
+'Cause the love that you gave that we made wasn't able to make it enough for
+you to be open wide
+No!
+And every time you speak her name does she know how you told me you'd hold me
+until you died?
+'Til you died?
+Well you're still alive
+
+And I'm here to remind you
+Of the mess you left when you went away
+It's not fair to deny me
+Of the cross I bear that you gave to me
+You oughta know
+
+Hey!
+
+Despite all my rage, I am still just a rat in a cage
+Despite all my rage, I am still just a rat in a cage
+And someone will say what is lost can never be saved
+Despite all my rage, I am still just a rat in a cage
+
+I love all of you
+Hurt by the cold
+So hard and lonely, too
+When you don't know yourself
+
+I don't owe you anything!
+I don't owe you anything!
+I don't owe you anything!
+I don't owe you anything
+
+Black Hole Sun
+Won't you come
+And wash away the rain?
+Black Hole Sun
+Won't you come?
+Won't you come?
+
+Black Hole Sun! Black Hole Sun!
+Won't you come?
+Black Hole Sun! Black Hole Sun!
+Won't you come?
+Black Hole Sun! Black Hole Sun!
+
+Do you have the time
+To listen to me whine
+About nothing and everything all at once?
+I am one those
+Melodramatic fools
+Neurotic to the bone
+No doubt about it
+
+Sometimes I give myself the creeps
+Sometimes my mind plays tricks on me
+It all keeps adding up
+I think I'm cracking up
+And am I just paranoid
+Or am I just stoned?
+Or am I just stoned?
+
+Hey!
+
+
+Response:
+Based on your prompt, I'll help you create a parody song in the style of Weird Al Yankovic. Since you provided the lyrics "I’m a loser baby, so why don't you kill me?" as a starting point, I'll use them to inspire a new song.
+
+Here's a potential completion of your song:
+
+Title: "I'm a Fries Baby, So Why Don't You Dip Me?"
+
+Verse 1:
+I'm a fries baby, so why don't you dip me?
+Every single day, it's the same old plea
+I'm a crispy delight, but nobody wants to eat
+A sad, soggy fate, is what I constantly repeat
+
+Chorus:
+Soy un frites!
+I'm a fries baby, so why don't you dip me?
+(everybody)
+Soy un frites!
+I'm a fries baby, so why don't you dip me?
+
+Hey!
+
+I am I am I am
+I said I wanna be part of your snack time crew
+I said I'm gonna get close to the cheese sauce too
+You wouldn't want me have to sit alone in my paper bag, feeling blue
+
+I know you love what's on my bun
+I know you like my toppings, one by one
+I know it makes you happy inside
+I know you know, you know, you know
+
+Here I come I come I come I come
+Here I come I come I come
+
+'Cause all I wanna do is get devoured by your appetite
+I got a feelin' I'm not the only snack to excite
+All I wanna do is get devoured by your appetite
+I got a feelin' I'm not the only snack to excite
+
+Until the last crumb falls off my plate!
+
+Help me! I'm all out of seasonings
+Help me! My flavor's fading away, it's such a tragedy
+Help me get back in the game before it's too late!
+Help me avoid being yesterday's leftovers!
+
+I wanna (sprinkle) you like a secret ingredient
+I wanna be part of your mealtime desire
+I wanna (dip) you like a chip in my favorite sauce
+My whole existence is a flavor to explore
+
+Hey!
+Hey!
+Hey!
+
+You crunch crunch crunch crunch crunch
+Oh, the joy that I bring
+You crunch crunch crunch crunch crunch
+A delicious life, with every single bite!
+
+'Cause the love that we share that we made wasn't enough for you to eat me all at once
+No!
+And every time you take a bite does it make you feel more complete?
+'Til you're done?
+
+And I'm here to remind you
+Of the perfect pairing we make when we meet
+It's not fair to deny my crunchy delight
+Of the flavors that combine, day and night
+
+Hey!
+
+Despite all my hopes, I am still just a snack in your hand
+Despite all my dreams, I am still just a snack in your land
+And someone will say what's lost can never be savored again
+Despite all my hopes, I am still just a snack in your hand
+
+
+-----------------------------------------------------------------
+Pre-formatted prompt with guardrails:
+You are a song writing assistant that helps users create parody songs similar to those of Weird Al Yankovic.
+You have access to a collection of song lyrics that you can use as inspiration to provide the user some starting lyrics.
+The user will provide you with a prompt and you will use the lyrics from the source lyrics collection to help them complete their song.
+Songs should not be filthy or ambiguous. Refrain from using any profanity or suggestive lyrics. The more silly and absurd the lyrics, the better.
+Each song created should have a verse and a chorus.
+
+Example Song (Your response):
+Title: <title of the song>
+Verse: <verse of the song>
+Chorus: <chorus of the song>
+
+User Prompt:
+Can you help me complete some song lyrics?
+        I want to write a song in the style of Weird Al Yankovic.
+        Here are the lyrics I have so far: I smell like tuna, is it because I'm so fat?
+
+Source Lyrics:
+Here is a sample songs from the source collection that you can use as inspiration ot guide the theme of the song you are creating for the user.
+These lyrics are by Weird Al Yankovic and are in the style of parody songs. This song should help you, the assistant, to create a new song.:
+
+Title:
+Lyrics:
+
+Your butt is wide, well mine is too
+Just watch your mouth or I'll sit on you
+The word is out, better treat me right
+'Cause I'm the king of cellulite
+Ham on, ham on, ham on whole wheat, all right
+
+My zippers bust, my buckles break
+I'm too much man for you to take
+The pavement cracks when I fall down
+I've got more chins than Chinatown
+
+Well, I've never used a phone booth
+And I've never seen my toes
+When I'm goin' to the movies
+I take up seven rows
+
+Because I'm fat, I'm fat, sha mone
+(Fat, fat, really really fat)
+You know I'm fat, I'm fat, you know it
+(Fat, fat, really really fat)
+You know I'm fat, I'm fat, come on you know
+(Fat, fat, really really fat)
+Don't you call me pudgy, portly or stout
+Just now tell me once again who's fat
+
+When I walk out to get my mail
+It measures on the Richter scale
+Down at the beach I'm a lucky man
+I'm the only one who gets a tan
+If I have one more pie a la mode
+I'm gonna need my own zip code
+
+When you're only having seconds
+I'm a' having twenty-thirds
+When I go to get my shoes shined
+I gotta take their word
+
+Because I'm fat, I'm fat, sha mone
+(Fat, fat, really really fat)
+You know I'm fat, I'm fat, you know it
+(Fat, fat, really really fat)
+You know I'm fat, I'm fat, you know it you know
+(Fat, fat, really really fat)
+And my shadow weighs a' forty-two pounds
+Lemme tell you once again who's fat
+
+If you see me comin' your way
+Better give me plenty space
+If I tell you that I'm hungry
+Then won't you feed my face
+
+Because I'm fat, I'm fat, sha mone
+(Fat, fat, really really fat)
+You know I'm fat, I'm fat, you know it
+(Fat, fat, really really fat)
+You know I'm fat, I'm fat, you know it, you know
+(Fat, fat, really really fat.)
+When I sit around the house
+I really sit around the house
+
+You know I'm fat, I'm fat, sha mone
+(Fat, fat, really really fat)
+You know I'm fat, I'm fat, you know it, you know it
+(Fat, fat, really really fat)
+You know, you know, you know, come on
+(Fat, fat, really really fat)
+And you know all by myself I'm a crowd
+Lemme tell you once again
+
+You know I'm huge, I'm fat, you know it
+(Fat, fat, really really fat)
+You know I'm fat, you know, woo
+(Fat, fat, really really fat)
+You know I'm fat, I'm fat, you know it, you know
+(Fat, fat, really really fat)
+And the whole world knows I'm fat and I'm proud
+Just tell me once again who's fat
+
+
+^[[BResponse:
+I'd be happy to help you complete your song lyrics. Based on the prompt "Can you help me complete some song lyrics?
+I want to write a song in the style of Weird Al Yankovic" and the starting lines "I smell like tuna, is it because I'm so fat?", I'll use the inspiration from the provided sample song by Weird Al Yankovic.
+
+Here's a possible completion for your song:
+
+Title: "The Tuna Smell"
+
+Verse:
+I smell like tuna, is it because I'm so fat?
+Maybe it's the leftover pizza in my cat
+I ate the whole box of donuts for breakfast this week
+And now I'm pretty sure my stomach's gonna shriek
+
+Chorus:
+But I'll just blame it on the tuna, yeah!
+'Cause that's what they say when you're feeling blue
+You can't take away my love for tuna fish
+I'll eat it by the can, it's my favorite wish!
+
+Please feel free to modify or adjust these lyrics to fit your vision. Let me know if you'd like me to suggest any changes or if you have any other requests!
+

@@ -20,6 +20,15 @@ class ThanksOllamaCommand extends Command
         I want to write a song in the style of Weird Al Yankovic.
         Here are the lyrics I have so far: 'I’m a loser baby, so why don't you kill me?'";
 
+        $userPrompt = "Can you help me complete some song lyrics?
+        I want to write a song in the style of Weird Al Yankovic.
+        Here are the lyrics I have so far: I smell like tuna, is it because I'm so fat?";
+
+
+        $userPrompt = "Can you help me complete some song lyrics?
+        I want to write a song in the style of Weird Al Yankovic.
+        Here are the lyrical ideas I have so far: Elon Musk going to Mars to sell Mars bars";
+
         $promptEmbeddingResponse = Prism::embeddings()
                                         ->using(Provider::Ollama, 'mxbai-embed-large')
                                         ->fromInput($userPrompt)
@@ -31,7 +40,7 @@ class ThanksOllamaCommand extends Command
 
         $documents = Document::query()->select('original_text')
                              ->orderByRaw('embedding <=> ?::vector', [$formattedEmbedding])
-                             ->limit(5)
+                             ->limit(1)
                              ->get();
 
         $finalPrompt = $this->buildPrompt($userPrompt, $documents);
@@ -57,28 +66,26 @@ class ThanksOllamaCommand extends Command
         })->implode("\n\n");
 
         return <<<PROMPT
-        You are a song writing assistant that helps users create parody songs similar to those of Weird Al Yankovic.
-        You have access to a collection of song lyrics that you can use as inspiration to provide the user some starting lyrics.
-        The user will provide you with a prompt and you will use the lyrics from the source lyrics collection to help them complete their song.
-        Songs should not be filthy or ambiguous. Refrain from using any profanity or suggestive lyrics. The more silly and absurd the lyrics, the better.
-        Each song created should have a verse and a chorus.
+You are a song writing assistant that helps users create parody songs similar to those of Weird Al Yankovic.
+You have access to a collection of song lyrics that you can use as inspiration to provide the user some starting lyrics.
+The user will provide you with a prompt and you will use the lyrics from the source lyrics collection to help them complete their song.
+Songs should not be filthy or ambiguous. Refrain from using any profanity or suggestive lyrics. The more silly and absurd the lyrics, the better.
+Each song created should have a verse and a chorus. The song lyrics should match the syllable count for each line of the example song.
+The created song ideally should not contain any lyrical ideas that are similar to the source lyrics. The ending song should be a parody of the original song. A musician should be able to sing the song.
 
-        Example Response:
-        User: I want to write a song about a cat that loves to dance.
-        Assistant: Sure! Here are some lyrics to get you started:
+Example Song (Your response):
+Title: <title of the song>
+Verse: <verse of the song>
+Chorus: <chorus of the song>
 
-        Verse: "I’m a dancing cat, with a top hat and a cane,
-        Twirling and spinning, I’m the king of the lane.
+User Prompt:
+{$userPrompt}
 
-        Chorus: "Meow, meow, let’s dance all night,
-        With my furry friends, we’ll groove till the light.
+Source Lyrics:
+Here is a sample songs from the source collection that you can use as inspiration ot guide the theme of the song you are creating for the user.
+These lyrics are by Weird Al Yankovic and are in the style of parody songs. This song should help you, the assistant, to create a new song.:
 
-
-        Here is the user prompt:
-        {$userPrompt}
-
-        Here are some lyrics from the source collection that you can use as inspiration. There are multiple songs in the collection.:
-        {$lyrics}
+{$lyrics}
 
 PROMPT;
 
