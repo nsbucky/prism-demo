@@ -18,12 +18,13 @@ class TextEmbeddingCommand extends Command
     {
         $sampleText = 'this is text input king - man = queen';
 
-        $tokens = GPT3Encoder::encode($sampleText);
+        # $tokens = GPT3Encoder::encode($sampleText);
 
-        $this->info('Tokens: ' . implode(', ', $tokens));
+        # $this->info('Tokens: ' . implode(', ', $tokens));
 
         // https://prismphp.com/core-concepts/embeddings.html
         $response = Prism::embeddings()
+                        ->withClientOptions(['timeout' => 60])
                          ->using(Provider::Ollama, 'mxbai-embed-large')
                          ->fromInput($sampleText)
                          ->asEmbeddings();
@@ -32,12 +33,13 @@ class TextEmbeddingCommand extends Command
 
         $this->info('Embeddings: ' . implode(', ', $embeddings));
 
-        $embeddingArray = array_map('floatval', $response->embeddings[0]->embedding);
-        $formattedEmbedding = '[' . implode(',', $embeddingArray) . ']';
+        //$embeddingArray = array_map('floatval', $response->embeddings[0]->embedding);
+
+        //$formattedEmbedding = '[' . implode(',', $embeddingArray) . ']';
 
         Document::create([
-            'name'          => 'Document Name',
-            'embedding'     => $formattedEmbedding,
+            'name'          => 'Sample Document',
+            'embedding'     => $embeddings,
             'original_text' => $sampleText
         ]);
 

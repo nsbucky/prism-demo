@@ -35,4 +35,6 @@ return [
         ],
     ],
 
+    'import_directory' => env('IMPORT_DIRECTORY', storage_path('app/imports')),
+
 ];

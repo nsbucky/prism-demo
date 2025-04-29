@@ -18,7 +18,7 @@ class Document extends Model
 
     protected $connection = 'pgsql';
 
-   /* protected $casts = [
+    protected $casts = [
         'embedding' => 'array',
-    ];*/
+    ];
 }
