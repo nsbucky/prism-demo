@@ -495,3 +495,87 @@ I'm left here broken, with a heart that's beset
 Reason: I came up with this parody by taking inspiration from the theme of an unhappy relationship and applying it to a sci-fi twist. The idea of a robot girlfriend being unhappy with her human partner is absurd and comical, making for a humorous song that could be sung in a similar style to Weird Al Yankovic's "Amish Paradise" or "Like a Surgeon".
 kenrickbuchanan@pop-os:~/PhpstormProjects/prism-demo$
 
+------------------------------------
+Please create a song using the following prompt and source lyrics:
+I like to ride the bus, but it makes me feel sick
+
+Source Lyrics
+Here is a sample song from the database that is similar to the song you are trying to create.
+
+Song ID (this is the ID of the song in the database)
+
+
+Song Title
+
+
+Lyrics
+
+
+Riding in the bus down the boulevard
+And the place was pretty packed (Yeah!)
+Couldn't find a seat so I had to stand
+With the perverts in the back
+It was smelling like a locker room
+There was junk all over the floor
+We're already packed in like sardines
+But we're stopping to pick up more, look out
+
+[Chorus]
+Another one rides the bus
+Another one rides the bus
+Another comes on and another comes on
+Another one rides the bus
+Hey, who's gonna sit by you
+Another one rides the bus
+
+There's a suitcase poking me in the ribs
+There's an elbow in my ear
+There's a smelly old bum standing next to me
+Hasn't showered in a year
+I think I'm missing a contact lens
+I think my wallet's gone
+And I think this bus is stopping again
+To let a couple more freaks get on look out
+
+[Chorus]
+
+[sound effects]
+
+Another one rides the bus
+
+Another one rides the bus ow
+Another one rides the bus hey hey
+Another one rides the bus hey-ey-ey-ey ey ey eyyyyyy
+
+The window doesn't open and the fan is broke
+And my face is turning blue (Yeah)
+I haven't been in a crowd like this
+Since I went to see the Who
+Well I should've got off a couple miles ago
+But I couldn't get to the door
+There isn't any room for me to breathe
+And now we're gonna pick up more yeaaah
+
+[Chorus]
+
+
+Response:
+Title
+"Riding Out the Virus"
+
+Reason
+I was inspired by the source lyrics because of their mention of "perverts" and "junk all over the floor", but I decided to flip the script and create a parody about someone who is uncomfortable due to a different reason. In this case, the discomfort is caused by not being able to find a seat on the bus due to it being crowded.
+
+Verse
+I like to ride the bus, but it makes me feel sick
+People passing gas and making me think
+Of all the things that I'd rather not lick
+Like the sticky floor or the sweaty stick
+
+Chorus
+Another one gets the flu
+Another one gets the flu
+Another one comes on and another comes on
+Another one gets the flu
+Hey, who's gonna sit by you
+Another one gets the flu

@@ -54,7 +54,7 @@ class OllamaIsSuchAToolCommand extends Command
                          ->withClientOptions(['timeout' => 60])
                          ->withPrompt('Can you find this user? I am searching for them: ' . $input['name'])
                          ->withTools([$searchTool])
-                         ->withMaxSteps(2)
+                         ->withMaxSteps(2) // so that it uses the tool
                          ->asText();
 
         $this->line($response->text);

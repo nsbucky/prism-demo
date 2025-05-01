@@ -18,9 +18,8 @@ class TextEmbeddingCommand extends Command
     {
         $sampleText = 'this is text input king - man = queen';
 
-        # $tokens = GPT3Encoder::encode($sampleText);
-
-        # $this->info('Tokens: ' . implode(', ', $tokens));
+        $tokens = GPT3Encoder::encode($sampleText);
+        $this->info('Tokens this prompt uses: ' . implode(', ', $tokens));
 
         // https://prismphp.com/core-concepts/embeddings.html
         $response = Prism::embeddings()
@@ -32,10 +31,6 @@ class TextEmbeddingCommand extends Command
         $embeddings = $response->embeddings[0]->embedding;
 
         $this->info('Embeddings: ' . implode(', ', $embeddings));
-
-        //$embeddingArray = array_map('floatval', $response->embeddings[0]->embedding);
-
-        //$formattedEmbedding = '[' . implode(',', $embeddingArray) . ']';
 
         Document::create([
             'name'          => 'Sample Document',
