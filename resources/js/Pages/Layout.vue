@@ -1,7 +1,7 @@
 <template>
     <div class="container mx-auto min-h-screen">
         <header class="bg-gray-800 text-white p-4">
-            <h1 class="text-2xl text-red-500">Prismatic Ollama</h1>
+            <h1 class="text-3xl text-red-500 text-center font-bold p-3">Prismatic Ollama</h1>
         </header>
         <main>
             <slot></slot>

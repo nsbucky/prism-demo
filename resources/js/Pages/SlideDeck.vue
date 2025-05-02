@@ -8,11 +8,11 @@ import Slide2 from './Slides/Slide2.vue'
 
 const slides = ref([
   {
-    title: 'Slide #1',
+    title: 'Intro',
     component: markRaw(Slide1)
   },
   {
-    title: 'Slide #2',
+    title: 'About Me',
     component: markRaw(Slide2) // More efficient
   }
 ])
