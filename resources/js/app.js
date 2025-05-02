@@ -1,6 +1,6 @@
 import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
-import Layout from './Pages/Layout.vue'
+import '../css/app.css'
 
 import axios from 'axios';
 
@@ -10,10 +10,6 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 createInertiaApp({
     resolve: name => {
         const pages = import.meta.glob('./Pages/**/*.vue', { eager: true })
-
-        // create a default layout for all pages
-        let page = pages[`./Pages/${name}.vue`]
-        page.default.layout = page.default.layout || Layout
 
         return pages[`./Pages/${name}.vue`]
     },
