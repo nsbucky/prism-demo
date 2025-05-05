@@ -33,6 +33,8 @@ docker ps
 docker exec -it ollama:latest /bin/bash
 
 ollama pull llama3.2
+
+ollama run llama3.2 "Hello, how are you?"
 ```
 ### make a sample command
 ```
@@ -45,4 +47,3 @@ https://pestphp.com/docs/writing-tests
 
 **Stuck on writing tests for the Tools in Prism/Ollama**
 
-# filament

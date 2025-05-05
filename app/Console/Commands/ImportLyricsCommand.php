@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -13,7 +15,7 @@ class ImportLyricsCommand extends Command
 
     protected const BASE_URL = 'https://www.azlyrics.com/lyrics/weirdalyankovic/';
 
-    private function importDirectory():string
+    private function importDirectory(): string
     {
         $importDirectory = config('services.import_directory');
 
@@ -55,7 +57,7 @@ class ImportLyricsCommand extends Command
 
                 file_put_contents($importDirectory . '/lyrics/' . $file, $lyrics);
 
-                sleep(rand(5,10));
+                sleep(rand(5, 10));
             });
         });
     }

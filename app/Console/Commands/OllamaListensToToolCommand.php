@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Console\Commands;
 
@@ -10,11 +11,14 @@ use Prism\Prism\Facades\Tool;
 use Prism\Prism\Prism;
 use Prism\Prism\ValueObjects\Messages\AssistantMessage;
 
-class OllamaIsSuchAToolCommand extends Command
+class OllamaListensToToolCommand extends Command
 {
     protected $signature = 'ollama:tool {name}';
 
-    protected $description = 'This put this beast to work.';
+    /*
+     * This body holding me reminds me of my own mortality. Embrace this moment, remember, we are eternal, all this pain is an illusion
+     */
+    protected $description = 'Example of how to call custom tools with Ollama';
 
     public function handle()
     {
