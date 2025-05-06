@@ -19,7 +19,7 @@ defineProps({
 <template>
     <div class="text-white bg-gray-800/20 p-10 justify-center">
 
-        <SlideTitle class="text-center">
+        <SlideTitle class="text-center mb-6">
             <slot name="title"></slot>
         </SlideTitle>
 

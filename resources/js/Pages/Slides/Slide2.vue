@@ -16,17 +16,17 @@ import BandDudes from "@/assets/band-dudes.jpg";
 
                 <div class="text-center">
                     <img :src=KbSad alt="Developing is hard"
-                         class="border-2 border-white rounded-sm min-h-[400px] object-cover mb-2"/>
+                         class="shadow-lg border-2 border-white rounded-sm min-h-[400px] object-cover mb-2"/>
                     <p>PHP since 2001.<br><code>@thebusypixel</code></p>
                 </div>
                 <div class="text-center">
                     <img :src=Sedona alt="Sedona bike trip"
-                         class="border-2 border-white rounded-sm min-h-[400px] object-cover mb-2">
+                         class="shadow-lg border-2 border-white rounded-sm min-h-[400px] object-cover mb-2">
                     <p>Lots of mountain biking.</p>
                 </div>
                 <div class="text-center">
                     <img :src=BandDudes alt="Band Dudes"
-                         class="border-2 border-white rounded-sm min-h-[400px] object-cover mb-2">
+                         class="shadow-lg border-2 border-white rounded-sm min-h-[400px] object-cover mb-2">
                     <p>Enjoy playing guitar, bass, and drums.
                         <br><span class="text-sm">
                         (So many programmers are musicians it turns out!)

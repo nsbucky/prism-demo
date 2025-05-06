@@ -4,27 +4,29 @@ import BaseSlide from "../Components/BaseSlide.vue";
 
 <template>
     <BaseSlide next="/slides/4" previous="/slides/2">
-        <template #title>What are going to cover today?</template>
+        <template #title>What are we going to cover today?</template>
         <template #content>
-            <h2>
-            Foundation:
-            </h2>
 
-            Use Laravel sail to run our project.
-            Using Vue + Inertia for the interface
-            Mysql and Postgres integration
-            Make install scripts?
-            install deps and get it running using Sail
-            Check to see all the models are running etc
+            <div class="flex">
+                <div class="w-1/2">
+                    <ul class="space-y-3">
+                        <li>Laravel framework</li>
+                        <li>Prism library</li>
+                        <li>Local Ollama setup using Docker</li>
+                        <li>Use Laravel's Sail</li>
 
-            <h2>
-                Coding:
-            </h2>
+                    </ul>
+                </div>
 
-            Talk to the Llama, get a response.
-            <code>docker exec -it ollama:latest /bin/bash</code>
-            Create a custom tool to use.
-            Create a simple RAG implementation using Weird Al
+                <div class="w-1/2">
+                    <ul class="space-y-3">
+                        <li>Talking to the Llama</li>
+                        <li>Using tools and function calls in prompts.</li>
+                        <li>RAG with Weird Al</li>
+                        <li>MCP with Prism Server</li>
+                    </ul>
+                </div>
+            </div>
         </template>
     </BaseSlide>
 </template>

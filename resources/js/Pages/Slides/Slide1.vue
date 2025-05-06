@@ -7,16 +7,16 @@ import Navigation from "../Components/Navigation.vue";
 
 </script>
 <template>
-    <div class="flex flex-row w-full h-full text-white bg-gray-800/20 ">
+    <div class="grid grid-cols-3 gap-8  w-full h-full text-white bg-gray-800/20 ">
 
         <!-- Left side - 1/3 width -->
-        <div class="w-1/3 p-4 flex items-center justify-center">
+        <div class="col-span-1 p-4 items-center justify-center">
             <img :src="llamaImage" alt="Llama"
                  class="w-full object-contain border-2 border-white w-full h-auto object-contain"/>
         </div>
 
         <!-- Right side - 2/3 width -->
-        <div class="w-2/3 p-8 flex flex-col justify-center">
+        <div class="col-span-2 p-8 justify-center">
             <SlideTitle>SDPHP Meetup 5/13</SlideTitle>
 
             <SlideBody>
