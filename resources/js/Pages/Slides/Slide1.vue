@@ -3,6 +3,7 @@
 import llamaImage from '../../assets/llama-al.png'
 import SlideTitle from "../Components/SlideTitle.vue";
 import SlideBody from "../Components/SlideBody.vue";
+import Navigation from "../Components/Navigation.vue";
 
 </script>
 <template>
@@ -10,7 +11,8 @@ import SlideBody from "../Components/SlideBody.vue";
 
         <!-- Left side - 1/3 width -->
         <div class="w-1/3 p-4 flex items-center justify-center">
-            <img :src="llamaImage" alt="Llama" class="w-full object-contain border-2 border-white w-full h-auto object-contain" />
+            <img :src="llamaImage" alt="Llama"
+                 class="w-full object-contain border-2 border-white w-full h-auto object-contain"/>
         </div>
 
         <!-- Right side - 2/3 width -->
@@ -23,4 +25,7 @@ import SlideBody from "../Components/SlideBody.vue";
             </SlideBody>
         </div>
     </div>
+
+    <Navigation next="/slides/2"  />
+
 </template>

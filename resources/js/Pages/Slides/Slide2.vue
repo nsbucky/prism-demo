@@ -1,21 +1,42 @@
 <script setup>
-
-import {defineComponent} from "vue";
-import SlideTitle from "../Components/SlideTitle.vue";
-import SlideBody from "../Components/SlideBody.vue";
-
+import BaseSlide from "../Components/BaseSlide.vue";
+import KbSad from "@/assets/kbsad.jpg";
+import Sedona from "@/assets/sedona.jpg";
+import BandDudes from "@/assets/band-dudes.jpg";
 </script>
 
 <template>
-    <div class="flex flex-col items-center justify-center h-full">
-        <SlideTitle>Kenrick aka thebusypixel</SlideTitle>
-        <SlideBody>
-            <p>A little about me:</p>
-            <ul>
-                <li>Been developing with PHP since 2001</li>
-                <li>Love to make music</li>
-                <li>Love to ride a moutain bike around San Diego</li>
-            </ul>
-        </SlideBody>
-    </div>
+    <BaseSlide next="/slides/3" previous="/slides/1">
+        <template #title>
+            Who Am I?
+        </template>
+
+        <template #content>
+            <div class="flex flex-row justify-between space-x-4">
+
+                <div class="text-center">
+                    <img :src=KbSad alt="Developing is hard"
+                         class="border-2 border-white rounded-sm min-h-[400px] object-cover mb-2"/>
+                    <p>PHP since 2001.<br><code>@thebusypixel</code></p>
+                </div>
+                <div class="text-center">
+                    <img :src=Sedona alt="Sedona bike trip"
+                         class="border-2 border-white rounded-sm min-h-[400px] object-cover mb-2">
+                    <p>Lots of mountain biking.</p>
+                </div>
+                <div class="text-center">
+                    <img :src=BandDudes alt="Band Dudes"
+                         class="border-2 border-white rounded-sm min-h-[400px] object-cover mb-2">
+                    <p>Enjoy playing guitar, bass, and drums.
+                        <br><span class="text-sm">
+                        (So many programmers are musicians it turns out!)
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+        </template>
+    </BaseSlide>
+
+
 </template>
