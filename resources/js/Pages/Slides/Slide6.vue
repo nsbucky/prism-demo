@@ -70,7 +70,6 @@ function streamResponse() {
     <template #content>
       <p>Prism does all the heavy lifting so that you can easily pass in text as your prompt.</p>
       <p>You can also pretend this happens easily via a test.</p>
-      <p>Want to see choppy text? You can also stream the response.</p>
 
       <hr class="my-8"/>
 
@@ -92,7 +91,7 @@ function streamResponse() {
                   type="submit"
                   class="bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition duration-200"
               >
-                {{ normalResponseLoading ? 'Waiting...' : 'Ask' }}
+                {{ normalResponseLoading ? 'Waiting...' : 'Normal Response' }}
               </button>
               <div v-if="response" class="mt-4 p-4 bg-gray-800/20 rounded-lg w-full overflow-y-auto h-48">
                 {{ response }}
@@ -118,7 +117,7 @@ function streamResponse() {
                   class="bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition duration-200"
                   :disabled="isStreaming"
               >
-                {{ isStreaming ? 'Streaming...' : 'Stream Response' }}
+                {{ isStreaming ? 'Streaming...' : 'Streamed Response' }}
               </button>
 
               <div v-if="streamingResponse" class="mt-4 p-4 bg-gray-800/20 rounded-lg w-full overflow-y-auto h-48">
