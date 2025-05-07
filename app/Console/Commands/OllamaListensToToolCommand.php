@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 
 use App\Models\User;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Validator;
 use Prism\Prism\Enums\Provider;
 use Prism\Prism\Facades\Tool;
 use Prism\Prism\Prism;
@@ -43,6 +42,7 @@ class OllamaListensToToolCommand extends Command
                          ->withClientOptions(['timeout' => 60])
                          ->withPrompt( $prompt)
                          ->withTools([$searchTool])
+                         ->withToolChoice('search')
                          //*You should use a higher number of max steps if you expect your initial prompt to make multiple tool calls.
                          ->withMaxSteps(2)
                          ->asText();

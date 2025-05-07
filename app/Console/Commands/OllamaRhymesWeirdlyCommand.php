@@ -5,8 +5,10 @@ namespace App\Console\Commands;
 use App\Models\Lyric;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Pipeline;
+use Illuminate\Support\Str;
 use Prism\Prism\Enums\Provider;
 use Prism\Prism\Prism;
+use Symfony\Component\Console\Terminal;
 
 class OllamaRhymesWeirdlyCommand extends Command
 {
@@ -18,6 +20,8 @@ class OllamaRhymesWeirdlyCommand extends Command
     protected $description = 'Semantic RAG prompt example for song lyrics.';
 
     private string $userPrompt;
+
+    private $promptView;
 
     public function handle()
     {
@@ -31,25 +35,56 @@ class OllamaRhymesWeirdlyCommand extends Command
 
         $this->userPrompt = $userPrompt;
 
-        $promptView = view('lyrics', [
-            'userPrompt' => $this->buildUserPrompt(),
-            'document'   => $this->getMatchingDocument(),
-            'keywords'   => $this->extractKeywords(),
-        ]);
+        $this->newLine();
+        $this->components->info('🦙 Ollama RAG');
+        $this->newLine();
 
-        $this->line((string)$promptView);
+        $this->components->task('Building formatted prompt', function () {
 
-        $response = Prism::text()
-                         ->using(Provider::Ollama, 'llama3.2')
-                         ->withClientOptions(['timeout' => 60])
-                         ->withPrompt($promptView)
-                         ->asText();
+            $this->promptView = view('lyrics', [
+                'userPrompt' => $this->buildUserPrompt(),
+                'document'   => $this->getMatchingDocument(),
+                'keywords'   => $this->extractKeywords(),
+            ]);
 
-        $this->line('Response:');
+            return true;
+        });
 
-        $this->line($response->text);
+        $this->newLine();
+
+        $this->components->twoColumnDetail('Final Prompt', $this->promptView);
+        $this->newLine();
+
+
+        $this->components->task('Generating song lyrics', function () {
+
+            $response = Prism::text()
+                             ->using(Provider::Ollama, 'llama3.2')
+                             ->withClientOptions(['timeout' => 60])
+                             ->withPrompt($this->promptView)
+                             ->asText();
+
+            $this->components->info('Song created by Ollama');
+
+            $this->formattedSong($response->text);
+
+            return true;
+        });
 
         return self::SUCCESS;
+    }
+
+    private function formattedSong($text)
+    {
+        $width = min(100,(new Terminal())->getWidth());
+
+        $this->output->write('<fg=blue>┌' . str_repeat('─', $width - 2) . '┐</>' . PHP_EOL);
+
+        foreach (explode("\n", wordwrap($text, $width - 4)) as $line) {
+            $this->output->write('<fg=blue>│</> ' . Str::padRight($line, $width - 4) . ' <fg=blue>│</>' . PHP_EOL);
+        }
+
+        $this->output->write('<fg=blue>└' . str_repeat('─', $width - 2) . '┘</>' . PHP_EOL);
     }
 
     private function usingRag(): bool
@@ -94,7 +129,7 @@ class OllamaRhymesWeirdlyCommand extends Command
         $formattedEmbedding = '[' . implode(',', $embeddingArray) . ']';
 
         return Lyric::query()
-                    ->select(['id','name','original_text'])
+                    ->select(['id', 'name', 'original_text'])
                     ->orderByRaw('embedding <=> ?::vector', [$formattedEmbedding])
                     ->first();
     }
@@ -134,30 +169,30 @@ class OllamaRhymesWeirdlyCommand extends Command
          * (e.g., hashtags, code snippets).
          */
         return Pipeline::send($this->userPrompt)
-            ->through([
-                // Lowercase
-                function ($input) {
-                    return mb_strtolower($input);
-                },
+                       ->through([
+                           // Lowercase
+                           function ($input) {
+                               return mb_strtolower($input);
+                           },
 
-                // Remove stop words
-                function ($input) {
-                    return preg_replace('/\b(?:the|a|is|and)\b/', '', $input);
-                },
+                           // Remove stop words
+                           function ($input) {
+                               return preg_replace('/\b(?:the|a|is|and)\b/', '', $input);
+                           },
 
-                // Remove punctuation
-                function ($input) {
-                    return preg_replace('/[^\w\s]/u', '', $input);
-                },
+                           // Remove punctuation
+                           function ($input) {
+                               return preg_replace('/[^\w\s]/u', '', $input);
+                           },
 
-                // Remove special characters
-                function ($input) {
-                    return preg_replace('/[^\p{L}\p{N}\s]/u', '', $input);
-                },
-            ])
-            ->then(function ($userPrompt) {
-                return $userPrompt;
-            });
+                           // Remove special characters
+                           function ($input) {
+                               return preg_replace('/[^\p{L}\p{N}\s]/u', '', $input);
+                           },
+                       ])
+                       ->then(function ($userPrompt) {
+                           return $userPrompt;
+                       });
     }
 
     /**

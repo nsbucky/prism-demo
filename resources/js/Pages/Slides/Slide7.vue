@@ -56,8 +56,7 @@ function submit() {
         Not every model supports tools, or even handles them the same way.</p>
 
 
-      <VueCodeBlock highlightjs lang="php" :code=sampleCode>
-      </VueCodeBlock>
+      <VueCodeBlock highlightjs lang="php" :code=sampleCode />
 
       <form @submit.prevent="submit">
         <div class="flex flex-col items-center">

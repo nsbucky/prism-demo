@@ -1,13 +1,46 @@
 <script setup>
 import BaseSlide from "../Components/BaseSlide.vue";
+import VueCodeBlock from '@wdns/vue-code-block';
+
+const sampleCode = `class AppServiceProvider extends ServiceProvider
+{
+    public function boot(): void
+    {
+        PrismServer::register(
+            'spatuala-creator',
+            fn () => Prism::text()
+                ->using(Provider::Ollama, 'llama3.2')
+                ->withSystemPrompt('You love Weird Al. Admit it.');
+        );
+    }
+}`
+
 </script>
 
 <template>
     <BaseSlide next="/slides/11" previous="/slides/9">
-        <template #title>Prism MCP Server</template>
+        <template #title>Prism Server</template>
         <template #content>
-            Make a demo of a simple prism server so people can understand the concepts of MCP and how they can use it in their project. integrate it with Open Web UI!
-            Prism Server acts as a middleware, translating requests from OpenAI-compatible clients into Prism-specific operations. This means you can use tools like ChatGPT web UIs or any OpenAI SDK to interact with your custom Prism models.
+            <p>Expose your Prism-powered AI models through a standardized API, making it a breeze to integrate with
+                OpenAI-compatible APIs.</p>
+
+            <h4 class="text-2xl text-pink-500 my-4">Simple Process</h4>
+            <ol class="list-disc list-inside mb-4">
+                <li>Enable Prism Server in <code>config/prism.php</code> (defaults to enabled)</li>
+                <li>Register your Prism models</li>
+                <li>Use OpenWeb UI or ChatGPT Web UIs to interface with your registered models.</li>
+            </ol>
+
+            <VueCodeBlock highlightjs lang="php" :code=sampleCode />
+        </template>
+        <template #footer>
+            <div class="flex flex-col w-1/2 mx-auto">
+                <p class="text-center text-xl">
+                    <a href="http://localhost:3000" target="_blank" class="text-orange-500 hover:underline">
+                    Launch OpenWebUI
+                    </a>
+                </p>
+            </div>
         </template>
     </BaseSlide>
 </template>
