@@ -13,7 +13,7 @@ use Prism\Prism\ValueObjects\Messages\AssistantMessage;
 
 class OllamaListensToToolCommand extends Command
 {
-    protected $signature = 'ollama:tool {name}';
+    protected $signature = 'ollama:tool {prompt?}';
 
     /*
      * This body holding me reminds me of my own mortality. Embrace this moment, remember, we are eternal, all this pain is an illusion
@@ -22,20 +22,7 @@ class OllamaListensToToolCommand extends Command
 
     public function handle()
     {
-        $validator = Validator::make(
-            data: [
-                'name' => $this->argument('name')],
-            rules: [
-                'name' => ['required', 'string', 'max:255'],
-            ]);
-
-        if ($validator->fails()) {
-            $this->error($validator->errors()->first());
-
-            return self::FAILURE;
-        }
-
-        $input = $validator->validated();
+        $prompt = $this->argument('prompt') ?? 'Can you search for a user named Test User?';
 
         $searchTool = Tool::as('search')
                           ->for('Search for user')
@@ -51,12 +38,10 @@ class OllamaListensToToolCommand extends Command
                               return 'User not found';
                           });
 
-        $this->info('Searching for ' . $input['name']);
-
         $response = Prism::text()
                          ->using(Provider::Ollama, 'qwen3:4b')
                          ->withClientOptions(['timeout' => 60])
-                         ->withPrompt('Can you find this user? I am searching for them: ' . $input['name'])
+                         ->withPrompt( $prompt)
                          ->withTools([$searchTool])
                          //*You should use a higher number of max steps if you expect your initial prompt to make multiple tool calls.
                          ->withMaxSteps(2)
@@ -64,18 +49,18 @@ class OllamaListensToToolCommand extends Command
 
         $this->line($response->text);
 
-        /*if ($response->toolResults) {
+        if ($response->toolResults) {
             foreach ($response->toolResults as $toolResult) {
                 echo "Tool: " . $toolResult->toolName . "\n";
                 echo "Result: " . $toolResult->result . "\n";
             }
-        }*/
+        }
 
-        /*foreach ($response->responseMessages as $message) {
+        foreach ($response->responseMessages as $message) {
             if ($message instanceof AssistantMessage) {
                 echo $message->content;
             }
-        }*/
+        }
 
         return self::SUCCESS;
 
