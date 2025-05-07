@@ -15,7 +15,7 @@ defineProps({
 </script>
 
 <template>
-    <div class="flex flex-col text-white bg-gray-800/20">
+    <div class="flex flex-col text-white bg-gray-800/20 mt-auto">
         <nav class="bg-gray-800 text-white p-4">
             <ul class="flex space-x-4 items-center space-x-32 justify-center">
                 <li v-if="previous !== null">

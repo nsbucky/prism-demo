@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Models\Document;
+use App\Models\Lyric;
 use Illuminate\Console\Command;
 use Prism\Prism\Enums\Provider;
 use Prism\Prism\Prism;
@@ -34,8 +34,8 @@ class TextEmbeddingCommand extends Command
 
         $this->info('Embeddings: ' . implode(', ', $embeddings));
 
-        Document::create([
-            'name'          => 'Sample Document',
+        Lyric::create([
+            'name'          => 'Sample Lyric',
             'embedding'     => $embeddings,
             'original_text' => $sampleText
         ]);

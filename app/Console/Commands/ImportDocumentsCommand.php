@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Models\Document;
+use App\Models\Lyric;
 use Illuminate\Console\Command;
 use Prism\Prism\Enums\Provider;
 use Prism\Prism\Prism;
@@ -23,7 +23,7 @@ class ImportDocumentsCommand extends Command
             return self::FAILURE;
         }
 
-        $files = glob($importDirectory . '/lyrics/*.html');
+        $files = glob($importDirectory . '/lyrics/*.txt');
 
         $this->info('Importing documents from: ' . $importDirectory);
 
@@ -44,7 +44,7 @@ class ImportDocumentsCommand extends Command
                              ->fromInput($content)
                              ->asEmbeddings();
 
-            Document::create([
+            Lyric::create([
                 'name'          => basename($file, '.html'),
                 'embedding'     => $response->embeddings[0]->embedding,
                 'original_text' => $content

@@ -7,7 +7,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @inertiaHead
 </head>
-<body class="bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 p-4">
+<body class="bg-gradient-to-r from-red-500 via-purple-500 to-blue-500">
 @inertia
 </body>
 </html>

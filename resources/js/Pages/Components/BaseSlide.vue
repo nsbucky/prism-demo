@@ -17,15 +17,19 @@ defineProps({
 
 </script>
 <template>
-    <div class="text-white bg-gray-800/20 p-10 justify-center">
+    <div class="flex flex-col h-full text-white bg-gray-800/20 p-10 justify-center">
 
-        <SlideTitle class="text-center mb-6">
+        <SlideTitle class="text-center mb-10">
             <slot name="title"></slot>
         </SlideTitle>
 
         <SlideBody class="mx-auto w-2/3">
             <slot name="content"></slot>
         </SlideBody>
+
+        <div class="flex flex-row justify-between mt-10">
+            <slot name="footer"></slot>
+        </div>
 
     </div>
 

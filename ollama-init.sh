@@ -8,6 +8,8 @@ pid=$!
 sleep 5
 echo "loading llama3.2"
 ollama pull llama3.2
+echo "loading qwen3:4b"
+ollama pull qwen3:4b
 echo "loading mxbai-embed-large"
 ollama pull mxbai-embed-large
 # ollama pull mistral

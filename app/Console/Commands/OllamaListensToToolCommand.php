@@ -54,21 +54,22 @@ class OllamaListensToToolCommand extends Command
         $this->info('Searching for ' . $input['name']);
 
         $response = Prism::text()
-                         ->using(Provider::Ollama, 'llama3.2')
+                         ->using(Provider::Ollama, 'qwen3:4b')
                          ->withClientOptions(['timeout' => 60])
                          ->withPrompt('Can you find this user? I am searching for them: ' . $input['name'])
                          ->withTools([$searchTool])
-                         ->withMaxSteps(2) // so that it uses the tool
+                         //*You should use a higher number of max steps if you expect your initial prompt to make multiple tool calls.
+                         ->withMaxSteps(2)
                          ->asText();
 
         $this->line($response->text);
 
-        if ($response->toolResults) {
+        /*if ($response->toolResults) {
             foreach ($response->toolResults as $toolResult) {
                 echo "Tool: " . $toolResult->toolName . "\n";
                 echo "Result: " . $toolResult->result . "\n";
             }
-        }
+        }*/
 
         /*foreach ($response->responseMessages as $message) {
             if ($message instanceof AssistantMessage) {

@@ -1,7 +1,8 @@
 <script setup>
 import BaseSlide from "../Components/BaseSlide.vue";
 import VueCodeBlock from '@wdns/vue-code-block';
-const sampleCode =`use Prism\\Prism\\Prism;
+
+const sampleCode = `use Prism\\Prism\\Prism;
 use Prism\\Prism\\Enums\\Provider;
 use Prism\\Prism\\Facades\\Tool;
 
@@ -22,20 +23,24 @@ $response = Prism::text()
 </script>
 
 <template>
-    <BaseSlide next="/slides/8" previous="/slides/6">
-        <template #title>Getting Ollama To Use Tools</template>
-        <template #content>
-            <p>Need your AI assistant to check the weather, search a database, or call your API? Tools are here to help!
-                They let you extend your AI's capabilities by giving it access to specific functions it can call.
-            </p>
-            <p>Think of tools as special functions that your AI assistant can use when it needs to perform specific
-                tasks. Just like how Laravel's facades provide a clean interface to complex functionality, Prism tools
-                give your AI a clean way to interact with external services and data sources.</p>
+  <BaseSlide next="/slides/8" previous="/slides/6">
+    <template #title>Using Prism to provide tools for Ollama</template>
+    <template #content>
+      <p>Extend the ability of your prompts by using tools.</p>
 
-            <p>*You should use a higher number of max steps if you expect your initial prompt to make multiple tool calls.</p>
+      <p>Prism provides a clean, Laravel friendly interface to enable tools in your prompts. </p>
 
-            <VueCodeBlock highlightjs lang="php" :code=sampleCode>
-            </VueCodeBlock>
-        </template>
-    </BaseSlide>
+      <p>These are named tools that can be used by the AI, if it determines that it needs to.
+        Not every model supports tools, or even handles them the same way.</p>
+
+
+      <VueCodeBlock highlightjs lang="php" :code=sampleCode>
+      </VueCodeBlock>
+    </template>
+  </BaseSlide>
 </template>
+<style scoped>
+  p {
+    margin-bottom: 1rem;
+  }
+  </style>

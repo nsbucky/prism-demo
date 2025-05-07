@@ -2,9 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\StreamController;
+use App\Http\Controllers\RespondsController;
 
 Route::get('/', function () {
-    return Inertia::render('SlideDeck', []);
+    return Inertia::render('Slides/Slide1', []);
 });
 
 Route::get('/slides/{id}', function (string $id) {
@@ -16,3 +18,5 @@ Route::get('/slides/{id}', function (string $id) {
 
 })->whereNumber('id');
 
+Route::get('/stream', StreamController::class);
+Route::post('/responds', RespondsController::class);

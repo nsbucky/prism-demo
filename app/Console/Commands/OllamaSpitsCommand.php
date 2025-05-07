@@ -6,7 +6,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Validator;
-use Prism\Prism\Prism; // omg why so many Prism classes
+use Prism\Prism\Prism; // it's in 3D
 use Prism\Prism\Enums\Provider;
 
 class OllamaSpitsCommand extends Command

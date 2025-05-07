@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Document;
+use App\Models\Lyric;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Pipeline;
 use Prism\Prism\Enums\Provider;
@@ -15,7 +15,7 @@ class OllamaRhymesWeirdlyCommand extends Command
                             {--no-rag : run without RAG}
                             ';
 
-    protected $description = 'Predefined RAG prompt for song lyrics suggestions based a on a prompt.';
+    protected $description = 'Semantic RAG prompt example for song lyrics.';
 
     private string $userPrompt;
 
@@ -36,8 +36,6 @@ class OllamaRhymesWeirdlyCommand extends Command
             'document'   => $this->getMatchingDocument(),
             'keywords'   => $this->extractKeywords(),
         ]);
-
-        $this->info('Pre-formatted prompt with guardrails:');
 
         $this->line((string)$promptView);
 
@@ -79,7 +77,7 @@ class OllamaRhymesWeirdlyCommand extends Command
         return $keywords;
     }
 
-    private function getMatchingDocument(): ?Document
+    private function getMatchingDocument(): ?Lyric
     {
         if (!$this->usingRag()) {
             return null;
@@ -95,10 +93,10 @@ class OllamaRhymesWeirdlyCommand extends Command
 
         $formattedEmbedding = '[' . implode(',', $embeddingArray) . ']';
 
-        return Document::query()
-                       ->select(['id','name','original_text'])
-                       ->orderByRaw('embedding <=> ?::vector', [$formattedEmbedding])
-                       ->first();
+        return Lyric::query()
+                    ->select(['id','name','original_text'])
+                    ->orderByRaw('embedding <=> ?::vector', [$formattedEmbedding])
+                    ->first();
     }
 
     private function buildUserPrompt(): string

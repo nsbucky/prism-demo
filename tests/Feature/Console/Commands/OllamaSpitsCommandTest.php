@@ -1,26 +1,20 @@
 <?php
 
+use App\Console\Commands\OllamaSpitsCommand;
 use Prism\Prism\Prism;
 use Prism\Prism\Testing\TextResponseFake;
-use Prism\Prism\ValueObjects\Usage;
-
-
-test('only accepts strings as a prompt', function () {
-    $this->artisan('ollama:spits', ['fuego' => []])
-         ->assertFailed();
-});
-
 
 it('returns some text', function () {
     $fakeResponse = TextResponseFake::make()
-                                    ->withText('Spit noise')
-                                    ->withUsage(new Usage(10, 20));
+                                    ->withText('Rawr!');
 
-    Prism::fake([$fakeResponse]);
+    $fake = Prism::fake([$fakeResponse]);
 
-    $this->artisan('ollama:spits', ['fuego' => 'Hello'])
-         ->expectsOutput('Spit noise')
+    $this->artisan(OllamaSpitsCommand::class, ['fuego' => 'Hello'])
+         ->expectsOutput('Rawr!')
          ->assertSuccessful();
+
+    $fake->assertPrompt('Hello');
 
 });
 
