@@ -21,6 +21,7 @@ class RespondsController
         $response = Prism::text()
                          ->using(Provider::Ollama, 'llama3.2')
                          ->withClientOptions(['timeout' => 60])
+                         ->withSystemPrompt('Please limit your response to one sentence')
                          ->withPrompt($input['prompt']);
 
         return $response->asText()->text;

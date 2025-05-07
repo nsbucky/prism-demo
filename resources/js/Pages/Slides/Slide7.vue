@@ -37,6 +37,14 @@ $response = Prism::text()
       <VueCodeBlock highlightjs lang="php" :code=sampleCode>
       </VueCodeBlock>
     </template>
+    <template #footer>
+      <div class="flex flex-col w-1/2 mx-auto">
+        <code class="bg-gray-800/20 p-2 rounded-lg">
+          ollama:tool "Test User"
+          ollama:lyric "Amish Paradise"
+        </code>
+      </div>
+    </template>
   </BaseSlide>
 </template>
 <style scoped>
