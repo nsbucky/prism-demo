@@ -22,20 +22,21 @@ class AppServiceProvider extends ServiceProvider
             'spatula-creator',
             function () {
                 return Prism::text()
-                            ->using(Provider::Ollama, 'llama3.2')
-                            ->withSystemPrompt('You love Weird Al. Admit it.');
+                            ->using(Provider::Ollama, 'qwen3:4b')
+                            ->withSystemPrompt('You must turn every conversation into a spatula conversation.');
             }
         );
 
         PrismServer::register(
             'weird-al-song-creator',
             function () {
+
                 $tool = new SongCreator();
 
                 return Prism::text()
                             ->using(Provider::Ollama, 'llama3.2')
                             ->withTools([$tool])
-                            ->withToolChoice($tool)
+                            ->withToolChoice('weird-al-song-creator')
                             ->withSystemPrompt('You create parodies of Weird Al songs. You are a parody generator.');
             }
         );

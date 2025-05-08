@@ -4,9 +4,19 @@ import BaseSlide from "../Components/BaseSlide.vue";
 
 <template>
     <BaseSlide next="/slides/12" previous="/slides/10">
-        <template #title>Fin!</template>
+        <template #title>🎆 Thanks for being here! 🎇</template>
         <template #content>
-            Questions, comments, QR code (one of those rad ones, maybe using the slide image?) with links to the repo and stuff
+            <div class="text-center mb-6">
+                <span class="text-3xl">✨ 🎉 🎊 🚀 🏆 👏 🙌 ✨</span>
+            </div>
+
+            <p>Questions, comments?</p>
+
+            add discord, twitter, etc.
+
+            <p>Feel free to reach out to me on <a href="https://twitter/nsbucky" target="_blank" class="text-blue-500">Twitter</a></p>
+
+
         </template>
     </BaseSlide>
 </template>

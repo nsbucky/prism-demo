@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\OllamaTools\SongCreator;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Prism\Prism\Enums\Provider;
@@ -33,11 +34,14 @@ class ToolController extends Controller
                               return 'User not found';
                           });
 
+        #$songCreator = new SongCreator();
+
         $response = Prism::text()
                          ->using(Provider::Ollama, 'qwen3:4b')
                          ->withClientOptions(['timeout' => 60])
                          ->withPrompt($input['prompt'])
                          ->withTools([$searchTool])
+                         ->withToolChoice('search')
             //*You should use a higher number of max steps if you expect your initial prompt to make multiple tool calls.
                          ->withMaxSteps(2)
                          ->asText();

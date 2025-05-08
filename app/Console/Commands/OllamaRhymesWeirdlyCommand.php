@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Lyric;
+use App\Services\OllamaTools\SongCreator;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Pipeline;
 use Illuminate\Support\Str;
@@ -52,7 +53,8 @@ class OllamaRhymesWeirdlyCommand extends Command
 
         $this->newLine();
 
-        $this->components->twoColumnDetail('Final Prompt', $this->promptView);
+        $this->line($this->promptView);
+
         $this->newLine();
 
 
@@ -60,7 +62,7 @@ class OllamaRhymesWeirdlyCommand extends Command
 
             $response = Prism::text()
                              ->using(Provider::Ollama, 'llama3.2')
-                             ->withClientOptions(['timeout' => 60])
+                             ->withClientOptions(['timeout' => 60,'usingTemperature' => 0.7])
                              ->withPrompt($this->promptView)
                              ->asText();
 
@@ -89,7 +91,7 @@ class OllamaRhymesWeirdlyCommand extends Command
 
     private function usingRag(): bool
     {
-        return (bool)!$this->option('no-rag');
+        return !$this->option('no-rag');
     }
 
     private function extractKeywords(): string

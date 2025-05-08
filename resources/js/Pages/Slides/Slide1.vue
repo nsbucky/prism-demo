@@ -14,11 +14,11 @@ import Navigation from "../Components/Navigation.vue";
          class="w-1/2 object-contain border-2 border-white h-auto object-contain mx-auto"/>
 
     <div class="mt-8 text-center">
-      <SlideTitle>SDPHP Meetup 5/13</SlideTitle>
+      <SlideTitle>SD PHPx Meetup 5/13</SlideTitle>
 
       <SlideBody>
-        <p>Thanks for coming! If you want to follow along you can clone this repo: </p>
-        <code>https://github.com/nsbucky/prism-demo</code>
+        <p class="mb-4">Thanks for coming! If you want to follow along you can clone this repo: </p>
+        <code class="bg-gray-800/20 p-4">https://github.com/nsbucky/prism-demo</code>
       </SlideBody>
     </div>
 

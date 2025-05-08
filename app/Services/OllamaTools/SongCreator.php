@@ -18,7 +18,7 @@ class SongCreator extends Tool
              ->using($this);
     }
 
-    public function __invoke($theme)
+    public function __invoke(string $theme)
     {
         $normalizedPrompt = $this->buildUserPrompt($theme);
 

@@ -21,7 +21,7 @@ import YtIcon from "@/assets/youtube.svg";
 
       <code class="mb-6 bg-gray-800/20 rounded p-2">[0.048100714, -0.0482884, 0.0136552155, -0.01290639, ...]</code>
 
-      <hr class="my-4">
+      <hr class="my-6">
 
 
       <h4 class="text-2xl font-bold text-pink-400">Initial User Prompt</h4>
