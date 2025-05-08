@@ -1,20 +1,37 @@
 <script setup>
+import Twitter from '@/assets/twitter-logo-2.svg'
+import Discord from '@/assets/discord.svg'
+import El from '@/assets/IMG_3565.jpg'
 </script>
 
 <template>
     <BaseSlide next="/slides/12" previous="/slides/10">
         <template #title>🎆 Thanks for being here! 🎇</template>
         <template #content>
+
             <div class="text-center mb-6">
                 <span class="text-3xl">✨ 🎉 🎊 🚀 🏆 👏 🙌 ✨</span>
             </div>
 
-            <p>Questions, comments?</p>
+            <h3 class="text-3xl text-orange-300 text-center my-10">Questions, comments?</h3>
 
-            add discord, twitter, etc.
+            <div class="flex justify-center space-x-4 mt-8">
 
-            <p>Feel free to reach out to me on <a href="https://twitter/nsbucky" target="_blank" class="text-blue-500">Twitter</a></p>
+                <div>
+                    <img :src=El alt="TBP home" class="bg-white rounded-sm shadow-lg p-1 inline-block" width="50" />
+                    thebusypixel.com
+                </div>
 
+                <div>
+                    <img :src=Twitter alt="twitter" class="bg-white rounded-sm shadow-lg p-1 inline-block" width="50" />
+                    @thebusypixel
+                </div>
+
+                <div>
+                    <img :src=Discord alt="Discord" class="bg-pink rounded-sm shadow-lg p-1 inline-block" width="50" />
+                    phparch server / nsbucky
+                </div>
+            </div>
 
         </template>
     </BaseSlide>
