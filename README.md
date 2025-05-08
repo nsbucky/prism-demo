@@ -1,12 +1,13 @@
 # Installation
 ```
+cp .env.example .env
+composer install
 sail up -d
-sail composer install
 sail npm install
 sail artisan key:generate
 sail artisan migrate
 sail artisan db:seed
-composer run dev
+sail composer run dev
 ```
 
 browse over to [url=http://localhost]http://localhost
