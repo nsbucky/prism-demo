@@ -1,7 +1,6 @@
 <script setup>
 
 import PrismLogo from '@/assets/prism.png'
-import SlideBody from "../Components/SlideBody.vue";
 
 </script>
 

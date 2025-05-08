@@ -10,8 +10,11 @@ import Navigation from "../Components/Navigation.vue";
 
   <div class="flex flex-col h-full pt-8">
 
+    <div style="width: 80%" class="mx-auto">
+
     <img :src="llamaImage" alt="Llama"
          class="w-1/2 object-contain border-2 border-white h-auto object-contain mx-auto"/>
+    </div>
 
     <div class="mt-8 text-center">
       <SlideTitle>SD PHPx Meetup 5/13</SlideTitle>

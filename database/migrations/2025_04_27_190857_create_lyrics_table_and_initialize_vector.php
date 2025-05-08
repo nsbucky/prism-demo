@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
+        if (Schema::connection('pgsql')->hasTable('lyrics')) {
+            return;
+        }
+
         Schema::connection('pgsql')
               ->create('lyrics', function (Blueprint $table) {
                   $table->id();

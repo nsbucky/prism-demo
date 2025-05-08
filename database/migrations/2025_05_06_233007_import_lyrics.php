@@ -11,6 +11,9 @@ return new class extends Migration
             return;
         }
 
+        // truncate table
+        DB::connection('pgsql')->unprepared('TRUNCATE TABLE lyrics');
+
         $sql = File::get(database_path('lyrics.sql'));
 
         DB::connection('pgsql')->unprepared($sql);

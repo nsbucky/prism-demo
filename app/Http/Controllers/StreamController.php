@@ -3,14 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Prism\Prism\Prism;
 use Prism\Prism\Enums\Provider;
+use Prism\Prism\Prism;
 
 class StreamController extends Controller
 {
     public function __invoke(Request $request)
     {
+        // Validate the request
+        $request->validate([
+            'prompt' => 'required|string|max:255',
+        ]);
+
         $prompt = $request->input('prompt');
 
         return response()->stream(function () use ($prompt) {

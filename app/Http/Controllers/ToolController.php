@@ -20,6 +20,7 @@ class ToolController extends Controller
             'prompt' => ['required', 'string', 'max:255'],
         ]);
 
+
         $searchTool = Tool::as('search')
                           ->for('Search for user')
                           ->withStringParameter('name', 'The name of the person you are searching for with this tool')
@@ -42,7 +43,6 @@ class ToolController extends Controller
                          ->withPrompt($input['prompt'])
                          ->withTools([$searchTool])
                          ->withToolChoice('search')
-            //*You should use a higher number of max steps if you expect your initial prompt to make multiple tool calls.
                          ->withMaxSteps(2)
                          ->asText();
 

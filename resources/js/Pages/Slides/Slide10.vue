@@ -39,6 +39,10 @@ const sampleCode = `class AppServiceProvider extends ServiceProvider
                     Launch OpenWebUI
                     </a>
                 </p>
+                <code class="bg-gray-800/20 p-2 rounded-lg">
+                    POST http://localhost/prism/openai/v1/chat/completions<br>
+                    GET http://localhost/prism/openai/v1/models
+                </code>
             </div>
         </template>
     </BaseSlide>

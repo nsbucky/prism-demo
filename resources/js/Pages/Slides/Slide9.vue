@@ -7,9 +7,6 @@ import Weird from '@/assets/accordion.jpg'
         <template #title>🎼 🎵 🎶 Weird AI Parody Songs 🎵🎵 </template>
         <template #content>
           <div class="flex items-center">
-
-
-
             <div>
               <h3 class="text-pink-400 text-3xl mb-3">Let's write silly songs!</h3>
 
@@ -29,7 +26,6 @@ import Weird from '@/assets/accordion.jpg'
               <img :src=Weird alt="Accordion" class="bg-white rounded-lg shadow-lg p-4 mb-2 w-full">
             </div>
           </div>
-
         </template>
     </BaseSlide>
 </template>
