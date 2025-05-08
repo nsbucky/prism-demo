@@ -1,5 +1,5 @@
 <script setup>
-import BaseSlide from "../Components/BaseSlide.vue";
+
 import VueCodeBlock from '@wdns/vue-code-block';
 import {reactive, ref} from "vue";
 import axios from "axios";

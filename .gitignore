@@ -24,3 +24,4 @@ yarn-error.log
 /ollama
 /ollama-embeddings
 /database/lyrics.sql
+/components.d.ts

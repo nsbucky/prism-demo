@@ -1,5 +1,4 @@
 <script setup>
-import BaseSlide from "../Components/BaseSlide.vue";
 import KbSad from "@/assets/kbsad.jpg";
 import Sedona from "@/assets/sedona.jpg";
 import BandDudes from "@/assets/band-dudes.jpg";

@@ -1,5 +1,4 @@
 <script setup>
-import BaseSlide from "../Components/BaseSlide.vue";
 import VueCodeBlock from '@wdns/vue-code-block';
 
 const sampleCode = `class AppServiceProvider extends ServiceProvider

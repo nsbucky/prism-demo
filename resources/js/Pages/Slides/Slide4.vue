@@ -1,5 +1,5 @@
 <script setup>
-import BaseSlide from "../Components/BaseSlide.vue";
+
 </script>
 
 <template>

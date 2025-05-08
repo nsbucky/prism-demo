@@ -1,6 +1,6 @@
 <script setup>
 import {reactive, ref} from "vue";
-import BaseSlide from "../Components/BaseSlide.vue";
+
 import axios from "axios";
 
 const form = reactive({

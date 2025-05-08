@@ -1,5 +1,4 @@
 <script setup>
-import BaseSlide from "../Components/BaseSlide.vue";
 import Weird from '@/assets/accordion.jpg'
 </script>
 
