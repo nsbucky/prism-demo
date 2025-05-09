@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Lyric;
+use App\Models\Song;
 use App\Services\OllamaTools\SongCreator;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Pipeline;
@@ -16,6 +17,7 @@ class OllamaRhymesWeirdlyCommand extends Command
     protected $signature = 'ollama:rhymes
                             {prompt? : The sentence or two you would like use as a base for your song}
                             {--no-rag : run without RAG}
+                            {--show-prompt=1: Omit prepared prompt from response}
                             ';
 
     protected $description = 'Semantic RAG prompt example for song lyrics.';
@@ -23,6 +25,8 @@ class OllamaRhymesWeirdlyCommand extends Command
     private string $userPrompt;
 
     private $promptView;
+
+    private Song $song;
 
     public function handle()
     {
@@ -36,49 +40,59 @@ class OllamaRhymesWeirdlyCommand extends Command
 
         $this->userPrompt = $userPrompt;
 
+        $this->song = new Song([
+            'prompt' => $this->userPrompt,
+            'title'=>Str::limit(trim($this->argument('prompt')), 100),
+        ]);
+
         $this->newLine();
-        $this->components->info('🦙 Ollama RAG');
+        $this->components->info('🦙 Ollama Lyrical RAG');
         $this->newLine();
 
         $this->components->task('Building formatted prompt', function () {
 
             $this->promptView = view('lyrics', [
                 'userPrompt' => $this->buildUserPrompt(),
-                'document'   => $this->getMatchingDocument(),
+                'document'   => $this->getMatchingLyric(),
                 'keywords'   => $this->extractKeywords(),
             ]);
+
+            $this->song->formatted_prompt = $this->promptView->render();
 
             return true;
         });
 
-        $this->newLine();
-
-        $this->line($this->promptView);
-
-        $this->newLine();
-
+        if ($this->option('show-prompt')) {
+            $this->newLine();
+            $this->line($this->promptView);
+            $this->newLine();
+        }
 
         $this->components->task('Generating song lyrics', function () {
 
             $response = Prism::text()
                              ->using(Provider::Ollama, 'llama3.2')
-                             ->withClientOptions(['timeout' => 60,'usingTemperature' => 0.7])
+                             ->withClientOptions(['timeout' => 60, 'usingTemperature' => 0.7])
                              ->withPrompt($this->promptView)
                              ->asText();
 
             $this->components->info('Song created by Ollama');
+
+            $this->song->lyrics = $response->text;
 
             $this->formattedSong($response->text);
 
             return true;
         });
 
+        $this->song->save();
+
         return self::SUCCESS;
     }
 
     private function formattedSong($text)
     {
-        $width = min(100,(new Terminal())->getWidth());
+        $width = min(100, (new Terminal())->getWidth());
 
         $this->output->write('<fg=blue>┌' . str_repeat('─', $width - 2) . '┐</>' . PHP_EOL);
 
@@ -111,10 +125,12 @@ class OllamaRhymesWeirdlyCommand extends Command
         $this->line('Extracted keywords:');
         $this->line($keywords);
 
+        $this->song->keywords = $keywords;
+
         return $keywords;
     }
 
-    private function getMatchingDocument(): ?Lyric
+    private function getMatchingLyric(): ?Lyric
     {
         if (!$this->usingRag()) {
             return null;
@@ -122,6 +138,7 @@ class OllamaRhymesWeirdlyCommand extends Command
 
         $promptEmbeddingResponse = Prism::embeddings()
                                         ->using(Provider::Ollama, 'mxbai-embed-large')
+                                        ->withClientOptions(['timeout' => 60]) // Add client options as an associative array
                                         ->fromInput($this->userPrompt)
                                         ->asEmbeddings();
 
@@ -130,10 +147,14 @@ class OllamaRhymesWeirdlyCommand extends Command
 
         $formattedEmbedding = '[' . implode(',', $embeddingArray) . ']';
 
-        return Lyric::query()
+        $lyric = Lyric::query()
                     ->select(['id', 'name', 'original_text'])
                     ->orderByRaw('embedding <=> ?::vector', [$formattedEmbedding])
                     ->first();
+
+        $this->song->matched_lyrics = $lyric->toArray();
+
+        return $lyric;
     }
 
     private function buildUserPrompt(): string

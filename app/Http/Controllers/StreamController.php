@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Prism\Prism\Enums\Provider;
 use Prism\Prism\Prism;
 
-class StreamController extends Controller
+class StreamController
 {
     public function __invoke(Request $request)
     {

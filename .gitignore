@@ -25,3 +25,4 @@ yarn-error.log
 /ollama-embeddings
 /database/lyrics.sql
 /components.d.ts
+/tests/http_requests/http-client.private.env.json

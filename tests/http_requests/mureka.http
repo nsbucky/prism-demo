@@ -1,0 +1,28 @@
+# curl https://api.mureka.ai/v1/song/generate
+#  -H "Authorization: Bearer $MUREKA_API_KEY"
+#  -H "Content-Type: application/json"
+#  -d '{
+#    "lyrics": "[Verse]\nIn the stormy night, I wander alone\nLost in the rain, feeling like I have been thrown\nMemories of you, they flash before my eyes\nHoping for a moment, just to find some bliss",
+#    "model": "auto",
+#    "prompt": "r&b, slow, passionate, male vocal"
+#  }'
+POST https://api.mureka.ai/v1/song/generate
+Authorization: Bearer {{API_KEY}}
+Content-Type: application/json
+
+{
+    "lyrics": "Verse 1:\nTummy's full of holy bread\nPraise the pasta that's stuck in my head\nDon't wanna hear no fasting tales\nJust give me a burger and let's hail\n\nChorus:\nPray to the fridge, hear our plea\nGive us food to eat, set us free\nWe're hungry sinners, hear our call\nFeed us, feed us, one and all\n\nVerse 2:\nCommunion's just a meal away\nMust have some meatloaf for Easter day\nDon't wanna miss out on the holy feast\nGimme a slice of pizza to make me complete\n\nChorus:\nPray to the fridge, hear our plea\nGive us food to eat, set us free\nWe're hungry sinners, hear our call\nFeed us, feed us, one and all\n\nVerse 3:\nPraise the altar, praise the grill\nMust have some BBQ to fulfill\nDon't wanna be a fasting fool\nGimme some fries with my holy rule",
+    "model": "auto",
+    "prompt": "male vocal, polka, upbeat, happy"
+}
+
+###
+# curl https://api.mureka.ai/v1/song/query/435134
+#  -H "Authorization: Bearer $MUREKA_API_KEY"
+GET https://api.mureka.ai/v1/song/query/435134
+Authorization: Bearer {{API_KEY}}
+
+###
+
+
+

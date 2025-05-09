@@ -10,7 +10,7 @@ use Prism\Prism\Enums\Provider;
 use Prism\Prism\Facades\Tool;
 use Prism\Prism\Prism;
 
-class ToolController extends Controller
+class ToolController
 {
     use ValidatesRequests;
 
@@ -19,7 +19,6 @@ class ToolController extends Controller
         $input = $this->validate($request, [
             'prompt' => ['required', 'string', 'max:255'],
         ]);
-
 
         $searchTool = Tool::as('search')
                           ->for('Search for user')
