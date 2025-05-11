@@ -106,6 +106,8 @@ services:
             WEBUI_SECRET_KEY: '${WEBUI_SECRET_KEY}'
         networks:
             - sail
+        volumes:
+            - ./open-webui:/app/backend/data
 networks:
     sail:
         driver: bridge

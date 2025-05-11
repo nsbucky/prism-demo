@@ -139,9 +139,7 @@ function streamResponse() {
           docker exec -it ollama /bin/bash
           ollama list
           <br>
-          php artisan ollama:spits {fuego}
-          <br>
-          php artisan ollama:streams {prompt}
+          php artisan ollama:responds {prompt}
         </code>
       </div>
     </template>
