@@ -47,7 +47,13 @@ class OllamaListensToToolCommand extends Command
                          ->withMaxSteps(2)
                          ->asText();
 
+        $this->components->info('LLM Response');
+
         $this->line($response->text);
+
+        $this->newLine();
+        $this->components->info('🦙 Ollama User Tool Results:');
+        $this->newLine();
 
         if ($response->toolResults) {
             foreach ($response->toolResults as $toolResult) {
@@ -56,11 +62,17 @@ class OllamaListensToToolCommand extends Command
             }
         }
 
+        $this->newLine();
+        $this->components->info('🦙 Ollama Assistant Messages:');
+        $this->newLine();
+
         foreach ($response->responseMessages as $message) {
             if ($message instanceof AssistantMessage) {
                 echo $message->content;
             }
         }
+
+        $this->newLine();
 
         return self::SUCCESS;
 

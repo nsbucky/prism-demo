@@ -87,7 +87,7 @@ function submit() {
       <div class="flex flex-col w-1/2 mx-auto">
         <code class="bg-gray-800/20 p-2 rounded-lg">
           ollama:tool "Test User"<br>
-          ollama:lyric "Amish Paradise"
+          ollama:tool-users
         </code>
       </div>
     </template>
