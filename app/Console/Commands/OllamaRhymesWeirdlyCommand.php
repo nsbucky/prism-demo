@@ -42,7 +42,7 @@ class OllamaRhymesWeirdlyCommand extends Command
 
         $this->song = new Song([
             'prompt' => $this->userPrompt,
-            'title'=>Str::limit(trim($this->argument('prompt')), 100),
+            'title'  => Str::limit(trim($this->argument('prompt')), 100),
         ]);
 
         $this->newLine();
@@ -148,11 +148,13 @@ class OllamaRhymesWeirdlyCommand extends Command
         $formattedEmbedding = '[' . implode(',', $embeddingArray) . ']';
 
         $lyric = Lyric::query()
-                    ->select(['id', 'name', 'original_text'])
-                    ->orderByRaw('embedding <=> ?::vector', [$formattedEmbedding])
-                    ->first();
+                      ->select(['id', 'name', 'original_text'])
+                      ->orderByRaw('embedding <=> ?::vector', [$formattedEmbedding])
+                      ->first();
 
-        $this->song->matched_lyrics = $lyric->toArray();
+        if (!$lyric) {
+            $this->song->matched_lyrics = $lyric->toArray();
+        }
 
         return $lyric;
     }

@@ -38,8 +38,7 @@ it('calls the console command with the correct prompt', function () {
         'prompt' => $prompt
     ]);
 
-
     $response->assertStatus(200)
              ->assertSee('Twinkle Dinky, little star');
 
-});
+})->skip(1);

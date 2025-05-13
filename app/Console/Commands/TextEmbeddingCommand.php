@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Services\GPT3Encoder;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 use Prism\Prism\Enums\Provider;
@@ -28,18 +27,6 @@ class TextEmbeddingCommand extends Command
         $sampleText = $this->argument('text') ?? 'Welcome to Spatula City! Where are we?';
 
         $this->components->twoColumnDetail('Input Text', $sampleText);
-        $this->newLine();
-
-        // Tokenization section
-        $this->components->task('Tokenizing text', function() use ($sampleText) {
-            $this->tokens = GPT3Encoder::encode($sampleText);
-            return true;
-        });
-
-        $this->components->bulletList([
-            'Token count: ' . count($this->tokens),
-            'Tokens: ' . Str::limit(implode(', ', $this->tokens), 60)
-        ]);
         $this->newLine();
 
         // Embedding generation section

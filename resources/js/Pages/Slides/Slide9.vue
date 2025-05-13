@@ -34,7 +34,9 @@ import Weird from '@/assets/accordion.jpg'
                     ollama:rhymes --no-rag<br>
                     ollama:rhymes<br>
                 </code>
-                <a href="https://www.mureka.ai/create" target="_blank">Mureka</a>
+                <p class="text-center text-xl">
+                <a href="https://www.mureka.ai/create" class="text-orange-500 hover:underline" target="_blank">Mureka</a>
+                </p>
             </div>
         </template>
     </BaseSlide>
