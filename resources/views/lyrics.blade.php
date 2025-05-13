@@ -21,6 +21,11 @@ Please output only the song, no other information is required.
 Please create a song using the following inspiration provided by the user.
 Sample lyrics from Weird Al and keywords are provided to help you create a new song.
 
+@if($keywords)
+Keywords
+{!! $keywords !!}
+@endif
+
 {!! $userPrompt !!}
 
 @if($document)
@@ -31,7 +36,4 @@ Lyrics
 {!! $document->original_text !!}
 @endif
 
-@if($keywords)
-Keywords
-{!! $keywords !!}
-@endif
+

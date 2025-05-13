@@ -6,6 +6,7 @@ use App\Models\Lyric;
 use App\Models\Song;
 use App\Services\OllamaTools\SongCreator;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Pipeline;
 use Illuminate\Support\Str;
 use Prism\Prism\Enums\Provider;
@@ -72,7 +73,7 @@ class OllamaRhymesWeirdlyCommand extends Command
 
             $response = Prism::text()
                              ->using(Provider::Ollama, 'llama3.2')
-                             ->withClientOptions(['timeout' => 60, 'usingTemperature' => 0.7])
+                             ->withClientOptions(['timeout' => 120, 'usingTemperature' => 0.7])
                              ->withPrompt($this->promptView)
                              ->asText();
 
@@ -116,7 +117,7 @@ class OllamaRhymesWeirdlyCommand extends Command
 
         $response = Prism::text()
                          ->using(Provider::Ollama, 'llama3.2')
-                         ->withClientOptions(['timeout' => 60])
+                         ->withClientOptions(['timeout' => 120])
                          ->withPrompt(view('keywords', ['userPrompt' => $this->userPrompt]))
                          ->asText();
 
@@ -138,7 +139,7 @@ class OllamaRhymesWeirdlyCommand extends Command
 
         $promptEmbeddingResponse = Prism::embeddings()
                                         ->using(Provider::Ollama, 'mxbai-embed-large')
-                                        ->withClientOptions(['timeout' => 60]) // Add client options as an associative array
+                                        ->withClientOptions(['timeout' => 120]) // Add client options as an associative array
                                         ->fromInput($this->userPrompt)
                                         ->asEmbeddings();
 
@@ -147,12 +148,28 @@ class OllamaRhymesWeirdlyCommand extends Command
 
         $formattedEmbedding = '[' . implode(',', $embeddingArray) . ']';
 
-        $lyric = Lyric::query()
-                      ->select(['id', 'name', 'original_text'])
-                      ->orderByRaw('embedding <=> ?::vector', [$formattedEmbedding])
-                      ->first();
+        /*$lyrics = Lyric::query()
+                       ->select(['id', 'name', 'original_text'])
+                       ->orderByRaw('embedding <=> ?::vector', [$formattedEmbedding])
+                       ->limit(3)
+                       ->get();
 
-        if (!$lyric) {
+        $lyric = $this->askForLyric($lyrics);
+
+        if ($lyric) {
+            $this->song->matched_lyrics = $lyric->toArray();
+        }
+
+        return $lyric;*/
+
+
+        $lyric = Lyric::query()
+                       ->select(['id', 'name', 'original_text'])
+                       ->orderByRaw('embedding <=> ?::vector', [$formattedEmbedding])
+                       ->limit(1)
+                       ->first();
+
+        if ($lyric) {
             $this->song->matched_lyrics = $lyric->toArray();
         }
 
@@ -317,6 +334,28 @@ class OllamaRhymesWeirdlyCommand extends Command
 
 
         return $prompts[array_rand($prompts)];
+    }
+
+    private function askForLyric(Collection $lyrics): ?Lyric
+    {
+        $response = Prism::text()
+                         ->using(Provider::Ollama, 'llama3.2')
+                         ->withClientOptions(['timeout' => 120])
+                         ->withPrompt(view('matching-lyrics', [
+                             'userPrompt' => $this->userPrompt,
+                             'lyrics'     => $lyrics,
+                         ]))
+                         ->asText();
+
+        $songId = $response->text;
+
+        $this->components->twoColumnDetail('Selected Lyric', $songId);
+
+        if (is_numeric($songId)) {
+            return $lyrics->firstWhere('id', $songId);
+        }
+
+        return $lyrics->first();
     }
 
 }
