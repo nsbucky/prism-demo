@@ -6,7 +6,7 @@ import TheMan from '@/assets/tjmiller.jpg'
 
 <template>
 
-    <BaseSlide next="/slides/6" previous="/slides/4">
+    <BaseSlide>
 
         <template #title>use Prism\Prism\Prism;</template>
 

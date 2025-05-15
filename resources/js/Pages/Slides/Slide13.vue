@@ -2,7 +2,7 @@
 </script>
 
 <template>
-    <BaseSlide  previous="/slides/12">
+    <BaseSlide>
         <template #title>NOT FINISHED</template>
         <template #content>
             content

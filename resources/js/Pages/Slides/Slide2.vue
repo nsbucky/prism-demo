@@ -5,7 +5,7 @@ import BandDudes from "@/assets/band-dudes.jpg";
 </script>
 
 <template>
-    <BaseSlide next="/slides/3" previous="/slides/1">
+    <BaseSlide>
         <template #title>
             Who Am I?
         </template>

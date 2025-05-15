@@ -4,17 +4,6 @@ import SlideTitle from "./SlideTitle.vue";
 import SlideBody from "./SlideBody.vue";
 import Navigation from "./Navigation.vue";
 
-defineProps({
-    next: {
-        type: String,
-        default: null
-    },
-    previous: {
-        type: String,
-        default: null
-    }
-})
-
 </script>
 <template>
     <div class="flex flex-col h-full text-white bg-gray-800/20 p-10 justify-center">
@@ -33,5 +22,5 @@ defineProps({
 
     </div>
 
-    <Navigation :next=next :previous=previous />
+    <Navigation />
 </template>

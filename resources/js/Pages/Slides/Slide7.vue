@@ -47,7 +47,7 @@ function submit() {
 </script>
 
 <template>
-  <BaseSlide next="/slides/8" previous="/slides/6">
+  <BaseSlide>
     <template #title>Using Prism to provide tools for Ollama</template>
     <template #content>
       <p>Extend the ability of your prompts by using tools. Prism provides a clean, Laravel friendly interface to enable tools in your prompts. </p>

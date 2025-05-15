@@ -3,7 +3,7 @@ import Weird from '@/assets/accordion.jpg'
 </script>
 
 <template>
-    <BaseSlide next="/slides/10" previous="/slides/8">
+    <BaseSlide>
         <template #title>🎼 🎵 🎶 Weird AI Parody Songs 🎵🎵 </template>
         <template #content>
           <div class="flex items-center">

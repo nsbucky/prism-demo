@@ -29,7 +29,7 @@ function submit() {
 </script>
 
 <template>
-    <BaseSlide next="/slides/10" previous="/slides/99">
+    <BaseSlide>
         <template #title>🎼 🎵 🎶 Your Parody Song 🎵🎵 </template>
         <template #content>
           <div>

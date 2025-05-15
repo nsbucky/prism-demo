@@ -4,7 +4,7 @@ import YtIcon from "@/assets/youtube.svg";
 </script>
 
 <template>
-  <BaseSlide next="/slides/9" previous="/slides/7">
+  <BaseSlide>
     <template #title>RAG - Retrieval Augmented Generation</template>
     <template #content>
 

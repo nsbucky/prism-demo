@@ -17,7 +17,7 @@ const sampleCode = `class AppServiceProvider extends ServiceProvider
 </script>
 
 <template>
-    <BaseSlide next="/slides/11" previous="/slides/9">
+    <BaseSlide>
         <template #title>Prism Server</template>
         <template #content>
             <p>Expose your Prism-powered AI models through a standardized API, making it a breeze to integrate with

@@ -6,7 +6,7 @@ import Github from '@/assets/github-mark.svg'
 </script>
 
 <template>
-    <BaseSlide next="/slides/12" previous="/slides/10">
+    <BaseSlide>
         <template #title>🎆 Thanks for being here! 🎇</template>
         <template #content>
 

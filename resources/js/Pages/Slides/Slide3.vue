@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <BaseSlide next="/slides/4" previous="/slides/2">
+    <BaseSlide>
         <template #title>What are we going to cover today?</template>
         <template #content>
             <div class="flex flex-col items-center">

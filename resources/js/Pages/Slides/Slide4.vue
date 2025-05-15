@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <BaseSlide next="/slides/5" previous="/slides/3">
+  <BaseSlide>
     <template #title>Laravel Framework</template>
     <template #content>
       <div class="grid grid-cols-6">

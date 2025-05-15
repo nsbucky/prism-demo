@@ -11,11 +11,10 @@ Route::get('/', function () {
     return Inertia::render('Slides/Slide1', []);
 });
 
-Route::get('/slides/{id}', function (string $id) {
+Route::get('/slides/{slide}', function (string $slide) {
+    return Inertia::render('Slides/'.$slide);
+})->whereAlphaNumeric('slide');
 
-    return Inertia::render('Slides/Slide'.(int) $id);
-
-})->whereNumber('id');
 
 Route::get('/stream', StreamController::class);
 Route::post('/responds', RespondsController::class);

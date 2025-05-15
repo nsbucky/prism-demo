@@ -65,7 +65,7 @@ function streamResponse() {
 </script>
 
 <template>
-  <BaseSlide next="/slides/7" previous="/slides/5">
+  <BaseSlide>
     <template #title>Talking to the Ollama</template>
     <template #content>
       <p>Prism does all the heavy lifting so that you can easily pass in text as your prompt.</p>
