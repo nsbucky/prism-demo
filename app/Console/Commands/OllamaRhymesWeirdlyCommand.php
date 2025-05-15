@@ -54,8 +54,8 @@ class OllamaRhymesWeirdlyCommand extends Command
 
             $this->promptView = view('lyrics', [
                 'userPrompt' => $this->buildUserPrompt(),
-                'document'   => $this->getMatchingLyric(),
                 'keywords'   => $this->extractKeywords(),
+                'document'   => $this->getMatchingLyric(),
             ]);
 
             $this->song->formatted_prompt = $this->promptView->render();
@@ -213,28 +213,18 @@ class OllamaRhymesWeirdlyCommand extends Command
         return Pipeline::send($this->userPrompt)
                        ->through([
                            // Lowercase
-                           function ($input) {
-                               return mb_strtolower($input);
-                           },
+                           fn($input) => mb_strtolower($input),
 
                            // Remove stop words
-                           function ($input) {
-                               return preg_replace('/\b(?:the|a|is|and)\b/', '', $input);
-                           },
+                           fn($input) => preg_replace('/\b(?:the|a|is|and)\b/', '', $input),
 
                            // Remove punctuation
-                           function ($input) {
-                               return preg_replace('/[^\w\s]/u', '', $input);
-                           },
+                           fn($input) => preg_replace('/[^\w\s]/u', '', $input),
 
                            // Remove special characters
-                           function ($input) {
-                               return preg_replace('/[^\p{L}\p{N}\s]/u', '', $input);
-                           },
+                           fn($input) => preg_replace('/[^\p{L}\p{N}\s]/u', '', $input),
                        ])
-                       ->then(function ($userPrompt) {
-                           return $userPrompt;
-                       });
+                       ->then(fn($userPrompt) => $userPrompt);
     }
 
     /**
