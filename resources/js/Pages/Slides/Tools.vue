@@ -1,6 +1,5 @@
 <script setup>
 
-import VueCodeBlock from '@wdns/vue-code-block';
 import {reactive, ref} from "vue";
 import axios from "axios";
 

@@ -1,8 +1,6 @@
 <script setup>
 
 import VueCodeBlock from '@wdns/vue-code-block';
-import {reactive, ref} from "vue";
-import axios from "axios";
 
 const sampleCode = `$tool = Tool::as('spatula')
 ->for('Find the best place for spatulas in town')
