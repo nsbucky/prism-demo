@@ -49,7 +49,6 @@ import TheMan from '@/assets/tjmiller.jpg'
 
         <template #footer>
             <div class="flex flex-col w-1/2 mx-auto">
-                <p class="text-center">Simple install</p>
                 <code class="bg-gray-800/20 p-2 rounded-lg">
                     composer require prism-php/prism<br>
                     php artisan vendor:publish --tag=prism-config

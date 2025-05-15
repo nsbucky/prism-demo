@@ -16,14 +16,5 @@
                 </ul>
             </div>
         </template>
-        <template #footer>
-            <div class="flex flex-col w-1/2 mx-auto">
-                <div class="text-center">
-                <a href="https://ollama.com" target="_blank" class="text-orange-300 mr-4">Ollama</a>
-
-                <a href="https://huggingface.co/" target="_blank" class="text-orange-300">Hugging Face</a>
-                </div>
-            </div>
-        </template>
     </BaseSlide>
 </template>

@@ -11,6 +11,18 @@ class SampleUsers extends Seeder
 {
     public function run(): void
     {
+        User::truncate();
+
+        User::factory()->make([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+        ]);
+
+        User::factory()->create([
+            'name' => 'Ollama',
+            'email' => 'llama2@example.com',
+        ]);
+
         User::factory()
             ->count(100)
             ->state(new Sequence(
