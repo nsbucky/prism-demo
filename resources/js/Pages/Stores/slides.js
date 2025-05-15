@@ -23,10 +23,11 @@ export const useSlides = () => {
         'ExtractKeywords',
         'SearchDb',
         'FinalSongPrompt',
+        'MCP',
         'Slide10',
+        'PrismServerHttp',
+        'MCPServerList',
         'Slide11',
-        'Slide12',
-        'Slide13',
     ]
 
     const next = computed(() =>

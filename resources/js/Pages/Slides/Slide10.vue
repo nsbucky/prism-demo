@@ -27,23 +27,11 @@ const sampleCode = `class AppServiceProvider extends ServiceProvider
             <ol class="list-disc list-inside mb-4">
                 <li>Enable Prism Server in <code>config/prism.php</code> (defaults to enabled)</li>
                 <li>Register your Prism models</li>
-                <li>Use OpenWeb UI or ChatGPT Web UIs to interface with your registered models.</li>
+                <li>Use <a href="http://localhost:3000" target="_blank" class="text-orange-500 hover:underline"> OpenWeb UI</a>
+                    or ChatGPT Web UIs to interface with your registered models.</li>
             </ol>
 
             <VueCodeBlock highlightjs lang="php" :code=sampleCode />
-        </template>
-        <template #footer>
-            <div class="flex flex-col w-1/2 mx-auto">
-                <p class="text-center text-xl">
-                    <a href="http://localhost:3000" target="_blank" class="text-orange-500 hover:underline">
-                    Launch OpenWebUI
-                    </a>
-                </p>
-                <code class="bg-gray-800/20 p-2 rounded-lg">
-                    POST http://localhost/prism/openai/v1/chat/completions<br>
-                    GET http://localhost/prism/openai/v1/models
-                </code>
-            </div>
         </template>
     </BaseSlide>
 </template>

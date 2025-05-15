@@ -3,6 +3,7 @@ import Twitter from '@/assets/twitter-logo-2.svg'
 import Discord from '@/assets/discord.svg'
 import El from '@/assets/IMG_3565.jpg'
 import Github from '@/assets/github-mark.svg'
+import Qr from '@/assets/bitly-qr.png'
 </script>
 
 <template>
@@ -11,12 +12,16 @@ import Github from '@/assets/github-mark.svg'
         <template #content>
 
             <div class="text-center mb-6">
-                <span class="text-3xl">✨ 🎉 🎊 🚀 🏆 👏 🙌 ✨</span>
+                <div class="text-3xl mb-3">✨ 🎉 🎊 🚀 🏆 👏 🙌 ✨</div>
+                <img :src="Qr" alt="Github Repo" class="bg-white rounded-sm shadow-lg p-1 inline-block"
+                     width="350"/>
             </div>
 
             <h3 class="text-3xl text-orange-300 text-center my-10">Questions, comments, suggestions?</h3>
 
             <div class="flex justify-center space-x-4 mt-8">
+
+
 
                 <div>
                     <img :src=El alt="TBP home" class="bg-white rounded-sm shadow-lg p-1 inline-block" width="50"/>
