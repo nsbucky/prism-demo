@@ -1,6 +1,6 @@
 <script setup>
 
-import YtIcon from "@/assets/youtube.svg";
+//import YtIcon from "@/assets/youtube.svg";
 </script>
 
 <template>
