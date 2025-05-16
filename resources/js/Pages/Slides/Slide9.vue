@@ -35,7 +35,7 @@ import Weird from '@/assets/accordion.jpg'
                     ollama:rhymes<br>
                 </code>
                 <p class="text-center text-xl">
-                <a href="https://www.mureka.ai/create" class="text-orange-500 hover:underline" target="_blank">Mureka</a>
+                <a href="https://www.mureka.ai/create" class="text-blue-300 hover:underline" target="_blank">Mureka Song Generator</a>
                 </p>
             </div>
         </template>

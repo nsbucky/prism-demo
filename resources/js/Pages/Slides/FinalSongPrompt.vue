@@ -23,14 +23,16 @@ Prism::text()
 
             <VueCodeBlock highlightjs lang="php" :code=sampleCode />
 
-            <h3>Guardrails</h3>
+            <h3 class="text-orange-500 my-3 text-3xl">Prompt Guardrails</h3>
             <p>Need more security on your user prompts? Consider using some guardrails by
                 running your propmpt through 1 more model. The Granite Guardian models are a robust suite of safeguards
                 designed to detect risks in both prompts and responses, ensuring safe and responsible use with any large
                 language model while promoting responsible AI development.</p>
 
-            <p><a href="https://huggingface.co/ibm-granite/granite-guardian-3.0-8b">Granite Guardian</a>
-                <a href="https://www.ibm.com/granite/docs/models/guardian/">Website</a>
+            <p class="text-center">
+            <a href="https://huggingface.co/ibm-granite/granite-guardian-3.0-8b" class="text-blue-300">Granite Guardian</a>
+                |
+                <a href="https://www.ibm.com/granite/docs/models/guardian/"  class="text-blue-300">Website</a>
             </p>
         </template>
     </BaseSlide>
