@@ -2,12 +2,12 @@
 ```
 cp .env.example .env
 composer install
-sail up -d
-sail npm install
-sail artisan key:generate
-sail artisan migrate
-sail artisan db:seed
-sail composer run dev
+./vendor/bin/sail up -d
+./vendor/bin/sail npm install
+./vendor/bin/sail artisan key:generate
+./vendor/bin/sail artisan migrate
+./vendor/bin/sail artisan db:seed
+./vendor/bin/sail composer run dev
 ```
 
 browse over to [url=http://localhost]http://localhost
