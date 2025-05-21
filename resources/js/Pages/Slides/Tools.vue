@@ -35,11 +35,7 @@ function submit() {
   <BaseSlide>
     <template #title>Tool Example</template>
     <template #content>
-      <p>Extend the ability of your prompts by using tools. Prism provides a clean, Laravel friendly interface to enable tools in your prompts. </p>
-
-      <p>These are named tools that can be used by the AI, if it determines that it needs to.
-        Not every model supports tools, or even handles them the same way.</p>
-
+      <p>Can ollama find our user? Define your input parameters and use case.</p>
 
       <form @submit.prevent="submit">
         <div class="flex items-center">

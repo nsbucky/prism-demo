@@ -9,12 +9,19 @@ use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Pipeline;
 use Illuminate\Support\Str;
+use Laravel\Prompts\Concerns\Colors;
+use Laravel\Prompts\Themes\Default\Concerns\DrawsBoxes;
 use Prism\Prism\Enums\Provider;
 use Prism\Prism\Prism;
+use Prism\Prism\Schema\ObjectSchema;
+use Prism\Prism\Schema\StringSchema;
 use Symfony\Component\Console\Terminal;
+use function Laravel\Prompts\select;
 
 class OllamaRhymesWeirdlyCommand extends Command
 {
+    use DrawsBoxes, Colors;
+
     protected $signature = 'ollama:rhymes
                             {prompt? : The sentence or two you would like use as a base for your song}
                             {--no-rag : run without RAG}
@@ -31,15 +38,7 @@ class OllamaRhymesWeirdlyCommand extends Command
 
     public function handle()
     {
-        $userPrompt = $this->getUserPrompt();
-
-        if (blank(trim($userPrompt))) {
-            $this->error('Please provide a valid prompt.');
-
-            return self::FAILURE;
-        }
-
-        $this->userPrompt = $userPrompt;
+        $this->getUserPrompt();
 
         $this->song = new Song([
             'prompt' => $this->userPrompt,
@@ -63,25 +62,52 @@ class OllamaRhymesWeirdlyCommand extends Command
             return true;
         });
 
+        $this->newLine();
+
         if ($this->option('show-prompt')) {
             $this->newLine();
-            $this->line($this->promptView);
+
+            $width = min(100, (new Terminal())->getWidth());
+
+            $this->box('Compiled Prompt', wordwrap($this->promptView,$width),'', 'blue');
+
             $this->newLine();
         }
 
         $this->components->task('Generating song lyrics', function () {
 
-            $response = Prism::text()
+            $songSchema = new ObjectSchema(
+                name: 'parody_song',
+                description: 'the final song created by ollama',
+                properties: [
+                    new StringSchema(
+                        name: 'title',
+                        description: 'The title of the song'
+                    ),
+                    new StringSchema(
+                        name: 'lyrics',
+                        description: 'The lyrics of the song'
+                    ),
+                ],
+                requiredFields: ['title', 'lyrics'],
+            );
+
+            $response = Prism::structured()
                              ->using(Provider::Ollama, 'llama3.2')
                              ->withClientOptions(['timeout' => 120, 'usingTemperature' => 0.7])
+                             ->withSchema($songSchema)
                              ->withPrompt($this->promptView)
-                             ->asText();
+                             ->asStructured();
 
             $this->components->info('Song created by Ollama');
 
-            $this->song->lyrics = $response->text;
+            $structuredResponse = $response->structured;
 
-            $this->formattedSong($response->text);
+            $this->song->lyrics = $structuredResponse['lyrics'];
+
+            $this->formattedSong($structuredResponse['lyrics']);
+
+            $this->prepareMureka($structuredResponse['lyrics']);
 
             return true;
         });
@@ -95,13 +121,7 @@ class OllamaRhymesWeirdlyCommand extends Command
     {
         $width = min(100, (new Terminal())->getWidth());
 
-        $this->output->write('<fg=blue>┌' . str_repeat('─', $width - 2) . '┐</>' . PHP_EOL);
-
-        foreach (explode("\n", wordwrap($text, $width - 4)) as $line) {
-            $this->output->write('<fg=blue>│</> ' . Str::padRight($line, $width - 4) . ' <fg=blue>│</>' . PHP_EOL);
-        }
-
-        $this->output->write('<fg=blue>└' . str_repeat('─', $width - 2) . '┘</>' . PHP_EOL);
+        $this->box('Parody song', wordwrap($text, $width), '', 'green');
     }
 
     private function usingRag(): bool
@@ -115,16 +135,30 @@ class OllamaRhymesWeirdlyCommand extends Command
             return '';
         }
 
-        $response = Prism::text()
+        $keywordSchema = new ObjectSchema(
+            name: 'parody_keyword',
+            description: 'keywords of the song',
+            properties: [
+                new StringSchema(
+                    name: 'keywords',
+                    description: 'extracted keywords from the prompt'
+                )
+            ],
+            requiredFields: ['keywords']
+        );
+
+        $response = Prism::structured()
                          ->using(Provider::Ollama, 'llama3.2')
                          ->withClientOptions(['timeout' => 120])
+                         ->withSchema($keywordSchema)
                          ->withPrompt(view('keywords', ['userPrompt' => $this->userPrompt]))
-                         ->asText();
+                         ->asStructured();
 
-        $keywords = (string)object_get($response, 'text', '');
+        $structuredResponse = $response->structured;
 
-        $this->line('Extracted keywords:');
-        $this->line($keywords);
+        $keywords = $structuredResponse['keywords'];
+
+        $this->components->twoColumnDetail('Keywords', $keywords);
 
         $this->song->keywords = $keywords;
 
@@ -148,26 +182,11 @@ class OllamaRhymesWeirdlyCommand extends Command
 
         $formattedEmbedding = '[' . implode(',', $embeddingArray) . ']';
 
-        /*$lyrics = Lyric::query()
-                       ->select(['id', 'name', 'original_text'])
-                       ->orderByRaw('embedding <=> ?::vector', [$formattedEmbedding])
-                       ->limit(3)
-                       ->get();
-
-        $lyric = $this->askForLyric($lyrics);
-
-        if ($lyric) {
-            $this->song->matched_lyrics = $lyric->toArray();
-        }
-
-        return $lyric;*/
-
-
         $lyric = Lyric::query()
-                       ->select(['id', 'name', 'original_text'])
-                       ->orderByRaw('embedding <=> ?::vector', [$formattedEmbedding])
-                       ->limit(1)
-                       ->first();
+                      ->select(['id', 'name', 'original_text'])
+                      ->orderByRaw('embedding <=> ?::vector', [$formattedEmbedding])
+                      ->limit(1)
+                      ->first();
 
         if ($lyric) {
             $this->song->matched_lyrics = $lyric->toArray();
@@ -233,119 +252,59 @@ class OllamaRhymesWeirdlyCommand extends Command
     public function getUserPrompt(): string
     {
         if (filled($this->argument('prompt'))) {
-            return (string)$this->argument('prompt');
+            $prompt           = (string)$this->argument('prompt');
+            $this->userPrompt = $prompt;
+            return $prompt;
         }
 
         $prompts = [
-            // Original prompt
             "I like to use the Ollama LLM",
-
-            // Song lyrics completion
             'I’m a loser baby, so why don\'t you kill me ?',
-
-            // Giraffe encounter
             "I bit a giraffe on the neck, and I made it cry.",
-
-            // Tuna-related joke
-            "I smell like tuna, is it because I'm so fat ? ",
-
-            // Elon Musk's Mars bar scheme
+            "I smell like tuna, is it because I'm so fat ?",
             "Elon Musk going to Mars to sell Mars bars",
-
-            // Robot girlfriend drama
             "My girlfriend is a robot, and she doesn't like me",
-
-            // Banned tomatoes in France
             'Tomatoes are banned in france, but I still eat them',
-
-            // Bus-related anxiety
             'I like to ride the bus, but it makes me feel sick',
-
-            // Pet rock takeover plans
-            "I'm secretly training my pet rock to take over the world . ",
-
-            // Silly Squares cereal jingle
-            "Can you help me come up with a catchy jingle for a fictional cereal brand called 'Silly Squares' ? ",
-
-            // Rainbow-colored chicken party
+            "I'm secretly training my pet rock to take over the world.",
+            "Can you help me come up with a catchy jingle for a fictional cereal brand called 'Silly Squares'?",
             "Why did the chicken wear a rainbow - colored tutu to the party ? ",
-
-            // Exploding frozen pizza microwave mishap
             "I've been trying to cook a frozen pizza in the microwave, but it keeps exploding.",
-
-            // Mars rollercoaster entrepreneur
-            "Elon Musk just announced that he's building a rollercoaster on Mars to attract tourists . ",
-
-            // Snail racing cat obsession
+            "Elon Musk just announced that he's building a rollercoaster on Mars to attract tourists.",
             "My cat thinks it's a professional snail trainer and has a PhD in slimy sports.",
-
-            // Pineapple pizza presidency platform
-            "I'm running for president on a platform of making pineapple pizza a national dish . ",
-
-            // Time-traveling accountant struggles
+            "I'm running for president on a platform of making pineapple pizza a national dish.",
             "Can you help me write a poem about the struggles of being a time - traveling accountant ? ",
-
-            // Banana health issues
             "Why did the banana go to the doctor ? It wasn't peeling well.",
-
-            // Cat video marathoning exhaustion
-            "I've been trying to break the world record for most consecutive hours spent watching cat videos, but I think I need a nap . ",
-
-            // Parrot Shakespearean actor
+            "I've been trying to break the world record for most consecutive hours spent watching cat videos, but I think I need a nap.",
             "My friend's parrot can recite the entire script of 'Hamlet' in iambic pentameter.",
-
-            // Moo-sical cow band
             "What do you call a group of cows playing instruments? A moo-sical band.",
-
-            // Desk surfing mishap
-            "I've been trying to learn how to surf on my desk, but I keep wiping out . ",
-
-            // Scarecrow award winner
-            "Why did the scarecrow win an award ? Because he was outstanding in his field . ",
-
-            // Country cow rockstar aspirations
+            "I've been trying to learn how to surf on my desk, but I keep wiping out.",
+            "Why did the scarecrow win an award ? Because he was outstanding in his field.",
             "Can you help me come up with a song title and lyrics for a country song about a cow who wants to be a rockstar ? ",
-
-            // Nacho cheese restaurant banishment
-            "I just got kicked out of my favorite restaurant for eating too much nacho cheese . ",
-
-            // Can't opener conundrum
-            "What do you call a can opener that doesn't work? A can't opener . ",
-
-            // Ninja dog sneakiness
+            "I just got kicked out of my favorite restaurant for eating too much nacho cheese.",
+            "What do you call a can opener that doesn't work? A can't opener.",
             "My dog thinks it's a professional ninja and has been sneaking around the house at night.",
-
-            // Astronaut relationship issues
             "Why did the astronaut break up with his girlfriend? Because he needed space.",
-
-            // Goldfish trick-training struggles
-            "I've been trying to train my goldfish to do tricks, but it just keeps swimming away . "
+            "I've been trying to train my goldfish to do tricks, but it just keeps swimming away."
         ];
 
+        shuffle($prompts);
 
-        return $prompts[array_rand($prompts)];
+        $choice = select('Pick from one of this silly prompts', $prompts);
+
+        $this->userPrompt = $choice;
+
+        return $choice;
+
     }
 
-    private function askForLyric(Collection $lyrics): ?Lyric
+    private function prepareMureka(string $text)
     {
-        $response = Prism::text()
-                         ->using(Provider::Ollama, 'llama3.2')
-                         ->withClientOptions(['timeout' => 120])
-                         ->withPrompt(view('matching-lyrics', [
-                             'userPrompt' => $this->userPrompt,
-                             'lyrics'     => $lyrics,
-                         ]))
-                         ->asText();
-
-        $songId = $response->text;
-
-        $this->components->twoColumnDetail('Selected Lyric', $songId);
-
-        if (is_numeric($songId)) {
-            return $lyrics->firstWhere('id', $songId);
-        }
-
-        return $lyrics->first();
+        file_put_contents(storage_path('mureka-' . Str::random(4) . ".txt"), json_encode([
+            'lyrics' => $text,
+            "model"  => "auto",
+            "prompt" => "male vocal, polka, upbeat, happy"
+        ]));
     }
 
 }

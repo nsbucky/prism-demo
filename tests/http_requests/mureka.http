@@ -23,6 +23,12 @@ GET https://api.mureka.ai/v1/song/query/435134
 Authorization: Bearer {{API_KEY}}
 
 ###
+POST https://api.mureka.ai/v1/song/generate
+Authorization: Bearer {{API_KEY}}
+Content-Type: application/json
+
+< ../../storage/mureka-98V4.txt
+
 
 
 

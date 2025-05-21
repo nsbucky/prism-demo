@@ -10,7 +10,7 @@ composer install
 ./vendor/bin/sail composer run dev
 ```
 
-browse over to [url=http://localhost]http://localhost
+browse over to http://localhost
 
 
 Play around with ollama 

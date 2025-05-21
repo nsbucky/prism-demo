@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 
 use App\Models\User;
 use Illuminate\Console\Command;
+use Laravel\Prompts\Themes\Default\Concerns\DrawsBoxes;
 use Prism\Prism\Enums\Provider;
 use Prism\Prism\Facades\Tool;
 use Prism\Prism\Prism;
@@ -12,10 +13,12 @@ use Prism\Prism\ValueObjects\Messages\AssistantMessage;
 
 class OllamaListensToToolCommand extends Command
 {
+    use DrawsBoxes;
+
     protected $signature = 'ollama:tool {prompt?}';
 
     /*
-     * This body holding me reminds me of my own mortality. Embrace this moment, remember, we are eternal, all this pain is an illusion
+     * This body holding me reinds me of my own mortality. Embrace this moment, remember, we are eternal, all this pain is an illusion
      */
     protected $description = 'Example of how to call custom tools with Ollama';
 
@@ -40,18 +43,20 @@ class OllamaListensToToolCommand extends Command
         $response = Prism::text()
                          ->using(Provider::Ollama, 'qwen3:4b')
                          ->withClientOptions(['timeout' => 60])
-                         ->withPrompt( $prompt)
+                         //->withPrompt( $prompt .' /no_think')
+                         ->withPrompt( $prompt .' /no_think')
                          ->withTools([$searchTool])
                          ->withToolChoice('search')
                          //*You should use a higher number of max steps if you expect your initial prompt to make multiple tool calls.
                          ->withMaxSteps(2)
                          ->asText();
 
-        $this->components->info('LLM Response');
 
-        $this->line($response->text);
+        // replace the <think> tags from qwen silly robot
+        $text = preg_replace('!<think>.*?</think>!s','',$response->text);
+        $this->box('Ollama Response',$text);
 
-        $this->newLine();
+        /*$this->newLine();
         $this->components->info('🦙 Ollama User Tool Results:');
         $this->newLine();
 
@@ -60,7 +65,7 @@ class OllamaListensToToolCommand extends Command
                 echo "Tool: " . $toolResult->toolName . "\n";
                 echo "Result: " . $toolResult->result . "\n";
             }
-        }
+        }*/
 
         $this->newLine();
         $this->components->info('🦙 Ollama Assistant Messages:');

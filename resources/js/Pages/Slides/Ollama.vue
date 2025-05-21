@@ -33,6 +33,8 @@ import HuggingFaceImg from "@/assets/hf-logo.svg";
 
                 </div>
             </div>
+
+            <p>This project uses llama3.2, qwen3:4b, and mxbai-embed-large models.</p>
         </template>
         <template #footer>
             <div class="flex flex-col w-1/2 mx-auto">

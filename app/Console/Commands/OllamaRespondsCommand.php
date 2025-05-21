@@ -6,13 +6,18 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
+use Laravel\Prompts\Concerns\Colors;
 use Prism\Prism\Enums\Provider;
 use Prism\Prism\Prism;
 use Symfony\Component\Console\Terminal;
+use Laravel\Prompts\Themes\Default\Concerns\DrawsBoxes;
+use function Laravel\Prompts\textarea;
 
 class OllamaRespondsCommand extends Command
 {
-    protected $signature = 'ollama:responds {prompt? : The prompt to send to Ollama}';
+    use DrawsBoxes, Colors;
+
+    protected $signature = 'ollama:responds';
 
     protected $description = 'Let\'s get the Ollama\'s attention';
 
@@ -25,14 +30,14 @@ class OllamaRespondsCommand extends Command
         $this->newLine();
 
         // https://www.youtube.com/watch?v=BYadMp8hwxQ
-        $firePrompt = $this->argument('prompt') ?? 'Where is Uncle Nutzy\'s Clubhouse?';
-
-        // Display the prompt
-        $this->components->twoColumnDetail('Prompt', $firePrompt);
-        $this->newLine();
+        $firePrompt = textarea(
+            label:'Prompt',
+            placeholder:'Where is Uncle Nutzy\'s Clubhouse?',
+            validate: ['prompt'=>'required|max:500']
+        );
 
         // Generate response
-        $this->components->task('Generating response', function() use($firePrompt) {
+        $this->components->task('Generating response', function () use ($firePrompt) {
             $response = Prism::text()
                              ->using(Provider::Ollama, 'llama3.2')
                              ->withClientOptions(['timeout' => 60])
@@ -42,32 +47,13 @@ class OllamaRespondsCommand extends Command
             return true;
         });
 
-        $this->components->info('Response from Ollama (llama3.2 model):');
         $this->newLine();
 
-        // Format the response in a box
-        $width = min(100, $this->getTerminalWidth());
-        $this->output->write('<fg=blue>┌' . str_repeat('─', $width - 2) . '┐</>' . PHP_EOL);
+        $width = min(100, (new Terminal())->getWidth());
 
-        foreach (explode("\n", wordwrap($this->responseText, $width - 4)) as $line) {
-            $this->output->write('<fg=blue>│</> ' . Str::padRight($line, $width - 4) . ' <fg=blue>│</>' . PHP_EOL);
-        }
-
-        $this->output->write('<fg=blue>└' . str_repeat('─', $width - 2) . '┘</>' . PHP_EOL);
-
-        $this->newLine();
-        $this->components->info('Response complete!');
+        $this->box('Response from Ollama (llama3.2 model):', wordwrap($this->responseText, $width),'Complete!', 'green');
 
         return self::SUCCESS;
     }
 
-    /**
-     * Get the terminal width
-     *
-     * @return int
-     */
-    private function getTerminalWidth(): int
-    {
-        return (new Terminal())->getWidth();
-    }
 }

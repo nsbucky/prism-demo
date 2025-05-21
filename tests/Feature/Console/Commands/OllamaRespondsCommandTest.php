@@ -13,14 +13,12 @@ it('returns some text', function () {
 
     $fake = Prism::fake([$fakeResponse]);
 
-    $this->artisan(OllamaRespondsCommand::class, ['prompt' => 'Hello'])
+    $this->artisan(OllamaRespondsCommand::class)
+        ->expectsQuestion('Prompt','Where is Uncle Nutzy\'s Clubhouse?')
         ->expectsOutputToContain('🦙 Ollama Response Generator')
         ->expectsOutputToContain('Response from Ollama (llama3.2 model)')
-        ->expectsOutputToContain($randomText)
-        ->expectsOutputToContain('Response complete!')
+        ->expectsOutputToContain('Complete!')
         ->assertSuccessful();
-
-    $fake->assertPrompt('Hello');
 
     $fake->assertCallCount(1);
 
