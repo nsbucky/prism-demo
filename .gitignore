@@ -28,3 +28,4 @@ yarn-error.log
 /components.d.ts
 /tests/http_requests/http-client.private.env.json
 /open-webui
+slide-notes.md

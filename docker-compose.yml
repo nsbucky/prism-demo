@@ -74,7 +74,7 @@ services:
         #image: 'postgres:17' the image below already has pgvector
         image: 'ankane/pgvector'
         ports:
-            - '${FORWARD_DB_PORT:-5432}:5432'
+            - '${FORWARD_PG_PORT:-5432}:5432'
         environment:
             PGPASSWORD: '${DB_PASSWORD:-secret}'
             POSTGRES_DB: '${DB_DATABASE}'
