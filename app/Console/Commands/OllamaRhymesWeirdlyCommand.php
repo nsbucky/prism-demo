@@ -42,7 +42,7 @@ class OllamaRhymesWeirdlyCommand extends Command
 
         $this->song = new Song([
             'prompt' => $this->userPrompt,
-            'title'  => Str::limit(trim($this->argument('prompt')), 100),
+            'title'  => Str::limit($this->userPrompt, 100),
         ]);
 
         $this->newLine();
