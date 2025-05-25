@@ -18,7 +18,7 @@ beforeEach(function () {
 
 it('handles successful status and dispatches download job', function () {
     config(['services.mureka.api_key' => 'test-key']);
-    
+
     $song = Song::factory()->create();
     $murekaCreation = MurekaCreation::factory()->create([
         'song_id' => $song->id,
@@ -64,7 +64,7 @@ it('handles successful status and dispatches download job', function () {
 
 it('handles failed HTTP response', function () {
     config(['services.mureka.api_key' => 'test-key']);
-    
+
     $song = Song::factory()->create();
     $murekaCreation = MurekaCreation::factory()->create([
         'song_id' => $song->id,
@@ -87,7 +87,7 @@ it('handles failed HTTP response', function () {
 
 it('handles failed status in response', function ($status) {
     config(['services.mureka.api_key' => 'test-key']);
-    
+
     $song = Song::factory()->create();
     $murekaCreation = MurekaCreation::factory()->create([
         'song_id' => $song->id,
@@ -116,7 +116,7 @@ it('handles failed status in response', function ($status) {
 
 it('reschedules itself for pending statuses', function ($status) {
     config(['services.mureka.api_key' => 'test-key']);
-    
+
     $song = Song::factory()->create();
     $murekaCreation = MurekaCreation::factory()->create([
         'song_id' => $song->id,
@@ -149,7 +149,7 @@ it('reschedules itself for pending statuses', function ($status) {
 
 it('sends correct request to Mureka API', function () {
     config(['services.mureka.api_key' => 'test-api-key']);
-    
+
     $song = Song::factory()->create();
     $murekaCreation = MurekaCreation::factory()->create([
         'song_id' => $song->id,
@@ -183,7 +183,7 @@ it('sends correct request to Mureka API', function () {
 
 it('handles HTTP timeout', function () {
     config(['services.mureka.api_key' => 'test-key']);
-    
+
     $song = Song::factory()->create();
     $murekaCreation = MurekaCreation::factory()->create([
         'song_id' => $song->id,
@@ -192,7 +192,7 @@ it('handles HTTP timeout', function () {
     ]);
 
     Http::fake([
-        'https://api.mureka.ai/v1/song/query/song-123' => Http::timeout()
+        'https://api.mureka.ai/v1/song/query/song-123' => Http::timeout(10)->response('Timeout', 408)
     ]);
 
     $job = new CheckMurekaSongStatus($murekaCreation);
