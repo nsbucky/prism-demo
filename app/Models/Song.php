@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Song extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'title',
         'keywords',
@@ -18,4 +21,9 @@ class Song extends Model
     protected $casts = [
         'matched_lyrics' => 'json'
     ];
+
+    public function murekaCreations()
+    {
+        return $this->hasMany(MurekaCreation::class);
+    }
 }

@@ -94,7 +94,7 @@ class OllamaRhymesWeirdlyCommand extends Command
 
             $response = Prism::structured()
                              ->using(Provider::Ollama, 'llama3.2')
-                             ->withClientOptions(['timeout' => 120, 'usingTemperature' => 0.7])
+                             ->withClientOptions(['timeout' => 120, 'usingTemperature' => 0.2])
                              ->withSchema($songSchema)
                              ->withPrompt($this->promptView)
                              ->asStructured();
@@ -106,8 +106,6 @@ class OllamaRhymesWeirdlyCommand extends Command
             $this->song->lyrics = $structuredResponse['lyrics'];
 
             $this->formattedSong($structuredResponse['lyrics']);
-
-            $this->prepareMureka($structuredResponse['lyrics']);
 
             return true;
         });
@@ -296,15 +294,6 @@ class OllamaRhymesWeirdlyCommand extends Command
 
         return $choice;
 
-    }
-
-    private function prepareMureka(string $text)
-    {
-        file_put_contents(storage_path('mureka-' . Str::random(4) . ".txt"), json_encode([
-            'lyrics' => $text,
-            "model"  => "auto",
-            "prompt" => "male vocal, polka, upbeat, happy"
-        ]));
     }
 
 }
