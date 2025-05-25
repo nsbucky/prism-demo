@@ -3,14 +3,13 @@
 
 <template>
     <BaseSlide>
-        <template #title>It's no Amish Paradise out there</template>
+        <template #title>Amish Paradise?</template>
         <template #content>
 
-            <h3 class="font-bold text-3xl my-4">
-                <a href="https://github.com/modelcontextprotocol/servers">Github MCP Server List</a>
+            <h3 class="text-orange-500 font-bold mb-5 text-center">
+                🔗
+                <a href="https://github.com/modelcontextprotocol/servers" target="_blank">https://github.com/modelcontextprotocol/servers</a>
             </h3>
-
-            <p class="text-orange-500 font-bold ">https://github.com/modelcontextprotocol/servers</p>
 
             <p>This repository is a collection of reference implementations for the Model Context Protocol (MCP), as
                 well as references to community built servers and additional resources.</p>

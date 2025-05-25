@@ -4,7 +4,7 @@ import VueCodeBlock from '@wdns/vue-code-block';
 
 const sampleCode = `Prism::embeddings()
     ->using(Provider::Ollama, 'mxbai-embed-large')
-    ->fromInput('What is the best city for spatulas?')
+    ->fromInput('Welcome to Spatula City! Where are we?')
     ->asEmbeddings();`
 </script>
 
@@ -23,9 +23,10 @@ const sampleCode = `Prism::embeddings()
         <p>For example, the words "spatula" and "flipper" may not be similar in terms of their spelling or pronunciation,
             but they are semantically similar because they refer to the same type of object.</p>
 
-      <code class="mb-6 bg-gray-800/20 rounded p-2 mb-3 block">[0.048100714, -0.0482884, 0.0136552155, -0.01290639, ...]</code>
-
         <VueCodeBlock highlightjs lang="php" :code=sampleCode />
+
+      <code class="mb-6 bg-gray-800/20 rounded p-2 mb-3 block">[0.010416343, 0.03364965, -0.03520376, 0.010199273, -0.06551366, -0.011224281, 0.027334454, 0.0229026...]</code>
+
 
 
 

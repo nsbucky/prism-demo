@@ -1,5 +1,5 @@
 services:
-    laravel.test:
+    prism-demo.test:
         build:
             context: ./docker/8.4
             dockerfile: Dockerfile
@@ -65,6 +65,7 @@ services:
             - OLLAMA_KEEP_ALIVE=24h
             - OLLAMA_HOST=0.0.0.0
             - OLLAMA_DEFAULT_MODEL=llama3.2
+            - SKIP_OLLAMA_MODELS=${SKIP_OLLAMA_MODELS:-false}
         entrypoint:
             - /usr/bin/bash
             - /ollama-init.sh

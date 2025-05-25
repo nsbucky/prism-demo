@@ -27,17 +27,5 @@ import Weird from '@/assets/accordion.jpg'
             </div>
           </div>
         </template>
-
-        <template #footer>
-            <div class="flex flex-col w-1/2 mx-auto">
-                <code class="bg-gray-800/20 p-2 rounded-lg">
-                    ollama:rhymes --no-rag<br>
-                    ollama:rhymes<br>
-                </code>
-                <p class="text-center text-xl">
-                <a href="https://www.mureka.ai/create" class="text-blue-300 hover:underline" target="_blank">Mureka Song Generator</a>
-                </p>
-            </div>
-        </template>
     </BaseSlide>
 </template>

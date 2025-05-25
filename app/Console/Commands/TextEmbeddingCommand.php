@@ -8,10 +8,11 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 use Prism\Prism\Enums\Provider;
 use Prism\Prism\Prism;
+use function Laravel\Prompts\text;
 
 class TextEmbeddingCommand extends Command
 {
-    protected $signature = 'ollama:text-embed {text? : The text to embed}';
+    protected $signature = 'ollama:text-embed';
 
     protected $description = 'Generate text embeddings using Ollama mxbai-embed-large model';
 
@@ -21,21 +22,26 @@ class TextEmbeddingCommand extends Command
     public function handle()
     {
         $this->newLine();
-        $this->components->info('Text Embedding Analysis');
+        $this->components->info('🔤 Text Embedding Analysis');
         $this->newLine();
 
-        $sampleText = $this->argument('text') ?? 'Welcome to Spatula City! Where are we?';
+        $sampleText = text(
+            label: 'Enter text to generate embeddings',
+            placeholder: 'e.g., Welcome to Spatula City! Where are we?',
+            default: 'Welcome to Spatula City! Where are we?',
+            required: true
+        );
 
         $this->components->twoColumnDetail('Input Text', $sampleText);
         $this->newLine();
 
         // Embedding generation section
-        $this->components->task('Generating embeddings', function() use ($sampleText) {
+        $this->components->task('Generating embeddings', function () use ($sampleText) {
             $response = Prism::embeddings()
-                ->withClientOptions(['timeout' => 60])
-                ->using(Provider::Ollama, 'mxbai-embed-large')
-                ->fromInput($sampleText)
-                ->asEmbeddings();
+                             ->withClientOptions(['timeout' => 60])
+                             ->using(Provider::Ollama, 'mxbai-embed-large')
+                             ->fromInput($sampleText)
+                             ->asEmbeddings();
 
             $this->embeddings = $response->embeddings[0]->embedding;
             return true;
@@ -44,13 +50,15 @@ class TextEmbeddingCommand extends Command
         // Display embeddings in a nice table format
         $this->components->info('Embedding Values (first 10 of ' . count($this->embeddings) . ' dimensions)');
 
-        $tableData = [];
-        for ($i = 0; $i < min(10, count($this->embeddings)); $i++) {
-            $tableData[] = [
-                'index' => $i,
-                'value' => $this->embeddings[$i]
-            ];
-        }
+        $tableData = collect($this->embeddings)
+            ->take(10)
+            ->map(function ($value, $index) {
+                return [
+                    'index' => $index,
+                    'value' => $value
+                ];
+            })
+            ->all();
 
         $this->table(['Index', 'Value'], $tableData);
 

@@ -5,7 +5,7 @@
 
 <template>
   <BaseSlide>
-    <template #title>RAG - Retrieval Augmented Generation</template>
+    <template #title><span class="text-pink-500">RAG</span> Retrieval Augmented Generation</template>
     <template #content>
 
       <p>RAG is a machine learning technique that incorporates external knowledge into a prompt sent to an LLM.

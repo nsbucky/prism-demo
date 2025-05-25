@@ -13,14 +13,9 @@ class SampleUsers extends Seeder
     {
         User::truncate();
 
-        User::factory()->make([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-
         User::factory()->create([
-            'name' => 'Ollama',
-            'email' => 'llama2@example.com',
+            'name' => 'Weird Al',
+            'email' => 'weirdal@yankinit.gov',
         ]);
 
         User::factory()

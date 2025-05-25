@@ -12,7 +12,7 @@
                     <li>Talking to local Ollama using Prism</li>
                     <li>Creating functions to be used as tools in prompts</li>
                     <li>RAG - Retrieval Augmented Generation</li>
-                    <li>Prism Server</li>
+                    <li>MCP - Prism Server Style</li>
                 </ul>
             </div>
         </template>

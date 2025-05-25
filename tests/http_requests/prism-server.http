@@ -13,5 +13,19 @@ Content-Type: application/json
 GET http://localhost/prism/openai/v1/models
 
 ###
+POST http://prism.test/prism/openai/v1/chat/completions
+Content-Type: application/json
+
+{
+    "model": "spatula-creator",
+    "messages": [
+        {"role": "user", "content": "Hello, who are you?"}
+    ]
+}
+
+###
+GET http://prism.test/prism/openai/v1/models
+
+###
 
 

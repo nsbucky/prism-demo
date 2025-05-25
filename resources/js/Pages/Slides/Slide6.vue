@@ -1,7 +1,7 @@
 <script setup>
 import {reactive, ref} from "vue";
-
 import axios from "axios";
+import LoadingSpinner from '../Components/LoadingSpinner.vue';
 
 const form = reactive({
     prompt: "Where exactly is Spatula City?"
@@ -104,9 +104,11 @@ function streamResponse() {
                             />
                             <button
                                 type="submit"
-                                class="bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition duration-200"
+                                class="bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition duration-200 flex items-center gap-2"
+                                :disabled="normalResponseLoading"
                             >
-                                {{ normalResponseLoading ? 'Waiting...' : 'Normal Response' }}
+                                <LoadingSpinner v-if="normalResponseLoading" size="16" />
+                                <span>{{ normalResponseLoading ? 'Waiting...' : 'Normal Response' }}</span>
                             </button>
                             <div v-if="response" class="mt-4 p-4 bg-gray-800/20 rounded-lg w-full overflow-y-auto h-48">
                                 {{ response }}
@@ -128,10 +130,11 @@ function streamResponse() {
                             />
                             <button
                                 type="submit"
-                                class="bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition duration-200"
+                                class="bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition duration-200 flex items-center gap-2"
                                 :disabled="isStreaming"
                             >
-                                {{ isStreaming ? 'Streaming...' : 'Streamed Response' }}
+                                <LoadingSpinner v-if="isStreaming" size="16" />
+                                <span>{{ isStreaming ? 'Streaming...' : 'Streamed Response' }}</span>
                             </button>
 
                             <div v-if="streamingResponse"
@@ -149,8 +152,7 @@ function streamResponse() {
             <div class="flex flex-col w-1/2 mx-auto">
                 <h4>Laravel CLI Command</h4>
                 <code class="bg-gray-800/20 p-2 rounded-lg">
-                    ./vendor/bin/sail artisan ollama:responds "Weird Al says I should 'Burn your candle at both ends,
-                    Look a gift horse in the mouth, Mashed potatoes can be your friends'"
+                    ./vendor/bin/sail artisan ollama:responds
                 </code>
             </div>
         </template>

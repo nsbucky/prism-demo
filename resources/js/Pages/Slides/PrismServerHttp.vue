@@ -2,7 +2,7 @@
 import VueCodeBlock from '@wdns/vue-code-block';
 
 const sampleCode = `
-POST http://localhost/prism/openai/v1/chat/completions
+POST http://prism.test/prism/openai/v1/chat/completions
 Content-Type: application/json
 
 {
@@ -12,13 +12,17 @@ Content-Type: application/json
   ]
 }
 
-GET http://localhost/prism/openai/v1/models`
+GET http://prism.test/prism/openai/v1/models`
 
 </script>
 
 <template>
     <BaseSlide>
-        <template #title>MCP Http Requests</template>
+        <template #title>MCP
+            <span class="text-pink-200">
+            Http Requests
+            </span>
+        </template>
         <template #content>
             <VueCodeBlock highlightjs :code=sampleCode />
         </template>

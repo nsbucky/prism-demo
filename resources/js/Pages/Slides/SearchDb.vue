@@ -1,27 +1,27 @@
 <script setup>
 import VueCodeBlock from '@wdns/vue-code-block';
 
-const sampleCode = `$promptEmbeddingResponse = Prism::embeddings()
-->using(Provider::Ollama, 'mxbai-embed-large')
-->fromInput($normalizedPrompt)
-->asEmbeddings();
+const sampleCode = `$response = Prism::embeddings()
+                 ->using(Provider::Ollama, 'mxbai-embed-large')
+                 ->fromInput($normalizedPrompt)
+                 ->asEmbeddings();
 
-$embeddingArray = $promptEmbeddingResponse->embeddings[0]->embedding;
+$embeddingArray = $response->embeddings[0]->embedding;
 $formattedEmbedding = '[' . implode(',', $embeddingArray) . ']';
 
 Lyric::query()
-->select(['id', 'name', 'original_text'])
-->orderByRaw('embedding <=> ?::vector', [$formattedEmbedding])
-->limit(1)
-->first();`
+     ->select(['id', 'name', 'original_text'])
+     ->orderByRaw('embedding <=> ?::vector', [$formattedEmbedding])
+     ->limit(1)
+     ->first();`
 </script>
 
 <template>
     <BaseSlide>
         <template #title>Semantic Vector Search</template>
         <template #content>
-            <p class="mb-3">Take the user's prompt, clean it up, then ask the LLM to create a similar embedding of this prompt.
-                In Postgres you can use the <code><=></code> cosine distance operator to search for related items. </p>
+            <p class="mb-3">Use the LLM to create an embedding of your prompt.
+                In Postgres you can use the <code class="text-orange-500 font-bold"><=></code> cosine distance operator to search for related items. </p>
 
             <VueCodeBlock highlightjs lang="php" :code=sampleCode />
 

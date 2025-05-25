@@ -25,11 +25,16 @@ const sampleCode = `Pipeline::send($this->userPrompt)
 
             <p class="mb-2">Embedding models aim to capture the meaning of text. Noise like stop words,
                 capitalization differences, and punctuation can sometimes obscure the core semantic content, leading to
-                less
-                accurate similarity comparisons with your document embeddings. Normalizing the data will help keep
+                less accurate similarity comparisons with your document embeddings. Normalizing the data will help keep
                 results consistent and safe.</p>
 
-            <h3 class="text-orange-500 font-bold mb-3">Use Laravel's Pipeline class:</h3>
+            <h3 class="mb-4">
+                <span class="text-orange-500 font-bold mb-3">
+                    Use Laravel's Pipeline class:
+                </span>
+
+                <span class="text-pink-300">(|> soon!)</span>
+            </h3>
 
             <VueCodeBlock highlightjs lang="php" :code=sampleCode />
 

@@ -2,9 +2,10 @@
 
 import {reactive, ref} from "vue";
 import axios from "axios";
+import LoadingSpinner from '../Components/LoadingSpinner.vue';
 
 const form = reactive({
-  prompt: 'Can you search for a user named Test User?'
+  prompt: 'Can you search for a user named Weird Al? How many users are there?',
 });
 
 const response = ref("");
@@ -35,9 +36,10 @@ function submit() {
   <BaseSlide>
     <template #title>Tool Example</template>
     <template #content>
-      <p>Can ollama find our user? Define your input parameters and use case.</p>
+      <p class="text-center">Can ollama find our user? Multiple tools can be made available and the LLM will decide when
+      to use the appropriate one.</p>
 
-      <form @submit.prevent="submit">
+      <form @submit.prevent="submit" class="mt-8">
         <div class="flex items-center">
 
           <input
@@ -45,14 +47,15 @@ function submit() {
               type="text"
               id="prompt"
               class="border border-gray-300 rounded-lg p-2 mr-4 w-full"
-              placeholder="Who has the best tacos?"
               required
           />
           <button
               type="submit"
-              class="bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition duration-200"
+              class="bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition duration-200 flex items-center gap-2"
+              :disabled="normalResponseLoading"
           >
-            {{ normalResponseLoading ? 'Searching...' : 'Search' }}
+            <LoadingSpinner v-if="normalResponseLoading" size="16" />
+            <span>{{ normalResponseLoading ? 'Searching...' : 'Search' }}</span>
 
           </button>
 
@@ -67,7 +70,7 @@ function submit() {
     <template #footer>
       <div class="flex flex-col w-1/2 mx-auto">
         <code class="bg-gray-800/20 p-2 rounded-lg">
-          ollama:tool "Test User"<br>
+          ollama:tool<br>
           ollama:tool-users
         </code>
       </div>

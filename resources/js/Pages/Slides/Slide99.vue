@@ -1,5 +1,6 @@
 <script setup>
 import {reactive, ref} from "vue";
+import LoadingSpinner from '../Components/LoadingSpinner.vue';
 
 const form = reactive({
     prompt: null
@@ -46,9 +47,11 @@ function submit() {
 
                       <button
                           type="submit"
-                          class="bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition duration-200"
+                          class="bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition duration-200 flex items-center gap-2"
+                          :disabled="loading"
                       >
-                          {{ loading ? 'Writing...' : 'Generate' }}
+                          <LoadingSpinner v-if="loading" size="16" />
+                          <span>{{ loading ? 'Writing...' : 'Generate' }}</span>
                       </button>
                       <div v-if="response" class="mt-4 p-4 bg-gray-800/20 rounded-lg w-full overflow-y-auto h-88">
                           {{ response }}

@@ -7,7 +7,8 @@ import HuggingFaceImg from "@/assets/hf-logo.svg";
     <BaseSlide>
         <template #title>Ollama LLM Setup</template>
         <template #content>
-            <div class="grid grid-cols-4 gap-8 mb-6">
+
+            <div class="grid grid-cols-4 gap-8 mb-8">
                 <div>
                     <img :src="OllamaImg" alt="Ollama Logo"
                          class="bg-white rounded-lg shadow-lg p-2 mb-2 mx-auto"
@@ -20,7 +21,8 @@ import HuggingFaceImg from "@/assets/hf-logo.svg";
                     <a href="https://ollama.com" class="text-orange-300">ollama.com</a>
                 </div>
             </div>
-            <div class="grid grid-cols-4 gap-8">
+
+            <div class="grid grid-cols-4 gap-8 mb-4">
                 <div class="text-center basis-1/3">
                     <img :src="HuggingFaceImg" alt="Huggy Boy"
                          class="bg-white rounded-lg shadow-lg p-1 mb-2 mx-auto"
@@ -34,7 +36,8 @@ import HuggingFaceImg from "@/assets/hf-logo.svg";
                 </div>
             </div>
 
-            <p>This project uses llama3.2, qwen3:4b, and mxbai-embed-large models.</p>
+            <p class="text-center">This project uses llama3.2, qwen3:4b, and mxbai-embed-large models.</p>
+
         </template>
         <template #footer>
             <div class="flex flex-col w-1/2 mx-auto">

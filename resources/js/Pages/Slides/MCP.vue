@@ -13,20 +13,17 @@
                 APIs, databases, and business applications.
             </p>
 
-            <h2 class="text-pink-300 text-center font-bold text-[48px] text-center">Prism is your AI bridge</h2>
+            <h2 class="text-pink-300 text-center font-bold text-[48px] text-center mb-4">Prism is your AI bridge</h2>
 
-            <h3 class="text-pink-500 font-bold text-2xl my-4">
-            Prism offers key components of MCP:
-            </h3>
-
-            <p>
+            <div class="bg-gray-800/40 p-4 rounded-lg mb-4">
                 <span class="font-bold text-orange-500">Client:</span><br>
             Part of the AI application (e.g., a chatbot or IDE) that initiate connections with MCP servers.
-            </p>
+            </div>
 
-            <p><span class="font-bold text-orange-500">Server</span><br>
+            <div class="bg-gray-800/40 p-4 rounded-lg mb-4">
+                <span class="font-bold text-orange-500">Server</span><br>
             Provide access to external tools, data sources, and services, handling communication with the client.
-            </p>
+            </div>
 
         </template>
     </BaseSlide>
