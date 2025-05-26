@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Lyric;
 use App\Models\Song;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Pipeline;
 use Illuminate\Support\Str;
 use Laravel\Prompts\Concerns\Colors;
@@ -53,7 +54,7 @@ class OllamaRhymesWeirdlyCommand extends Command
             $this->promptView = view('lyrics', [
                 'userPrompt' => $this->buildUserPrompt(),
                 'keywords' => $this->extractKeywords(),
-                'document' => $this->getMatchingLyric(),
+                'lyric' => $this->getMatchingLyric(),
             ]);
 
             $this->song->formatted_prompt = $this->promptView->render();
@@ -93,7 +94,7 @@ class OllamaRhymesWeirdlyCommand extends Command
 
             $response = Prism::structured()
                 ->using(Provider::Ollama, 'llama3.2')
-                ->withClientOptions(['timeout' => 120, 'usingTemperature' => 0.2])
+                ->withClientOptions(['timeout' => 120, 'usingTemperature' => 0.3])
                 ->withSchema($songSchema)
                 ->withPrompt($this->promptView)
                 ->asStructured();
@@ -182,7 +183,6 @@ class OllamaRhymesWeirdlyCommand extends Command
         $lyric = Lyric::query()
             ->select(['id', 'name', 'original_text'])
             ->orderByRaw('embedding <=> ?::vector', [$formattedEmbedding])
-            ->limit(1)
             ->first();
 
         if ($lyric) {

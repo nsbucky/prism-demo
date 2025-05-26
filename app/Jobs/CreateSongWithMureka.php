@@ -17,12 +17,17 @@ class CreateSongWithMureka implements ShouldBeUnique, ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    protected const ENDPOINT = 'https://api.mureka.io/v1/song/generate';
+    protected const ENDPOINT = 'https://api.mureka.ai/v1/song/generate';
 
     public function __construct(public Song $song) {}
 
     public function handle(): void
     {
+        logger('Song creation started', [
+            'song_id' => $this->song->id,
+            'title' => $this->song->title,
+        ]);
+
         $response = Http::timeout(20)
             ->asJson()
             ->acceptJson()

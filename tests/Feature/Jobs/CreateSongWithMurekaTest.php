@@ -17,7 +17,7 @@ beforeEach(function () {
 
 it('handles successful response with succeeded status', function () {
     Http::fake([
-        'https://api.mureka.io/v1/song/generate' => Http::response([
+        'https://api.mureka.ai/v1/song/generate' => Http::response([
             'id' => 'song-123',
             'created_at' => time(),
             'finished_at' => time() + 30,
@@ -53,7 +53,7 @@ it('handles successful response with succeeded status', function () {
 
 it('handles failed HTTP response', function () {
     Http::fake([
-        'https://api.mureka.io/v1/song/generate' => Http::response([
+        'https://api.mureka.ai/v1/song/generate' => Http::response([
             'error' => 'Invalid request',
         ], 400),
     ]);
@@ -75,7 +75,7 @@ it('handles failed HTTP response', function () {
 
 it('handles failed status in response', function ($status) {
     Http::fake([
-        'https://api.mureka.io/v1/song/generate' => Http::response([
+        'https://api.mureka.ai/v1/song/generate' => Http::response([
             'id' => 'song-123',
             'created_at' => time(),
             'finished_at' => time() + 30,
@@ -103,7 +103,7 @@ it('handles failed status in response', function ($status) {
 
 it('dispatches CheckMurekaSongStatus job for pending statuses', function ($status) {
     Http::fake([
-        'https://api.mureka.io/v1/song/generate' => Http::response([
+        'https://api.mureka.ai/v1/song/generate' => Http::response([
             'id' => 'song-123',
             'created_at' => time(),
             'finished_at' => null,
@@ -142,7 +142,7 @@ it('sends correct request to Mureka API', function () {
     config(['services.mureka.api_key' => 'test']);
 
     Http::fake([
-        'https://api.mureka.io/v1/song/generate' => Http::response([
+        'https://api.mureka.ai/v1/song/generate' => Http::response([
             'id' => 'song-123',
             'status' => 'succeeded',
             'choices' => [],
@@ -162,7 +162,7 @@ it('sends correct request to Mureka API', function () {
     $job->handle();
 
     Http::assertSent(function ($request) use ($song) {
-        return $request->url() === 'https://api.mureka.io/v1/song/generate' &&
+        return $request->url() === 'https://api.mureka.ai/v1/song/generate' &&
                $request->method() === 'POST' &&
                $request->header('Authorization')[0] === 'Bearer '.config('services.mureka.api_key') &&
                $request->data()['lyrics'] === $song->lyrics &&
