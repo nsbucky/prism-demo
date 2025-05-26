@@ -8,24 +8,17 @@ SKIP_OLLAMA_MODELS=true composer setup
 ```
 
 ## Full Installation
-To run the full demo with all AI features, use:
-```
-composer setup
-```
-
-If this does not work, you can also run the commands manually:
+To run the full demo with all AI features:
 ```
 cp .env.example .env
-composer install
 ./vendor/bin/sail up -d
+./vendor/bin/sail composer install
 ./vendor/bin/sail npm install
-./vendor/bin/sail artisan key:generate
-./vendor/bin/sail artisan migrate
-./vendor/bin/sail artisan db:seed
+./vendor/bin/sail composer run setup
 ./vendor/bin/sail composer run dev
 ```
 
-browse over to [the presentation](http://localhost:8080)
+browse over to [the presentation](http://localhost:8000)
 
 ## Installing Ollama Models Later
 If you skipped model installation, you can install them anytime by running:

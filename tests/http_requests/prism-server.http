@@ -1,5 +1,5 @@
 ###
-POST http://prism-demo.test:8080/prism/openai/v1/chat/completions
+POST http://prism-demo.test/prism/openai/v1/chat/completions
 Content-Type: application/json
 
 {
@@ -13,7 +13,10 @@ Content-Type: application/json
 GET http://localhost/prism/openai/v1/models
 
 ###
-POST http://prism-demo.test:8080/prism/openai/v1/chat/completions
+GET https://prism-demo.test/prism/openai/v1/models
+
+###
+POST http://prism-demo.test/prism/openai/v1/chat/completions
 Content-Type: application/json
 
 {
@@ -27,5 +30,15 @@ Content-Type: application/json
 GET http://prism-demo.test:8080/prism/openai/v1/models
 
 ###
+POST http://prism-demo.test:8080/prism/openai/v1/chat/completions
+Content-Type: application/json
 
+{
+  "model": "created-songs-search",
+  "messages": [
+    {"role": "user", "content": "Can you find a song that has the word 'cheese' in it?"}
+  ]
+}
+
+###
 

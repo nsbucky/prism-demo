@@ -24,7 +24,8 @@
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
         "pestphp/pest": "^3.8",
-        "pestphp/pest-plugin-laravel": "^3.2"
+        "pestphp/pest-plugin-laravel": "^3.2",
+        "ryoluo/sail-ssl": "^1.4"
     },
     "autoload": {
         "psr-4": {
@@ -64,13 +65,9 @@
         ],
         "setup": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
-            "composer install --no-interaction",
-            "./vendor/bin/sail up -d",
-            "./vendor/bin/sail npm install",
-            "./vendor/bin/sail artisan key:generate",
-            "./vendor/bin/sail artisan migrate",
-            "./vendor/bin/sail artisan db:seed",
-            "./vendor/bin/sail composer run dev"
+            "php artisan key:generate",
+            "php artisan migrate",
+            "php artisan db:seed"
         ],
         "stanalyze": [
             "@php vendor/bin/phpstan analyse --memory-limit=2G --configuration=phpstan.neon"

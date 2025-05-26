@@ -1,4 +1,23 @@
 services:
+    nginx:
+        image: 'nginx:latest'
+        ports:
+            - '${HTTP_PORT:-8000}:80'
+            - '${SSL_PORT:-443}:443'
+        environment:
+            - SSL_PORT=${SSL_PORT:-443}
+            - APP_SERVICE=${APP_SERVICE:-prism-demo.test}
+            - SERVER_NAME=${SERVER_NAME:-localhost}
+            - SSL_DOMAIN=${SSL_DOMAIN:-localhost}
+            - SSL_ALT_NAME=${SSL_ALT_NAME:-DNS:localhost}
+        volumes:
+            - 'sail-nginx:/etc/nginx/certs'
+            - './nginx/templates:/etc/nginx/templates'
+            - './vendor/ryoluo/sail-ssl/nginx/generate-ssl-cert.sh:/docker-entrypoint.d/99-generate-ssl-cert.sh'
+        depends_on:
+            - ${APP_SERVICE:-prism-demo.test}
+        networks:
+            - sail
     prism-demo.test:
         build:
             context: ./docker/8.4
@@ -41,11 +60,7 @@ services:
         networks:
             - sail
         healthcheck:
-            test:
-                - CMD
-                - mysqladmin
-                - ping
-                - '-p${DB_PASSWORD}'
+            test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
             retries: 3
             timeout: 5s
     ollama:
@@ -88,23 +103,21 @@ services:
         networks:
             - sail
         healthcheck:
-            test:
-                - CMD
-                - pg_isready
-                - '-q'
-                - '-d'
-                - '${DB_DATABASE}'
-                - '-U'
-                - '${DB_USERNAME}'
+            test: ["CMD", "pg_isready", "-q", "-d", "${DB_DATABASE}", "-U", "${DB_USERNAME}"]
             retries: 3
             timeout: 5s
     open-webui:
         image: ghcr.io/open-webui/open-webui:main
-        ports:
-            - "3000:8080"
+        expose:
+            - "8080"
         environment:
             OPENAI_API_BASE_URLS: '${OPENAI_API_BASE_URLS}'
             WEBUI_SECRET_KEY: '${WEBUI_SECRET_KEY}'
+            # Add these important environment variables
+            WEBUI_SERVER_NAME: "webui.${SERVER_NAME:-localhost}"
+            # Ensure OpenWebUI knows it's behind a proxy
+            UVICORN_PROXY_HEADERS: "True"
+
         networks:
             - sail
         volumes:
@@ -120,6 +133,8 @@ networks:
     sail:
         driver: bridge
 volumes:
+    sail-nginx:
+        driver: local
     sail-mysql:
         driver: local
     sail-pgsql:
