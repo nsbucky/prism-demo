@@ -34,8 +34,9 @@ class DownloadMurekaSong implements ShouldQueue
     {
         // does the file already exist?
         $basePath = 'songs/' . $this->murekaCreation->song_id;
+        $filePath = $basePath . '/' . basename($url);
 
-        if (Storage::disk('public')->exists($basePath . '/' . basename($url))) {
+        if (Storage::disk('public')->exists($filePath)) {
             return;
         }
 
@@ -44,7 +45,7 @@ class DownloadMurekaSong implements ShouldQueue
             Storage::disk('public')->makeDirectory($basePath);
         }
 
-        $response = Http::sink(Storage::disk('public')->path($basePath . '/' . basename($url)))
+        $response = Http::sink(Storage::disk('public')->path($filePath))
                         ->get($url);
 
         if ($response->failed()) {
@@ -53,6 +54,9 @@ class DownloadMurekaSong implements ShouldQueue
                 'status' => $response->status(),
                 'body'   => $response->body(),
             ]);
+
+            // remove the file if download failed
+            Storage::disk('public')->delete($filePath);
 
             return;
         }

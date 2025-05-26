@@ -39,27 +39,6 @@ class CreateSongWithMureka implements ShouldQueue, ShouldBeUnique
 
     private function handleResponse(PromiseInterface|Response $response) :void
     {
-        /*
-        * response sample
-        * {"id": "string","created_at": 0,"finished_at": 0,"model": "string","status": "string","failed_reason": "string","choices": [{"index": 0,"url": "string","flac_url": "string","duration": 0,"lyrics_sections": [{"section_type": "string","start": 0,"end": 0,"lines": [{"start": 0,"end": 0,"text": "string"}]}]}]}
-        */
-
-        /*
-         * status types
-         * status
-            string
-
-            The current status of the task
-            Valid values
-            preparing
-            queued
-            running
-            succeeded
-            failed
-            timeouted
-            cancelled
-         */
-
         if ($response->failed()) {
             logger()->error('Song creation failed', $response->json());
             $this->delete();
@@ -90,3 +69,23 @@ class CreateSongWithMureka implements ShouldQueue, ShouldBeUnique
         }
     }
 }
+/*
+* response sample
+* {"id": "string","created_at": 0,"finished_at": 0,"model": "string","status": "string","failed_reason": "string","choices": [{"index": 0,"url": "string","flac_url": "string","duration": 0,"lyrics_sections": [{"section_type": "string","start": 0,"end": 0,"lines": [{"start": 0,"end": 0,"text": "string"}]}]}]}
+*/
+
+/*
+ * status types
+ * status
+    string
+
+    The current status of the task
+    Valid values
+    preparing
+    queued
+    running
+    succeeded
+    failed
+    timeouted
+    cancelled
+ */

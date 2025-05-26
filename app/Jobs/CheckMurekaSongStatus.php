@@ -34,9 +34,11 @@ class CheckMurekaSongStatus implements ShouldQueue
 
     private function handleResponse(PromiseInterface|Response $response): void
     {
-        $status = $response->json()['status'];
+        $status = $response->json('status');
 
-        if ($response->failed() || in_array($status, ['failed', 'timeouted', 'canceled'])) {
+        if (blank($status)
+            || $response->failed()
+            || in_array($status, ['failed', 'timeouted', 'canceled'])) {
             logger()->error('failed to check status on song', $response->json());
 
             $this->delete();
@@ -58,10 +60,9 @@ class CheckMurekaSongStatus implements ShouldQueue
 
         if ($status === 'succeeded') {
             $this->murekaCreation->update([
-                'mureka_status'   => $status,
-                'mureka_url'      => $response->json()['choices'][0]['url'],
-                'mureka_flac_url' => $response->json()['choices'][0]['flac_url'],
-                'mureka_duration' => $response->json()['choices'][0]['duration'],
+                'status'      => $status,
+                'choices'     => $response->json()['choices'],
+                'finished_at' => now(),
             ]);
 
             // dispatch a job to download the song

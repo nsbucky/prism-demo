@@ -6,6 +6,23 @@ use Prism\Prism\Testing\TextResponseFake;
 use Illuminate\Support\Str;
 
 it('returns some text', function () {
+
+    $fakeResponse = TextResponseFake::make()
+                                    ->withText('Hello, Ollama!');
+
+    $fake = Prism::fake([$fakeResponse]);
+
+    $this->artisan(OllamaRespondsCommand::class)
+        ->expectsQuestion('You',"Hello, Ollama!")
+        ->expectsOutputToContain('🦙 Ollama Chat Interface')
+        ->expectsQuestion('You',"exit")
+        ->assertSuccessful();
+
+    $fake->assertCallCount(1);
+
+});
+
+it('exits when prompted', function () {
     $randomText = Str::random();
 
     $fakeResponse = TextResponseFake::make()
@@ -14,13 +31,12 @@ it('returns some text', function () {
     $fake = Prism::fake([$fakeResponse]);
 
     $this->artisan(OllamaRespondsCommand::class)
-        ->expectsQuestion('Prompt','Where is Uncle Nutzy\'s Clubhouse?')
-        ->expectsOutputToContain('🦙 Ollama Response Generator')
-        ->expectsOutputToContain('Response from Ollama (llama3.2 model)')
-        ->expectsOutputToContain('Complete!')
-        ->assertSuccessful();
+         ->expectsQuestion('You',"exit")
+         ->expectsOutputToContain('🦙 Ollama Chat Interface')
+         ->doesntExpectOutputToContain('Ollama is thinking...')
+         ->assertSuccessful();
 
-    $fake->assertCallCount(1);
+    $fake->assertCallCount(0);
 
 });
 

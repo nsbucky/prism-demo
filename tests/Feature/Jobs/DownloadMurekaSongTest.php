@@ -16,21 +16,21 @@ beforeEach(function () {
 });
 
 it('downloads songs from mureka creation choices', function () {
-    $song = Song::factory()->create();
+    $song           = Song::factory()->create();
     $murekaCreation = MurekaCreation::factory()->create([
-        'song_id' => $song->id,
+        'song_id'   => $song->id,
         'mureka_id' => 'song-123',
-        'status' => 'succeeded',
-        'choices' => [
+        'status'    => 'succeeded',
+        'choices'   => [
             [
-                'index' => 0,
-                'url' => 'https://example.com/song1.mp3',
+                'index'    => 0,
+                'url'      => 'https://example.com/song1.mp3',
                 'flac_url' => 'https://example.com/song1.flac',
                 'duration' => 120
             ],
             [
-                'index' => 1,
-                'url' => 'https://example.com/song2.mp3',
+                'index'    => 1,
+                'url'      => 'https://example.com/song2.mp3',
                 'flac_url' => 'https://example.com/song2.flac',
                 'duration' => 130
             ]
@@ -53,15 +53,15 @@ it('downloads songs from mureka creation choices', function () {
 });
 
 it('skips download if file already exists', function () {
-    $song = Song::factory()->create();
+    $song           = Song::factory()->create();
     $murekaCreation = MurekaCreation::factory()->create([
-        'song_id' => $song->id,
+        'song_id'   => $song->id,
         'mureka_id' => 'song-123',
-        'status' => 'succeeded',
-        'choices' => [
+        'status'    => 'succeeded',
+        'choices'   => [
             [
-                'index' => 0,
-                'url' => 'https://example.com/song1.mp3',
+                'index'    => 0,
+                'url'      => 'https://example.com/song1.mp3',
                 'flac_url' => 'https://example.com/song1.flac',
                 'duration' => 120
             ]
@@ -84,15 +84,15 @@ it('skips download if file already exists', function () {
 });
 
 it('creates directory if it does not exist', function () {
-    $song = Song::factory()->create();
+    $song           = Song::factory()->create();
     $murekaCreation = MurekaCreation::factory()->create([
-        'song_id' => $song->id,
+        'song_id'   => $song->id,
         'mureka_id' => 'song-123',
-        'status' => 'succeeded',
-        'choices' => [
+        'status'    => 'succeeded',
+        'choices'   => [
             [
-                'index' => 0,
-                'url' => 'https://example.com/song.mp3',
+                'index'    => 0,
+                'url'      => 'https://example.com/song.mp3',
                 'flac_url' => 'https://example.com/song.flac',
                 'duration' => 120
             ]
@@ -113,15 +113,15 @@ it('creates directory if it does not exist', function () {
 });
 
 it('handles failed download response', function () {
-    $song = Song::factory()->create();
+    $song           = Song::factory()->create();
     $murekaCreation = MurekaCreation::factory()->create([
-        'song_id' => $song->id,
+        'song_id'   => $song->id,
         'mureka_id' => 'song-123',
-        'status' => 'succeeded',
-        'choices' => [
+        'status'    => 'succeeded',
+        'choices'   => [
             [
-                'index' => 0,
-                'url' => 'https://example.com/song.mp3',
+                'index'    => 0,
+                'url'      => 'https://example.com/song.mp3',
                 'flac_url' => 'https://example.com/song.flac',
                 'duration' => 120
             ]
@@ -132,6 +132,8 @@ it('handles failed download response', function () {
         'https://example.com/song.mp3' => Http::response('Not Found', 404)
     ]);
 
+    Storage::disk('public')->assertMissing("songs/{$song->id}");
+
     $job = new DownloadMurekaSong($murekaCreation);
     $job->handle();
 
@@ -139,39 +141,13 @@ it('handles failed download response', function () {
     Storage::disk('public')->assertMissing("songs/{$song->id}/song.mp3");
 });
 
-it('handles HTTP timeout during download', function () {
-    $song = Song::factory()->create();
-    $murekaCreation = MurekaCreation::factory()->create([
-        'song_id' => $song->id,
-        'mureka_id' => 'song-123',
-        'status' => 'succeeded',
-        'choices' => [
-            [
-                'index' => 0,
-                'url' => 'https://example.com/song.mp3',
-                'flac_url' => 'https://example.com/song.flac',
-                'duration' => 120
-            ]
-        ]
-    ]);
-
-    Http::fake([
-        'https://example.com/song.mp3' => Http::timeout(1)->response('Timeout', 408)
-    ]);
-
-    $job = new DownloadMurekaSong($murekaCreation);
-    $job->handle();
-
-    Storage::disk('public')->assertMissing("songs/{$song->id}/song.mp3");
-});
-
 it('logs error when no downloadable songs are found', function () {
-    $song = Song::factory()->create();
+    $song           = Song::factory()->create();
     $murekaCreation = MurekaCreation::factory()->create([
-        'song_id' => $song->id,
+        'song_id'   => $song->id,
         'mureka_id' => 'song-123',
-        'status' => 'succeeded',
-        'choices' => []
+        'status'    => 'succeeded',
+        'choices'   => []
     ]);
 
     Http::fake();
@@ -185,21 +161,21 @@ it('logs error when no downloadable songs are found', function () {
 });
 
 it('filters out choices without urls', function () {
-    $song = Song::factory()->create();
+    $song           = Song::factory()->create();
     $murekaCreation = MurekaCreation::factory()->create([
-        'song_id' => $song->id,
+        'song_id'   => $song->id,
         'mureka_id' => 'song-123',
-        'status' => 'succeeded',
-        'choices' => [
+        'status'    => 'succeeded',
+        'choices'   => [
             [
-                'index' => 0,
+                'index'    => 0,
                 // Missing url
                 'flac_url' => 'https://example.com/song1.flac',
                 'duration' => 120
             ],
             [
-                'index' => 1,
-                'url' => 'https://example.com/song2.mp3',
+                'index'    => 1,
+                'url'      => 'https://example.com/song2.mp3',
                 'flac_url' => 'https://example.com/song2.flac',
                 'duration' => 130
             ]

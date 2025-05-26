@@ -43,8 +43,8 @@ class OllamaRespondsCommand extends Command
             $userMessage = text(
                 label: 'You',
                 placeholder: 'Type your message...',
-                required: true,
                 default: $defaultSillyMessage,
+                required: true,
             );
 
             // reset the default message
