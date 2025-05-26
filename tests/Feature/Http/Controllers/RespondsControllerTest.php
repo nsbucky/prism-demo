@@ -8,7 +8,7 @@ use Prism\Prism\Prism;
 use Prism\Prism\Testing\TextResponseFake;
 
 beforeEach(function () {
-    $this->controller = new RespondsController();
+    $this->controller = new RespondsController;
 });
 
 it('returns a response from Ollama', function () {
@@ -20,7 +20,7 @@ it('returns a response from Ollama', function () {
     $fake = Prism::fake([$fakeResponse]);
 
     $request = Request::create('/responds', 'POST', [
-        'prompt' => 'Hello world'
+        'prompt' => 'Hello world',
     ]);
 
     $response = $this->controller->__invoke($request);
@@ -33,7 +33,7 @@ it('returns a response from Ollama', function () {
 
 it('validates that prompt is required', function () {
     $request = Request::create('/responds', 'POST', [
-        'prompt' => ''
+        'prompt' => '',
     ]);
 
     $this->expectException(ValidationException::class);
@@ -43,7 +43,7 @@ it('validates that prompt is required', function () {
 
 it('validates that prompt is a string', function () {
     $request = Request::create('/responds', 'POST', [
-        'prompt' => 123
+        'prompt' => 123,
     ]);
 
     $this->expectException(ValidationException::class);
@@ -53,7 +53,7 @@ it('validates that prompt is a string', function () {
 
 it('validates that prompt is not too long', function () {
     $request = Request::create('/responds', 'POST', [
-        'prompt' => Str::random(256)
+        'prompt' => Str::random(256),
     ]);
 
     $this->expectException(ValidationException::class);
@@ -70,7 +70,7 @@ it('passes with valid prompt data', function () {
     Prism::fake([$fakeResponse]);
 
     $request = Request::create('/responds', 'POST', [
-        'prompt' => 'Valid prompt'
+        'prompt' => 'Valid prompt',
     ]);
 
     $response = $this->controller->__invoke($request);

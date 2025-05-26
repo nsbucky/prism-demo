@@ -17,8 +17,8 @@ class LyricFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'          => $this->faker->word,
-            'embeddings'    => $this->faker->randomElement(['embedding1', 'embedding2', 'embedding3']),
+            'name' => $this->faker->word,
+            'embeddings' => $this->faker->randomElement(['embedding1', 'embedding2', 'embedding3']),
             'original_text' => $this->faker->sentence,
         ];
     }

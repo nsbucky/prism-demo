@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Jobs;
@@ -17,17 +18,15 @@ class CheckMurekaSongStatus implements ShouldQueue
 
     protected const ENDPOINT = 'https://api.mureka.ai/v1/song/query/';
 
-    public function __construct(public MurekaCreation $murekaCreation)
-    {
-    }
+    public function __construct(public MurekaCreation $murekaCreation) {}
 
     public function handle(): void
     {
         $response = Http::timeout(20)
-                        ->asJson()
-                        ->acceptJson()
-                        ->withToken(config('services.mureka.api_key'))
-                        ->get(self::ENDPOINT . $this->murekaCreation->mureka_id);
+            ->asJson()
+            ->acceptJson()
+            ->withToken(config('services.mureka.api_key'))
+            ->get(self::ENDPOINT.$this->murekaCreation->mureka_id);
 
         $this->handleResponse($response);
     }
@@ -48,11 +47,11 @@ class CheckMurekaSongStatus implements ShouldQueue
 
         if (in_array($status, ['preparing', 'running', 'queued'])) {
             CheckMurekaSongStatus::dispatch($this->murekaCreation)
-                                 ->delay(now()->addMinute());
+                ->delay(now()->addMinute());
 
             logger()->info('song is still processing', [
                 'mureka_id' => $this->murekaCreation->mureka_id,
-                'status'    => $status,
+                'status' => $status,
             ]);
 
             return;
@@ -60,8 +59,8 @@ class CheckMurekaSongStatus implements ShouldQueue
 
         if ($status === 'succeeded') {
             $this->murekaCreation->update([
-                'status'      => $status,
-                'choices'     => $response->json()['choices'],
+                'status' => $status,
+                'choices' => $response->json()['choices'],
                 'finished_at' => now(),
             ]);
 
@@ -71,6 +70,4 @@ class CheckMurekaSongStatus implements ShouldQueue
             logger()->info('song created successfully', $response->json());
         }
     }
-
-
 }

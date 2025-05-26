@@ -23,8 +23,8 @@ class SongController
         ob_start();
 
         Artisan::call(OllamaRhymesWeirdlyCommand::class, [
-            'prompt'        => $input['prompt'],
-            '--show-prompt' => false
+            'prompt' => $input['prompt'],
+            '--show-prompt' => false,
         ], $buffer);
 
         return ob_get_clean();

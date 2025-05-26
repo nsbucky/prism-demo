@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Console\Commands;
@@ -10,12 +11,13 @@ use Laravel\Prompts\Themes\Default\Concerns\DrawsBoxes;
 use Prism\Prism\Enums\Provider;
 use Prism\Prism\Facades\Tool;
 use Prism\Prism\Prism;
-use function Laravel\Prompts\text;
+
 use function Laravel\Prompts\table;
+use function Laravel\Prompts\text;
 
 class OllamaListensToToolCommand extends Command
 {
-    use DrawsBoxes, Colors;
+    use Colors, DrawsBoxes;
 
     protected $signature = 'ollama:tool';
 
@@ -39,35 +41,36 @@ class OllamaListensToToolCommand extends Command
 
         // Define the search tools
         $searchTool = Tool::as('search')
-                          ->for('Search for user')
-                          ->withStringParameter('name', 'The name of the person you are searching for')
-                          ->using(function (string $name): string {
-                              $user = User::where('name', 'like', "%{$name}%")->first();
+            ->for('Search for user')
+            ->withStringParameter('name', 'The name of the person you are searching for')
+            ->using(function (string $name): string {
+                $user = User::where('name', 'like', "%{$name}%")->first();
 
-                              if ($user) {
-                                  return 'Found user: ' . $user->name . ' with email: ' . $user->email;
-                              }
+                if ($user) {
+                    return 'Found user: '.$user->name.' with email: '.$user->email;
+                }
 
-                              return 'User not found';
-                          });
+                return 'User not found';
+            });
 
         $countTool = Tool::as('count')
-                          ->for('Count the number of users')
-                          ->using(function (): string {
-                              $userCount = User::count();
-                              return "Total number of users: {$userCount}";
-                          });
+            ->for('Count the number of users')
+            ->using(function (): string {
+                $userCount = User::count();
+
+                return "Total number of users: {$userCount}";
+            });
 
         $this->newLine();
         $this->components->task('Ollama is searching...', function () use ($prompt, $searchTool, $countTool) {
             $this->response = Prism::text()
-                                   ->using(Provider::Ollama, 'qwen3:4b')
-                                   ->withClientOptions(['timeout' => 60])
-                                   ->withPrompt($prompt . ' /no_think')
-                                   ->withTools([$searchTool, $countTool])
-                                   //->withToolChoice('search')
-                                   ->withMaxSteps(2)
-                                   ->asText();
+                ->using(Provider::Ollama, 'qwen3:4b')
+                ->withClientOptions(['timeout' => 60])
+                ->withPrompt($prompt.' /no_think')
+                ->withTools([$searchTool, $countTool])
+                                   // ->withToolChoice('search')
+                ->withMaxSteps(2)
+                ->asText();
 
             return true;
         });
@@ -86,7 +89,7 @@ class OllamaListensToToolCommand extends Command
             $tableData = collect($this->response->toolResults)->map(function ($toolResult) {
                 return [
                     'Tool Name' => $toolResult->toolName,
-                    'Result'    => wordwrap($toolResult->result, 60)
+                    'Result' => wordwrap($toolResult->result, 60),
                 ];
             })->all();
 

@@ -12,23 +12,25 @@ use Prism\Prism\Prism;
 use Prism\Prism\ValueObjects\Messages\AssistantMessage;
 use Prism\Prism\ValueObjects\Messages\UserMessage;
 use Symfony\Component\Console\Terminal;
+
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\text;
 
 class OllamaRespondsCommand extends Command
 {
-    use DrawsBoxes, Colors;
+    use Colors, DrawsBoxes;
 
     protected $signature = 'ollama:responds';
 
     protected $description = 'Chat with Ollama in a continuous conversation';
 
     private array $messages = [];
+
     private int $terminalWidth;
 
     public function handle()
     {
-        $this->terminalWidth = min(100, (new Terminal())->getWidth());
+        $this->terminalWidth = min(100, (new Terminal)->getWidth());
 
         $this->newLine();
         $this->components->info('🦙 Ollama Chat Interface');
@@ -64,10 +66,10 @@ class OllamaRespondsCommand extends Command
             $this->newLine();
             $this->components->task('Ollama is thinking...', function () {
                 $response = Prism::text()
-                                 ->using(Provider::Ollama, 'llama3.2')
-                                 ->usingTemperature(0.7)
-                                 ->withClientOptions(['timeout' => 60])
-                                 ->withMessages($this->messages);
+                    ->using(Provider::Ollama, 'llama3.2')
+                    ->usingTemperature(0.7)
+                    ->withClientOptions(['timeout' => 60])
+                    ->withMessages($this->messages);
 
                 // Add assistant response to conversation history
                 $this->messages[] = new AssistantMessage($response->asText()->text);
@@ -81,7 +83,7 @@ class OllamaRespondsCommand extends Command
             $this->newLine();
 
             // Optional: Ask if user wants to continue
-            if (count($this->messages) > 10 && !confirm('Continue chatting?')) {
+            if (count($this->messages) > 10 && ! confirm('Continue chatting?')) {
                 $this->newLine();
                 $this->components->info('👋 Thanks for the conversation!');
                 break;
@@ -101,5 +103,4 @@ class OllamaRespondsCommand extends Command
             $this->box('🦙 Ollama', $wrappedText, '', 'cyan');
         }
     }
-
 }

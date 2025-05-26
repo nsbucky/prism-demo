@@ -15,11 +15,11 @@ class Song extends Model
         'lyrics',
         'prompt',
         'formatted_prompt',
-        'matched_lyrics'
+        'matched_lyrics',
     ];
 
     protected $casts = [
-        'matched_lyrics' => 'json'
+        'matched_lyrics' => 'json',
     ];
 
     public function murekaCreations()

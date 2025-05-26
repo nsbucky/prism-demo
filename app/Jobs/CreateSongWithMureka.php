@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Jobs;
@@ -12,32 +13,30 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 
-class CreateSongWithMureka implements ShouldQueue, ShouldBeUnique
+class CreateSongWithMureka implements ShouldBeUnique, ShouldQueue
 {
     use Queueable, SerializesModels;
 
     protected const ENDPOINT = 'https://api.mureka.io/v1/song/generate';
 
-    public function __construct(public Song $song)
-    {
-    }
+    public function __construct(public Song $song) {}
 
     public function handle(): void
     {
         $response = Http::timeout(20)
-                        ->asJson()
-                        ->acceptJson()
-                        ->withToken(config('services.mureka.api_key'))
-                        ->post(self::ENDPOINT, [
-                            'lyrics' => $this->song->lyrics,
-                            'model'  => 'auto',
-                            'prompt' => 'male vocal, polka, upbeat, happy'
-                        ]);
+            ->asJson()
+            ->acceptJson()
+            ->withToken(config('services.mureka.api_key'))
+            ->post(self::ENDPOINT, [
+                'lyrics' => $this->song->lyrics,
+                'model' => 'auto',
+                'prompt' => 'male vocal, polka, upbeat, happy',
+            ]);
 
         $this->handleResponse($response);
     }
 
-    private function handleResponse(PromiseInterface|Response $response) :void
+    private function handleResponse(PromiseInterface|Response $response): void
     {
         if ($response->failed()) {
             logger()->error('Song creation failed', $response->json());
@@ -60,8 +59,8 @@ class CreateSongWithMureka implements ShouldQueue, ShouldBeUnique
 
             $murekaCreation = $this->song->murekaCreations()->create([
                 'mureka_id' => $response->json()['id'],
-                'model'     => $response->json()['model'],
-                'status'    => $status,
+                'model' => $response->json()['model'],
+                'status' => $status,
             ]);
 
             // launch another job to check on status

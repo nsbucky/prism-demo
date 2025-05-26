@@ -5,7 +5,8 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
         if (Schema::connection('pgsql')->hasTable('lyrics')) {
@@ -13,25 +14,25 @@ return new class extends Migration {
         }
 
         Schema::connection('pgsql')
-              ->create('lyrics', function (Blueprint $table) {
-                  $table->id();
+            ->create('lyrics', function (Blueprint $table) {
+                $table->id();
 
-                  $table->string('name');
+                $table->string('name');
 
-                  /*
+                /*
                    * 1024 because it is the default for pgvector.
                    */
-                  $table->vector('embedding', 1024)
-                        ->comment('The embedding vector for the document, used for similarity search');
+                $table->vector('embedding', 1024)
+                    ->comment('The embedding vector for the document, used for similarity search');
 
-                  $table->text('original_text')
-                        ->comment('The original text of the document');
+                $table->text('original_text')
+                    ->comment('The original text of the document');
 
-                  $table->timestamps();
-              });
+                $table->timestamps();
+            });
 
         DB::connection('pgsql')
-          ->statement('
+            ->statement('
             CREATE INDEX lyrics_embedding_ivfflat_index
             ON lyrics
             USING ivfflat (embedding vector_cosine_ops)

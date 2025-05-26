@@ -25,12 +25,12 @@ class StreamController
 
             // Stream the AI response
             $response = Prism::text()
-                             ->using(Provider::Ollama, 'llama3.2')
-                             ->withPrompt($prompt)
-                             ->asStream();
+                ->using(Provider::Ollama, 'llama3.2')
+                ->withPrompt($prompt)
+                ->asStream();
 
             foreach ($response as $chunk) {
-                echo "data: " . json_encode(['chunk' => $chunk->text]) . "\n\n";
+                echo 'data: '.json_encode(['chunk' => $chunk->text])."\n\n";
                 ob_flush();
                 flush();
 
@@ -40,13 +40,13 @@ class StreamController
                 }
             }
 
-            echo "data: " . json_encode(['done' => true]) . "\n\n";
+            echo 'data: '.json_encode(['done' => true])."\n\n";
             ob_flush();
             flush();
 
         }, 200, [
             'Cache-Control' => 'no-cache',
-            'Content-Type'  => 'text/event-stream',
+            'Content-Type' => 'text/event-stream',
         ]);
     }
 }

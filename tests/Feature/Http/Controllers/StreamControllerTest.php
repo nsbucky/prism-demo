@@ -7,8 +7,8 @@ use Prism\Prism\Testing\TextResponseFake;
 it('can stream a response', function () {
 
     $fakeResponse = TextResponseFake::make()
-                                    ->withText('Sup Al!')
-                                    ->withFinishReason(FinishReason::Stop);
+        ->withText('Sup Al!')
+        ->withFinishReason(FinishReason::Stop);
 
     $prismFake = Prism::fake([$fakeResponse]);
 

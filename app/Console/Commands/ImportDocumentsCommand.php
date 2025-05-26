@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Console\Commands;
@@ -18,36 +19,38 @@ class ImportDocumentsCommand extends Command
     {
         $importDirectory = config('services.import_directory');
 
-        if (!is_dir($importDirectory)) {
-            $this->error('Import directory does not exist: ' . $importDirectory);
+        if (! is_dir($importDirectory)) {
+            $this->error('Import directory does not exist: '.$importDirectory);
+
             return self::FAILURE;
         }
 
-        $files = glob($importDirectory . '/lyrics/*.txt');
+        $files = glob($importDirectory.'/lyrics/*.txt');
 
-        $this->info('Importing documents from: ' . $importDirectory);
+        $this->info('Importing documents from: '.$importDirectory);
 
-        $this->info('Found ' . count($files) . ' files to import.');
+        $this->info('Found '.count($files).' files to import.');
 
         foreach ($files as $file) {
-            $this->info('Importing file: ' . $file);
+            $this->info('Importing file: '.$file);
             $content = file_get_contents($file);
 
             if (blank(trim($content))) {
-                $this->error('File is empty or contains only whitespace: ' . $file);
+                $this->error('File is empty or contains only whitespace: '.$file);
+
                 continue;
             }
 
             $response = Prism::embeddings()
-                             ->withClientOptions(['timeout' => 60])
-                             ->using(Provider::Ollama, 'mxbai-embed-large')
-                             ->fromInput($content)
-                             ->asEmbeddings();
+                ->withClientOptions(['timeout' => 60])
+                ->using(Provider::Ollama, 'mxbai-embed-large')
+                ->fromInput($content)
+                ->asEmbeddings();
 
             Lyric::create([
-                'name'          => basename($file, '.html'),
-                'embedding'     => $response->embeddings[0]->embedding,
-                'original_text' => $content
+                'name' => basename($file, '.html'),
+                'embedding' => $response->embeddings[0]->embedding,
+                'original_text' => $content,
             ]);
 
         }

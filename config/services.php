@@ -37,7 +37,7 @@ return [
 
     'import_directory' => env('IMPORT_DIRECTORY', storage_path('app/imports')),
 
-    'mureka'=>[
+    'mureka' => [
         'api_key' => env('MUREKA_API_KEY'),
-    ]
+    ],
 ];

@@ -19,13 +19,13 @@ class MurekaCreation extends Model
         'failed_reason',
         'finished_at',
         'failed_at',
-        'choices'
+        'choices',
     ];
 
     protected $casts = [
-        'choices'     => 'json',
+        'choices' => 'json',
         'finished_at' => 'datetime',
-        'failed_at'   => 'datetime'
+        'failed_at' => 'datetime',
     ];
 
     public function song()
@@ -33,12 +33,12 @@ class MurekaCreation extends Model
         return $this->belongsTo(Song::class);
     }
 
-    public function downloadableSongs() : Collection
+    public function downloadableSongs(): Collection
     {
         return collect($this->choices)
             ->filter(fn (array $choice) => isset($choice['url']))
             ->map(fn (array $choice) => [
-                'url'      => $choice['url'],
+                'url' => $choice['url'],
                 'flac_url' => $choice['flac_url'] ?? null,
                 'duration' => $choice['duration'] ?? null,
             ]);

@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Factories\Sequence;
+use Illuminate\Database\Seeder;
 
 class SampleUsers extends Seeder
 {
@@ -22,7 +22,7 @@ class SampleUsers extends Seeder
             ->count(100)
             ->state(new Sequence(
                 fn (Sequence $sequence) => [
-                    'created_at' => Carbon::createFromTimestamp(rand(now()->startOfYear()->timestamp, time()))
+                    'created_at' => Carbon::createFromTimestamp(rand(now()->startOfYear()->timestamp, time())),
                 ]
             ))
             ->create();

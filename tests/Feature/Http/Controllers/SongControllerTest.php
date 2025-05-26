@@ -1,17 +1,14 @@
 <?php
 
-use App\Console\Commands\OllamaRhymesWeirdlyCommand;
-use Illuminate\Support\Facades\Artisan;
 use Prism\Prism\Prism;
-use Prism\Prism\Testing\PrismFake;
-use Prism\Prism\Testing\TextResponseFake;
 use Prism\Prism\Testing\EmbeddingsResponseFake;
+use Prism\Prism\Testing\TextResponseFake;
 use Prism\Prism\ValueObjects\Embedding;
 
 it('validates the input', function () {
     $this->postJson('/song')
-         ->assertStatus(422)
-         ->assertJsonValidationErrors(['prompt']);
+        ->assertStatus(422)
+        ->assertJsonValidationErrors(['prompt']);
 });
 
 it('calls the console command with the correct prompt', function () {
@@ -27,18 +24,18 @@ it('calls the console command with the correct prompt', function () {
 
     $prismFake = Prism::fake([
         EmbeddingsResponseFake::make()
-                              ->withEmbeddings([Embedding::fromArray($embedding)]),
+            ->withEmbeddings([Embedding::fromArray($embedding)]),
         TextResponseFake::make()
-                        ->withText('test, prompt'),
+            ->withText('test, prompt'),
         TextResponseFake::make()
-                        ->withText('Twinkle Dinky, little star')
+            ->withText('Twinkle Dinky, little star'),
     ]);
 
     $response = $this->post('/song', [
-        'prompt' => $prompt
+        'prompt' => $prompt,
     ]);
 
     $response->assertStatus(200)
-             ->assertSee('Twinkle Dinky, little star');
+        ->assertSee('Twinkle Dinky, little star');
 
 })->skip(1);

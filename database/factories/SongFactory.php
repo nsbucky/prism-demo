@@ -17,12 +17,12 @@ class SongFactory extends Factory
     public function definition(): array
     {
         return [
-            'title'           => $this->faker->sentence(3),
-            'keywords'        => $this->faker->words(3, true),
-            'lyrics'          => $this->faker->paragraphs(3, true),
-            'prompt'          => $this->faker->sentence(5),
+            'title' => $this->faker->sentence(3),
+            'keywords' => $this->faker->words(3, true),
+            'lyrics' => $this->faker->paragraphs(3, true),
+            'prompt' => $this->faker->sentence(5),
             'formatted_prompt' => $this->faker->sentence(5),
-            'matched_lyrics'  => [],
+            'matched_lyrics' => [],
         ];
     }
 }

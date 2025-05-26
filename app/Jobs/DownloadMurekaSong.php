@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Jobs;
@@ -25,7 +26,7 @@ class DownloadMurekaSong implements ShouldQueue
         })->whenEmpty(function () {
             logger()->error('no downloadable songs found', [
                 'mureka_id' => $this->murekaCreation->mureka_id,
-                'choices'   => $this->murekaCreation->choices,
+                'choices' => $this->murekaCreation->choices,
             ]);
         });
     }
@@ -33,26 +34,26 @@ class DownloadMurekaSong implements ShouldQueue
     private function downloadSong($url): void
     {
         // does the file already exist?
-        $basePath = 'songs/' . $this->murekaCreation->song_id;
-        $filePath = $basePath . '/' . basename($url);
+        $basePath = 'songs/'.$this->murekaCreation->song_id;
+        $filePath = $basePath.'/'.basename($url);
 
         if (Storage::disk('public')->exists($filePath)) {
             return;
         }
 
         // make sure the directory exists
-        if (!Storage::disk('public')->exists($basePath)) {
+        if (! Storage::disk('public')->exists($basePath)) {
             Storage::disk('public')->makeDirectory($basePath);
         }
 
         $response = Http::sink(Storage::disk('public')->path($filePath))
-                        ->get($url);
+            ->get($url);
 
         if ($response->failed()) {
             logger()->error('failed to download song', [
-                'url'    => $url,
+                'url' => $url,
                 'status' => $response->status(),
-                'body'   => $response->body(),
+                'body' => $response->body(),
             ]);
 
             // remove the file if download failed

@@ -13,9 +13,9 @@ class SongCreator extends Tool
     public function __construct()
     {
         $this->as('weird-al-song-creator')
-             ->for('when you want to create a parody of a Weird Al song')
-             ->withStringParameter('theme', 'The theme you want to use for the parody')
-             ->using($this);
+            ->for('when you want to create a parody of a Weird Al song')
+            ->withStringParameter('theme', 'The theme you want to use for the parody')
+            ->using($this);
     }
 
     public function __invoke(string $theme)
@@ -24,15 +24,15 @@ class SongCreator extends Tool
 
         $promptView = view('lyrics', [
             'userPrompt' => $normalizedPrompt,
-            'document'   => $this->getMatchingDocument($normalizedPrompt),
-            'keywords'   => $this->extractKeywords($normalizedPrompt),
+            'document' => $this->getMatchingDocument($normalizedPrompt),
+            'keywords' => $this->extractKeywords($normalizedPrompt),
         ]);
 
         $response = Prism::text()
-                         ->using(Provider::Ollama, 'llama3.2')
-                         ->withClientOptions(['timeout' => 60])
-                         ->withPrompt($promptView)
-                         ->asText();
+            ->using(Provider::Ollama, 'llama3.2')
+            ->withClientOptions(['timeout' => 60])
+            ->withPrompt($promptView)
+            ->asText();
 
         return $response->text;
     }
@@ -40,12 +40,12 @@ class SongCreator extends Tool
     private function extractKeywords($prompt): string
     {
         $response = Prism::text()
-                         ->using(Provider::Ollama, 'llama3.2')
-                         ->withClientOptions(['timeout' => 60])
-                         ->withPrompt(view('keywords', ['userPrompt' => $prompt]))
-                         ->asText();
+            ->using(Provider::Ollama, 'llama3.2')
+            ->withClientOptions(['timeout' => 60])
+            ->withPrompt(view('keywords', ['userPrompt' => $prompt]))
+            ->asText();
 
-        $keywords = (string)object_get($response, 'text', '');
+        $keywords = (string) object_get($response, 'text', '');
 
         return $keywords;
     }
@@ -53,47 +53,47 @@ class SongCreator extends Tool
     private function getMatchingDocument($prompt): ?Lyric
     {
         $promptEmbeddingResponse = Prism::embeddings()
-                                        ->using(Provider::Ollama, 'mxbai-embed-large')
-                                        ->fromInput($prompt)
-                                        ->asEmbeddings();
+            ->using(Provider::Ollama, 'mxbai-embed-large')
+            ->fromInput($prompt)
+            ->asEmbeddings();
 
         // select original_text from document order by embedding <=> embedding
         $embeddingArray = $promptEmbeddingResponse->embeddings[0]->embedding;
 
-        $formattedEmbedding = '[' . implode(',', $embeddingArray) . ']';
+        $formattedEmbedding = '['.implode(',', $embeddingArray).']';
 
         return Lyric::query()
-                    ->select(['id', 'name', 'original_text'])
-                    ->orderByRaw('embedding <=> ?::vector', [$formattedEmbedding])
-                    ->first();
+            ->select(['id', 'name', 'original_text'])
+            ->orderByRaw('embedding <=> ?::vector', [$formattedEmbedding])
+            ->first();
     }
 
     private function buildUserPrompt($prompt): string
     {
         return Pipeline::send($prompt)
-                       ->through([
-                           // Lowercase
-                           function ($input) {
-                               return mb_strtolower($input);
-                           },
+            ->through([
+                // Lowercase
+                function ($input) {
+                    return mb_strtolower($input);
+                },
 
-                           // Remove stop words
-                           function ($input) {
-                               return preg_replace('/\b(?:the|a|is|and)\b/', '', $input);
-                           },
+                // Remove stop words
+                function ($input) {
+                    return preg_replace('/\b(?:the|a|is|and)\b/', '', $input);
+                },
 
-                           // Remove punctuation
-                           function ($input) {
-                               return preg_replace('/[^\w\s]/u', '', $input);
-                           },
+                // Remove punctuation
+                function ($input) {
+                    return preg_replace('/[^\w\s]/u', '', $input);
+                },
 
-                           // Remove special characters
-                           function ($input) {
-                               return preg_replace('/[^\p{L}\p{N}\s]/u', '', $input);
-                           },
-                       ])
-                       ->then(function ($userPrompt) {
-                           return $userPrompt;
-                       });
+                // Remove special characters
+                function ($input) {
+                    return preg_replace('/[^\p{L}\p{N}\s]/u', '', $input);
+                },
+            ])
+            ->then(function ($userPrompt) {
+                return $userPrompt;
+            });
     }
 }

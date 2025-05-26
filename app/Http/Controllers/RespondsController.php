@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Prism\Prism\Enums\Provider;
 use Prism\Prism\Prism;
 
@@ -19,10 +18,10 @@ class RespondsController
         ]);
 
         $response = Prism::text()
-                         ->using(Provider::Ollama, 'llama3.2')
-                         ->withClientOptions(['timeout' => 60])
-                         ->withSystemPrompt('You are brief in your responses.')
-                         ->withPrompt($input['prompt']);
+            ->using(Provider::Ollama, 'llama3.2')
+            ->withClientOptions(['timeout' => 60])
+            ->withSystemPrompt('You are brief in your responses.')
+            ->withPrompt($input['prompt']);
 
         return $response->asText()->text;
     }

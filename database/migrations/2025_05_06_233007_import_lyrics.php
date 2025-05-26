@@ -7,7 +7,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        if(!File::exists(database_path('lyrics.sql'))) {
+        if (! File::exists(database_path('lyrics.sql'))) {
             return;
         }
 
