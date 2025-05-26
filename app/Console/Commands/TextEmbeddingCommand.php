@@ -17,8 +17,6 @@ class TextEmbeddingCommand extends Command
 
     protected $description = 'Generate text embeddings using Ollama mxbai-embed-large model';
 
-    private array $tokens = [];
-
     private array $embeddings = [];
 
     public function handle()

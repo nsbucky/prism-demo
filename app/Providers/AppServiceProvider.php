@@ -50,7 +50,13 @@ class AppServiceProvider extends ServiceProvider
                             ->when($keywords, function ($query, $keywords) {
                                 return $query->where('keywords', 'like'.'%'.$keywords.'%');
                             })
-                            ->limit(5)
+                            ->limit(3)
+                            ->get([
+                                'id',
+                                'title',
+                                'keywords',
+                                'lyrics',
+                            ])
                             ->toJson();
                     });
 

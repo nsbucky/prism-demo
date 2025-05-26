@@ -17,6 +17,7 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
+        "larastan/larastan": "^3.0",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.22",
         "laravel/sail": "^1.41",
@@ -70,6 +71,9 @@
             "./vendor/bin/sail artisan migrate",
             "./vendor/bin/sail artisan db:seed",
             "./vendor/bin/sail composer run dev"
+        ],
+        "stanalyze": [
+            "@php vendor/bin/phpstan analyse --memory-limit=2G --configuration=phpstan.neon"
         ]
     },
     "extra": {

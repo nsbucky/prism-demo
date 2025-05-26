@@ -91,7 +91,7 @@ class OllamaListensToToolCommand extends Command
                     'Tool Name' => $toolResult->toolName,
                     'Result' => wordwrap($toolResult->result, 60),
                 ];
-            })->all();
+            })->toArray();
 
             // Display as table
             table(
