@@ -1,5 +1,5 @@
 ###
-POST http://localhost/prism/openai/v1/chat/completions
+POST http://prism-demo.test:8080/prism/openai/v1/chat/completions
 Content-Type: application/json
 
 {
@@ -13,7 +13,7 @@ Content-Type: application/json
 GET http://localhost/prism/openai/v1/models
 
 ###
-POST http://prism.test/prism/openai/v1/chat/completions
+POST http://prism-demo.test:8080/prism/openai/v1/chat/completions
 Content-Type: application/json
 
 {
@@ -24,7 +24,7 @@ Content-Type: application/json
 }
 
 ###
-GET http://prism.test/prism/openai/v1/models
+GET http://prism-demo.test:8080/prism/openai/v1/models
 
 ###
 

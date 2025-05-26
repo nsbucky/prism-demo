@@ -109,6 +109,13 @@ services:
             - sail
         volumes:
             - ./open-webui:/app/backend/data
+    watchtower:
+        image: containrrr/watchtower
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+        command: --interval 300 open-webui
+        depends_on:
+            - open-webui
 networks:
     sail:
         driver: bridge
@@ -116,4 +123,6 @@ volumes:
     sail-mysql:
         driver: local
     sail-pgsql:
+        driver: local
+    open-webui:
         driver: local
