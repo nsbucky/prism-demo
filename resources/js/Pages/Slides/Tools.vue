@@ -46,7 +46,7 @@ function submit() {
               v-model="form.prompt"
               type="text"
               id="prompt"
-              class="border border-gray-300 rounded-lg p-2 mr-4 w-full"
+              class="border border-gray-300 rounded-lg p-2 mb-4 w-full bg-gray-800/40 border-orange-500 focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
               required
           />
           <button

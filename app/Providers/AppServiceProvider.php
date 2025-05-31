@@ -8,6 +8,7 @@ use Prism\Prism\Enums\Provider;
 use Prism\Prism\Facades\PrismServer;
 use Prism\Prism\Facades\Tool;
 use Prism\Prism\Prism;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -18,6 +19,10 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        if ($this->app->environment('local')) {
+            URL::forceScheme('https');
+        }
+        
         PrismServer::register(
             'spatula-creator',
             function () {
