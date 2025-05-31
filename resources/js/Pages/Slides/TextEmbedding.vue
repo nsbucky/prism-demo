@@ -1,11 +1,41 @@
 <script setup>
-
+import {computed, ref} from "vue";
+import {useForm, usePage, router} from '@inertiajs/vue3';
 import VueCodeBlock from '@wdns/vue-code-block';
+import LoadingSpinner from '../Components/LoadingSpinner.vue';
 
 const sampleCode = `Prism::embeddings()
     ->using(Provider::Ollama, 'mxbai-embed-large')
     ->fromInput('Welcome to Spatula City! Where are we?')
     ->asEmbeddings();`
+
+const embeddingForm = useForm({
+  text: 'Welcome to Spatula City! Where are we?'
+});
+
+const page = usePage();
+const embeddingResponse = computed(() => page.props.flash?.embedding);
+const isSubmitting = ref(false);
+
+function getEmbedding() {
+  isSubmitting.value = true;
+  
+  router.post('/embedding', {
+    text: embeddingForm.text
+  }, {
+    preserveScroll: true,
+    onSuccess: () => {
+      isSubmitting.value = false;
+    },
+    onError: (errors) => {
+      console.error('Validation errors:', errors);
+      isSubmitting.value = false;
+    },
+    onFinish: () => {
+      isSubmitting.value = false;
+    }
+  });
+}
 </script>
 
 <template>
@@ -25,7 +55,39 @@ const sampleCode = `Prism::embeddings()
 
         <VueCodeBlock highlightjs lang="php" :code=sampleCode />
 
-      <code class="mb-6 bg-gray-800/20 rounded p-2 mb-3 block">[0.010416343, 0.03364965, -0.03520376, 0.010199273, -0.06551366, -0.011224281, 0.027334454, 0.0229026...]</code>
+        <div class="mt-6">
+          <h4 class="text-orange-300 font-bold mb-3">Live Embedding Generator</h4>
+          <form @submit.prevent="getEmbedding">
+            <div class="flex items-center mb-3">
+              <input
+                  v-model="embeddingForm.text"
+                  type="text"
+                  id="embedding-text"
+                  class="flex-1 mr-2 border border-gray-300 rounded-lg p-2 bg-gray-800/40 border-orange-500 focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
+                  placeholder="Enter text to generate embeddings..."
+                  required
+              />
+              <button
+                  type="submit"
+                  class="bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition duration-200 flex items-center gap-2"
+                  :disabled="isSubmitting"
+              >
+                <LoadingSpinner v-if="isSubmitting" size="16"/>
+                <span>{{ isSubmitting ? 'Generating...' : 'Generate' }}</span>
+              </button>
+            </div>
+          </form>
+          
+          <div v-if="embeddingResponse" class="mt-4">
+            <div class="mb-2 text-sm text-gray-400">
+              <span class="font-semibold">Dimensions:</span> {{ embeddingResponse.total_dimensions }}
+              <span class="ml-4 font-semibold">Showing:</span> First 50 values
+            </div>
+            <code class="bg-gray-800/20 rounded p-3 block text-xs overflow-x-auto whitespace-pre-wrap">
+              [{{ embeddingResponse.embeddings.map(v => v.toFixed(6)).join(', ') }}...]
+            </code>
+          </div>
+        </div>
 
 
 

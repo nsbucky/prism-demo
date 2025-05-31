@@ -11,23 +11,36 @@ class StreamController
     public function __invoke(Request $request)
     {
         // Validate the request
-        $request->validate([
+        $validated = $request->validate([
             'prompt' => 'required|string|max:255',
+            'temperature' => 'nullable|numeric|min:0|max:1|prohibits:topP',
+            'topP' => 'nullable|numeric|min:0|max:1|prohibits:temperature',
         ]);
 
-        $prompt = $request->input('prompt');
+        $prompt = $validated['prompt'];
+        $temperature = $validated['temperature'] ?? null;
+        $topP = $validated['topP'] ?? null;
 
-        return response()->stream(function () use ($prompt) {
+        return response()->stream(function () use ($prompt, $temperature, $topP) {
             // Set proper headers for SSE
             header('Content-Type: text/event-stream');
             header('Cache-Control: no-cache');
             header('Connection: keep-alive');
 
             // Stream the AI response
-            $response = Prism::text()
+            $prism = Prism::text()
                 ->using(Provider::Ollama, 'llama3.2')
-                ->withPrompt($prompt)
-                ->asStream();
+                ->withSystemPrompt('You are a helpful assistant that responds in 250 words or less.')
+                ->withPrompt($prompt);
+
+            // Apply temperature or topP if provided
+            if ($temperature !== null) {
+                $prism = $prism->usingTemperature($temperature);
+            } elseif ($topP !== null) {
+                $prism = $prism->usingTopP($topP);
+            }
+
+            $response = $prism->asStream();
 
             foreach ($response as $chunk) {
                 echo 'data: '.json_encode(['chunk' => $chunk->text])."\n\n";
