@@ -1,5 +1,5 @@
 <script setup>
-import {computed, ref} from "vue";
+import {computed} from "vue";
 import {useForm, usePage, router} from '@inertiajs/vue3';
 import VueCodeBlock from '@wdns/vue-code-block';
 import LoadingSpinner from '../Components/LoadingSpinner.vue';
