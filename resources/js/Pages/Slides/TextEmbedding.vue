@@ -14,26 +14,17 @@ const embeddingForm = useForm({
 });
 
 const page = usePage();
-const embeddingResponse = computed(() => page.props.flash?.embedding);
-const isSubmitting = ref(false);
+const embeddingResponse = computed(() => page.props.flash?.payload);
 
 function getEmbedding() {
-  isSubmitting.value = true;
-  
   router.post('/embedding', {
     text: embeddingForm.text
   }, {
     preserveScroll: true,
-    onSuccess: () => {
-      isSubmitting.value = false;
-    },
     onError: (errors) => {
       console.error('Validation errors:', errors);
       isSubmitting.value = false;
     },
-    onFinish: () => {
-      isSubmitting.value = false;
-    }
   });
 }
 </script>
@@ -70,14 +61,14 @@ function getEmbedding() {
               <button
                   type="submit"
                   class="bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition duration-200 flex items-center gap-2"
-                  :disabled="isSubmitting"
+                  :disabled="embeddingForm.processing"
               >
-                <LoadingSpinner v-if="isSubmitting" size="16"/>
-                <span>{{ isSubmitting ? 'Generating...' : 'Generate' }}</span>
+                <LoadingSpinner v-if="embeddingForm.processing" size="16"/>
+                <span>{{ embeddingForm.processing ? 'Generating...' : 'Generate' }}</span>
               </button>
             </div>
           </form>
-          
+
           <div v-if="embeddingResponse" class="mt-4">
             <div class="mb-2 text-sm text-gray-400">
               <span class="font-semibold">Dimensions:</span> {{ embeddingResponse.total_dimensions }}

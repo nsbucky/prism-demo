@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EmbeddingController;
+use App\Http\Controllers\ParodySongController;
 use App\Http\Controllers\RespondsController;
 use App\Http\Controllers\SongController;
 use App\Http\Controllers\StreamController;
@@ -21,3 +22,4 @@ Route::post('/responds', RespondsController::class);
 Route::post('/tool', ToolController::class);
 Route::post('/song', SongController::class);
 Route::post('/embedding', EmbeddingController::class);
+Route::post('/parody-song', ParodySongController::class);

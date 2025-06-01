@@ -28,6 +28,6 @@ class EmbeddingController extends Controller
             'total_dimensions' => count($embeddings),
         ];
 
-        return back()->with('embedding', $embeddingData);
+        return back()->with('payload', $embeddingData);
     }
 }
