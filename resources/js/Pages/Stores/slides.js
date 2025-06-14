@@ -29,6 +29,7 @@ export const useSlides = () => {
         'PrismServerHttp',
         'MCPServerList',
         'Slide11',
+        'ChatWithTools',
     ]
 
     const next = computed(() =>
