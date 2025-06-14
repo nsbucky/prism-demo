@@ -1,12 +1,22 @@
 import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import Layout from "./Pages/Layout.vue";
 import '../css/app.css'
+import Echo from 'laravel-echo';
 
 import axios from 'axios';
 
 window.axios = axios;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+// Set up CSRF token for axios and Inertia
+let token = document.head.querySelector('meta[name="csrf-token"]');
+if (token) {
+    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+} else {
+    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+}
 
 createInertiaApp({
     resolve: name => {
@@ -21,8 +31,31 @@ createInertiaApp({
         return page
     },
     setup({ el, App, props, plugin }) {
-        createApp({ render: () => h(App, props) })
+        return createApp({ render: () => h(App, props) })
             .use(plugin)
             .mount(el)
     },
+    progress: {
+        color: '#4B5563',
+    },
 })
+
+
+
+window.Echo = new Echo({
+
+    broadcaster: 'reverb',
+
+    key: import.meta.env.VITE_REVERB_APP_KEY,
+
+    wsHost: import.meta.env.VITE_REVERB_HOST,
+
+    wsPort: import.meta.env.VITE_REVERB_PORT ?? 80,
+
+    wssPort: import.meta.env.VITE_REVERB_PORT ?? 443,
+
+    forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? 'https') === 'https',
+
+    enabledTransports: ['ws', 'wss'],
+
+});

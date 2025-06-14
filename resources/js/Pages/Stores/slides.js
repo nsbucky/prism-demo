@@ -23,6 +23,7 @@ export const useSlides = () => {
         'ExtractKeywords',
         'SearchDb',
         'FinalSongPrompt',
+        'WeirdAlLives',
         'MCP',
         'Slide10',
         'PrismServerHttp',

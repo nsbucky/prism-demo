@@ -1,6 +1,5 @@
 <script setup>
 import {reactive, ref} from "vue";
-import axios from "axios";
 import LoadingSpinner from '../Components/LoadingSpinner.vue';
 
 const streamForm = reactive({
@@ -15,8 +14,14 @@ const streamForm = reactive({
     "Invent a new holiday for robots and describe the traditions.",
     "If socks could talk, what secrets would they reveal?",
     "Write a haiku about a confused potato."
-  ][Math.floor(Math.random() * 10)]
+  ][Math.floor(Math.random() * 10)],
+  temperature: null,
+  topP: null
 });
+
+function handleTemperatureChange() {
+  if (streamForm.temperature !== null) streamForm.topP = null;
+}
 
 const streamingResponse = ref("");
 const isStreaming = ref(false);
@@ -25,8 +30,17 @@ function streamResponse() {
   isStreaming.value = true;
   streamingResponse.value = "";
 
+  // Build query parameters
+  let queryParams = `prompt=${encodeURIComponent(streamForm.prompt)}`;
+  if (streamForm.temperature !== null) {
+    queryParams += `&temperature=${streamForm.temperature}`;
+  }
+  if (streamForm.topP !== null) {
+    queryParams += `&topP=${streamForm.topP}`;
+  }
+
   // Create EventSource for Server-Sent Events
-  const eventSource = new EventSource(`/stream?prompt=${encodeURIComponent(streamForm.prompt)}`);
+  const eventSource = new EventSource(`/stream?${queryParams}`);
 
   eventSource.onmessage = (event) => {
     const data = JSON.parse(event.data);
@@ -76,7 +90,7 @@ function streamResponse() {
       <div>
         <h4 class="text-orange-300 font-bold mb-3">Streamed response</h4>
         <form @submit.prevent="streamResponse">
-          <div class="flex items-center">
+          <div class="flex items-center mb-3">
             <input
                 v-model="streamForm.prompt"
                 type="text"
@@ -92,10 +106,59 @@ function streamResponse() {
               <LoadingSpinner v-if="isStreaming" size="16"/>
               <span>{{ isStreaming ? 'Working...' : 'Ask' }}</span>
             </button>
-
           </div>
+
+          <div class="flex gap-4 mb-3">
+            <div class="flex items-center">
+              <label for="temperature" class="mr-2 text-sm" :class="{ 'opacity-50': streamForm.topP !== null }">Temperature:</label>
+              <select
+                  v-model="streamForm.temperature"
+                  id="temperature"
+                  class="border border-gray-300 rounded-lg p-1 bg-gray-800/40 border-orange-500 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-sm"
+                  :disabled="streamForm.topP !== null"
+                  :class="{ 'opacity-50 cursor-not-allowed': streamForm.topP !== null }"
+                  @change="handleTemperatureChange"
+              >
+                <option :value="null">Default</option>
+                <option :value="0.0">0.0 (Deterministic)</option>
+                <option :value="0.2">0.2</option>
+                <option :value="0.5">0.5</option>
+                <option :value="0.7">0.7</option>
+                <option :value="0.8">0.8</option>
+                <option :value="1.0">1.0 (Creative)</option>
+              </select>
+            </div>
+
+            <div class="flex items-center">
+              <label for="topP" class="mr-2 text-sm" :class="{ 'opacity-50': streamForm.temperature !== null }">Top
+                P:</label>
+              <select
+                  v-model="streamForm.topP"
+                  id="topP"
+                  class="border border-gray-300 rounded-lg p-1 bg-gray-800/40 border-orange-500 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-sm"
+                  :disabled="streamForm.temperature !== null"
+                  :class="{ 'opacity-50 cursor-not-allowed': streamForm.temperature !== null }"
+                  @change="() => { if (streamForm.topP !== null) streamForm.temperature = null }"
+              >
+                <option :value="null">Default</option>
+                <option :value="0.1">0.1 (Focused)</option>
+                <option :value="0.3">0.3</option>
+                <option :value="0.5">0.5</option>
+                <option :value="0.7">0.7</option>
+                <option :value="0.9">0.9 (Diverse)</option>
+                <option :value="1.0">1.0</option>
+              </select>
+            </div>
+
+            <div class="flex items-center text-xs text-gray-400 italic">
+              <span v-if="streamForm.temperature === null && streamForm.topP === null">(Choose one parameter)</span>
+              <span v-else-if="streamForm.temperature !== null" class="text-orange-400">Using Temperature</span>
+              <span v-else class="text-orange-400">Using Top P</span>
+            </div>
+          </div>
+
           <div v-if="streamingResponse"
-               class="mt-4 p-4 bg-gray-800/20 rounded-lg w-full overflow-y-auto h-48">
+               class="mt-4 p-4 bg-gray-800/20 rounded-lg w-full overflow-y-auto h-48 whitespace-pre-line">
             {{ streamingResponse }}
           </div>
         </form>
