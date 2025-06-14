@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChatWithToolsController;
 use App\Http\Controllers\EmbeddingController;
 use App\Http\Controllers\ParodySongController;
 use App\Http\Controllers\RespondsController;
@@ -18,6 +19,7 @@ Route::get('/slides/{slide}', function (string $slide) {
 })->whereAlphaNumeric('slide');
 
 Route::get('/stream', StreamController::class);
+Route::post('/chat', ChatWithToolsController::class);
 Route::post('/responds', RespondsController::class);
 Route::post('/tool', ToolController::class);
 Route::post('/song', SongController::class);
