@@ -1,7 +1,6 @@
 <script setup>
 import {reactive, ref} from "vue";
 import LoadingSpinner from '../Components/LoadingSpinner.vue';
-import 'deep-chat';
 
 const streamForm = reactive({
   prompt: [
@@ -24,59 +23,49 @@ function handleTemperatureChange() {
   if (streamForm.temperature !== null) streamForm.topP = null;
 }
 
+const streamingResponse = ref("");
+const isStreaming = ref(false);
 const toolResults = ref([]);
 
+function streamResponse() {
+  isStreaming.value = true;
+  streamingResponse.value = "";
 
-// Get CSRF token - ensure it exists
-const getCsrfToken = () => {
-  const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-  if (!token) {
-    console.error('CSRF token not found!');
+  // Build query parameters
+  let queryParams = `prompt=${encodeURIComponent(streamForm.prompt)}`;
+  if (streamForm.temperature !== null) {
+    queryParams += `&temperature=${streamForm.temperature}`;
   }
-  return token || '';
-};
-
-// deep chat
-const connectionParameters = {
-  url: '/chat',
-  headers: {
-    'Content-Type': 'application/json',
-    'X-CSRF-TOKEN': getCsrfToken(),
-  },
-  method: 'POST',
-  stream: true,
-  requestBodyLimits: {
-    maxMessages: -1
+  if (streamForm.topP !== null) {
+    queryParams += `&topP=${streamForm.topP}`;
   }
-};
 
-console.log('CSRF Token:', getCsrfToken());
-console.log('Connection Parameters:', connectionParameters);
-// Request interceptor to format messages for the controller
-const requestInterceptor = (body) => {
-  // DeepChat sends messages in format: {messages: [{role: 'user', text: '...'}]}
-  // Convert to controller's expected format
-  return {
-    messages: body.messages || [],
-    temperature: streamForm.temperature,
-    topP: streamForm.topP,
-    //_token: getCsrfToken() // Also include CSRF token in body
+  // Create EventSource for Server-Sent Events
+  const eventSource = new EventSource(`/chat?${queryParams}`);
+
+  eventSource.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+
+    if (data.chunk) {
+      streamingResponse.value += data.chunk;
+    }
+
+    if(data.toolResults) {
+      //streamingResponse.value += '\n\nTool Response: ' + Object.keys(data.toolResults).join(', ');
+      toolResults.value = data.toolResults;
+    }
+
+    if (data.done) {
+      eventSource.close();
+      isStreaming.value = false;
+    }
   };
-};
 
-const responseInterceptor = (response) => {
-  if (response.toolResults) {
-    console.log(response.toolResults);
-    toolResults.value = response.toolResults;
-  }
-
-  if (response.done) {
-    //isStreaming.value = false;
-  }
-
-  return response;
-};
-
+  eventSource.onerror = () => {
+    eventSource.close();
+    isStreaming.value = false;
+  };
+}
 </script>
 
 <template>
@@ -85,15 +74,26 @@ const responseInterceptor = (response) => {
     <template #content>
 
       <div>
+        <h4 class="text-orange-300 font-bold mb-3">Streamed response</h4>
+        <form @submit.prevent="streamResponse">
+          <div class="flex items-center mb-3">
+            <input
+                v-model="streamForm.prompt"
+                type="text"
+                id="stream-prompt"
+                class="w-200 mr-3 border border-gray-300 rounded-lg p-2 bg-gray-800/40 border-orange-500 focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
+                required
+            />
+            <button
+                type="submit"
+                class="bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition duration-200 flex items-center gap-2"
+                :disabled="isStreaming"
+            >
+              <LoadingSpinner v-if="isStreaming" size="16"/>
+              <span>{{ isStreaming ? 'Working...' : 'Ask' }}</span>
+            </button>
+          </div>
 
-        <deep-chat
-            :connect="connectionParameters"
-            :responseInterceptor="responseInterceptor"
-        />
-
-        <h4 class="text-orange-300 font-bold mb-3">Options</h4>
-
-        <form>
           <div class="flex gap-4 mb-3">
             <div class="flex items-center">
               <label for="temperature" class="mr-2 text-sm" :class="{ 'opacity-50': streamForm.topP !== null }">Temperature:</label>
@@ -143,13 +143,17 @@ const responseInterceptor = (response) => {
             </div>
           </div>
 
-        </form>
-        <div v-if="toolResults">
-          <h4 class="text-orange-300 font-bold mt-4">Tool Results</h4>
-          <div class="mt-2 p-4 bg-gray-800/20 rounded-lg w-full overflow-y-auto h-48 whitespace-pre-line">
-            {{ toolResults }}
+          <div v-if="streamingResponse"
+               class="mt-4 p-4 bg-gray-800/20 rounded-lg w-full overflow-y-auto h-48 whitespace-pre-line">
+            {{ streamingResponse }}
           </div>
-        </div>
+          <div v-if="toolResults">
+            <h4 class="text-orange-300 font-bold mt-4">Tool Results</h4>
+            <div class="mt-2 p-4 bg-gray-800/20 rounded-lg w-full overflow-y-auto h-48 whitespace-pre-line">
+              {{ toolResults }}
+            </div>
+          </div>
+        </form>
       </div>
 
     </template>
