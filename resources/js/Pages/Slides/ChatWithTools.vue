@@ -1,6 +1,8 @@
 <script setup>
-import {reactive, ref} from "vue";
+import {reactive, ref, onMounted} from "vue";
 import 'deep-chat';
+import axios from "axios";
+
 
 const streamForm = reactive({
   prompt: [
@@ -25,6 +27,8 @@ function handleTemperatureChange() {
 
 const toolResults = ref([]);
 const toolHtml = ref('');
+const sessionId = ref(null);
+const history = ref([]);
 
 
 // Get CSRF token - ensure it exists
@@ -50,6 +54,10 @@ const connectionParameters = {
   }
 };
 
+onMounted(() => {
+   fetchHistory();
+});
+
 console.log('CSRF Token:', getCsrfToken());
 console.log('Connection Parameters:', connectionParameters);
 // Request interceptor to format messages for the controller
@@ -60,6 +68,7 @@ const requestInterceptor = (body) => {
     messages: body.messages || [],
     temperature: streamForm.temperature,
     topP: streamForm.topP,
+    session_id: sessionId.value,
     //_token: getCsrfToken() // Also include CSRF token in body
   };
 };
@@ -70,9 +79,14 @@ const responseInterceptor = (response) => {
     toolResults.value = response.toolResults;
   }
 
-  if(response.toolHtml){
+  if (response.toolHtml) {
     console.log(response.toolHtml);
     toolHtml.value = response.toolHtml;
+  }
+
+  if (response.session_id) {
+    sessionId.value = response.session_id;
+    console.log('Session ID:', response.session_id);
   }
 
   if (response.done) {
@@ -81,6 +95,18 @@ const responseInterceptor = (response) => {
 
   return response;
 };
+
+// Fetch chat history from internal endpoint
+async function fetchHistory() {
+
+  try {
+    const response = await axios.get(sessionId.value ? `/chat-history/${sessionId}` : '/chat-history');
+    history.value = response.data || [];
+    console.log('Chat history fetched:', response.data);
+  } catch (error) {
+    console.error('Failed to fetch chat history:', error);
+  }
+}
 
 </script>
 
@@ -96,6 +122,7 @@ const responseInterceptor = (response) => {
             class="w-full h-full"
             :connect="connectionParameters"
             :responseInterceptor="responseInterceptor"
+            :history="history"
         />
 
         <h4 class="text-orange-300 font-bold mb-3">Options</h4>
@@ -159,7 +186,9 @@ const responseInterceptor = (response) => {
         </div>
         <div v-if="toolHtml">
           <h4 class="text-orange-300 font-bold mt-4">Tool HTML</h4>
-          <div class="mt-2 p-4 bg-gray-800/20 rounded-lg w-full overflow-y-auto h-48 whitespace-pre-line">{{toolHtml}}</div>
+          <div class="mt-2 p-4 bg-gray-800/20 rounded-lg w-full overflow-y-auto h-48 whitespace-pre-line">
+            {{ toolHtml }}
+          </div>
         </div>
       </div>
 

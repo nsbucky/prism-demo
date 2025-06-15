@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChatHistoryController;
 use App\Http\Controllers\ChatWithToolsController;
 use App\Http\Controllers\EmbeddingController;
 use App\Http\Controllers\ParodySongController;
@@ -25,3 +26,8 @@ Route::post('/tool', ToolController::class);
 Route::post('/song', SongController::class);
 Route::post('/embedding', EmbeddingController::class);
 Route::post('/parody-song', ParodySongController::class);
+
+// Chat history routes
+Route::get('/chat-history', [ChatHistoryController::class, 'index']);
+Route::get('/chat-history/{sessionId?}', [ChatHistoryController::class, 'show']);
+Route::post('/chat-history', [ChatHistoryController::class, 'store']);
