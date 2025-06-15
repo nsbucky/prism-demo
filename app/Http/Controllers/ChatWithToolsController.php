@@ -20,7 +20,7 @@ class ChatWithToolsController
     private array $toolResults = [];
     private array $toolHtml = [];
 
-    private $session;
+    private ChatSession $session;
 
     public function __invoke(Request $request)
     {
@@ -260,7 +260,6 @@ class ChatWithToolsController
 
                     return json_encode([
                         'data' => $contactInfo,
-                        'html' => '<p>Contact information extracted successfully.</p>',
                     ]);
                 }),
             Tool::as('search')
