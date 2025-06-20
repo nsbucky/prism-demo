@@ -31,3 +31,6 @@ Route::post('/parody-song', ParodySongController::class);
 Route::get('/chat-history', [ChatHistoryController::class, 'index']);
 Route::get('/chat-history/{sessionId?}', [ChatHistoryController::class, 'show']);
 Route::post('/chat-history', [ChatHistoryController::class, 'store']);
+
+// Include conversation flow routes
+require __DIR__.'/conversation-flow.php';

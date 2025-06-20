@@ -283,8 +283,9 @@ class ChatWithToolsController
                 }),
             Tool::as('count_users')
                 ->for('Count the number of users')
-                ->withStringParameter('notUsed', 'This parameter is not used, but required for the tool to work')
-                ->using(function (string $notUsed = null): string {
+                // ->withStringParameter('notUsed', 'This parameter is not used, but required for the tool to work')
+                //->using(function (string $notUsed = null): string {
+                ->using(function (): string {
 
                     $userCount = User::count();
 
